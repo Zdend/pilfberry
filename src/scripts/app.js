@@ -9,6 +9,9 @@ import createHistory from 'history/createBrowserHistory';
 import initLocales from './locales';
 import {getActiveLanguage} from './reducers/selectors';
 import { AppContainer } from 'react-hot-loader';
+import '../styles/vendor.scss';
+import '../styles/app.scss';
+
 
 const initialState = window.__INITIAL_STATE__;
 const history = createHistory();
@@ -26,6 +29,7 @@ initLocales(getActiveLanguage(store.getState()), () => render(Routes));
 
 // Hot Module Replacement API
 if (module.hot) {
+
     module.hot.accept('./routes', () => {
         const newRoutes = require('./routes').default;
         render(newRoutes);

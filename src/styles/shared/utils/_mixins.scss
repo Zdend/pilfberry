@@ -1,0 +1,48 @@
+@mixin radial-bg($color) {
+  $color1: scale-color($color, $lightness: -20%);
+  $color2: scale-color($color, $lightness: 20%);
+  background: $color2; /* Old browsers */
+  background: radial-gradient(ellipse at center, $color2 0%, $color1 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$color2', endColorstr='$color1', GradientType=1); /* IE6-9 fallback on horizontal gradient */
+}
+
+@mixin inset-shadow() {
+  box-shadow: inset 0 0 10px #000000;
+}
+@mixin block-shadow-1x() {
+  box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+}
+
+@mixin context-borders($type, $width) {
+  $all: str-index($type, "all");
+  $t: str-index($type, "top");
+  $b: str-index($type, "bottom");
+  $l: str-index($type, "left");
+  $r: str-index($type, "right");
+  @if $all != null {
+    border-width: $width;
+    border-style: solid;
+  } @else {
+    @if $l != null {
+      border-left-width: $width;
+      border-left-style: solid;
+    }
+    @if $r != null {
+      border-right-width: $width;
+      border-right-style: solid;
+    }
+    @if $t != null {
+      border-top-width: $width;
+      border-top-style: solid;
+    }
+    @if $b != null {
+      border-bottom-width: $width;
+      border-bottom-style: solid;
+    }
+  }
+}
+
+
+@mixin ehr-icon($icon) {
+  @extend .ehr-#{$icon};
+}

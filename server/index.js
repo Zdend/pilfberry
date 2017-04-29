@@ -26,11 +26,11 @@ const compiler = webpack(webpackConfig);
 app.use(webpackDevMiddleware(compiler, {
     noInfo: true,
     publicPath: webpackConfig.output.publicPath,
-    // hot: true,
-    // stats: {
-    //
-    //     colors: true
-    // }
+    hot: true,
+    stats: {
+
+        colors: true
+    }
 }));
 
 app.use(webpackHotMiddleware(compiler));
@@ -50,7 +50,8 @@ app.use(webpackHotMiddleware(compiler));
 //     console.log('Listening at http://localhost:8080/');
 // });
 
-
+//<link rel="stylesheet" type="text/css" href="/static/vendor.css">
+// <link rel="stylesheet" type="text/css" href="/static/app.css">
 const layout = (body, initialState) => (`
     <!DOCTYPE html>
     <html>
@@ -59,7 +60,7 @@ const layout = (body, initialState) => (`
             <title>Special Diet</title>
             <meta name="description" content="Special Diet">
             <meta name="author" content="ZDV">
-            
+           
         </head>
         <body>
             <div id="root"><div>${body}</div></div>
@@ -101,10 +102,6 @@ const initialState = JSON.stringify({
 app.get('*', function (req, res) {
     res.send(layout('', initialState));
 });
-//
-// app.route('/').get(function (req, res) {
-//     res.send(layout('', initialState));
-// });
 
 app.listen(8080);
 console.log('Server is running on port 3000..');

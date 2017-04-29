@@ -1,0 +1,10 @@
+// Vendor library variables
+$fa-font-path: "~font-awesome/fonts";
+$icon-font-path: "~bootstrap-sass/assets/fonts/bootstrap/";
+
+// Vendor libraries
+@import "font-awesome/scss/font-awesome";
+@import "bootstrap-sass/assets/stylesheets/bootstrap";
+
+// Vendor styles
+@import "vendor/module";

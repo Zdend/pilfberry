@@ -13,17 +13,23 @@ const config = {
 module.exports = {
         devtool: 'cheap-module-eval-source-map',
         context: __dirname,
-        entry: [
-            'babel-polyfill',
-            'react-hot-loader/patch',
-            'webpack-hot-middleware/client',
+        entry: {
+
             // 'webpack-dev-server/client?http://localhost:3000', // WebpackDevServer host and port
             // 'webpack/hot/only-dev-server', // "only" prevents reload on syntax errors
             //'webpack/hot/dev-server',
             // 'webpack-hot-middleware/client',
-            './src/app.js'
+            bundle: [
+                'babel-polyfill',
+                'react-hot-loader/patch',
+                'webpack-hot-middleware/client',
+                './src/scripts/app.js'
+            ],
+            // app: './src/styles/app.scss',
+            // vendor: './src/styles/vendor.scss'
+
             // './src/vendor.js'
-        ],
+        },
             // vendor: [
             //     `./src/vendor.js`,
             //     'react',
@@ -46,7 +52,7 @@ module.exports = {
             // ]
         output: {
             path: path.join(__dirname, 'build'),
-            filename: 'bundle.js',
+            filename: '[name].js',
             chunkFilename: '[name]-[chunkhash].js',
             publicPath: PUBLIC_PATH
         },
@@ -104,10 +110,10 @@ module.exports = {
         plugins: [
             new webpack.HotModuleReplacementPlugin(),
             new webpack.NamedModulesPlugin(),
-            new ExtractTextPlugin({
-                filename: '[name].css',
-                allChunks: true
-            }),
+            // new ExtractTextPlugin({
+            //     filename: '[name].css',
+            //     allChunks: true
+            // }),
             new webpack.DefinePlugin({
                 __DEVELOPMENT__: config.dev,
                 __DEVTOOLS__: config.dev,
@@ -126,9 +132,14 @@ module.exports = {
 function makeStyleLoader(config) {
     return {
         test: exts('scss'),
-        use: ExtractTextPlugin.extract({
-            fallback: 'style-loader',
-            use: [
+        // use: ExtractTextPlugin.extract({
+        use: [
+                {
+                    loader: 'style-loader',
+                    options: {
+                        minimize: !config.dev
+                    }
+                },
                 {
                     loader: 'css-loader',
                     options: {
@@ -148,9 +159,7 @@ function makeStyleLoader(config) {
                         precision: 10
                     }
                 }
-            ],
-            publicPath: PUBLIC_PATH
-        })
+            ]
     };
 }
 function exts(...extensions) {
