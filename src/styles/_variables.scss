@@ -1,0 +1,33 @@
+$white: #fff;
+$black: #000;
+
+$font-titles: "Magra", "Roboto", sans-serif;
+
+// BOOTSTRAP OVERRIDES
+$brand-primary: #673AB7;
+//$brand-primary: #E6E6FA;
+
+$font-family-sans-serif: Roboto;
+
+$navbar-default-color: $brand-primary;
+$navbar-default-bg: #fff;
+$navbar-default-border:            darken($navbar-default-bg, 6.5%) !default;
+
+// Navbar links
+$navbar-default-link-color:                $brand-primary !default;
+$navbar-default-link-hover-color:          #333 !default;
+$navbar-default-link-hover-bg:             transparent !default;
+$navbar-default-link-active-color:         #555 !default;
+$navbar-default-link-active-bg:            darken($navbar-default-bg, 6.5%) !default;
+$navbar-default-link-disabled-color:       #ccc !default;
+$navbar-default-link-disabled-bg:          transparent !default;
+
+// Navbar brand label
+$navbar-default-brand-color:               $navbar-default-link-color !default;
+$navbar-default-brand-hover-color:         darken($navbar-default-brand-color, 10%) !default;
+$navbar-default-brand-hover-bg:            transparent !default;
+
+// Navbar toggle
+$navbar-default-toggle-hover-bg:           lighten($brand-primary,30%) !default;
+$navbar-default-toggle-icon-bar-bg:        $brand-primary !default;
+$navbar-default-toggle-border-color:       $brand-primary !default;

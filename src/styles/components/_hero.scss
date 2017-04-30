@@ -1,0 +1,15 @@
+.hero {
+  overflow: auto;
+  min-height: 500px;
+  height: 100%;
+  background: transparent url('/static/images/food-wallpaper.jpg');
+  background-size: cover;
+
+}
+.hero-title {
+  text-align: center;
+  margin-top: 8rem;
+  color: $white;
+  font-size: 5rem;
+  text-shadow: 1px 2px 7px $black;
+}

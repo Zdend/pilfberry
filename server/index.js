@@ -1,28 +1,16 @@
 import express from 'express';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
-import WebpackDevServer from 'webpack-dev-server';
 import webpack from 'webpack';
 import webpackConfig from '../webpack.config';
+import {findAllRestaurants} from './db';
 
-const assetsPath = 'http://localhost:3000/static/';
+const port = process.env.NODE_ENV || 8080;
+
 
 const app = express();
 const compiler = webpack(webpackConfig);
-// app.use(webpackMiddleware(webpack(webpackConfig)), {
-//     watchOptions: {
-//         aggregateTimeout: 300,
-//         poll: true
-//     },
-//
-//     publicPath: webpackConfig.output.publicPath,
-//
-//     stats: {
-//         colors: true
-//     },
-//     reporter: null,
-//     serverSideRender: true
-// });
+
 app.use(webpackDevMiddleware(compiler, {
     noInfo: true,
     publicPath: webpackConfig.output.publicPath,
@@ -34,24 +22,9 @@ app.use(webpackDevMiddleware(compiler, {
 }));
 
 app.use(webpackHotMiddleware(compiler));
+app.use('/static', express.static('public'));
 
-// new WebpackDevServer(webpack(webpackConfig), {
-//     publicPath: webpackConfig.output.publicPath,
-//     hot: true,
-//     historyApiFallback: true,
-//     proxy: {
-//         '*': 'http://localhost:3000'
-//     }
-// }).listen(8080, 'localhost', function(err, result) {
-//     if (err) {
-//         return console.log(err);
-//     }
-//
-//     console.log('Listening at http://localhost:8080/');
-// });
 
-//<link rel="stylesheet" type="text/css" href="/static/vendor.css">
-// <link rel="stylesheet" type="text/css" href="/static/app.css">
 const layout = (body, initialState) => (`
     <!DOCTYPE html>
     <html>
@@ -72,15 +45,6 @@ const layout = (body, initialState) => (`
     </html>
 `);
 
-// app.use((req, res) => {
-//     const assetsByChunkName = res.locals.webpackStats.toJson().assetsByChunkName;
-//
-//     // then use `assetsByChunkName` for server-sider rendering
-//     // For example, if you have only one main chunk:
-//
-//     res.send(layout('', initialState, assetsByChunkName))
-//
-// });
 
 const initialState = JSON.stringify({
     ui: {
@@ -96,12 +60,15 @@ const initialState = JSON.stringify({
     domain: {}
 });
 
-
+app.get('/api/restaurants', function (req, res) {
+    findAllRestaurants()
+        .then((restaurants) => res.json(restaurants));
+});
 
 
 app.get('*', function (req, res) {
     res.send(layout('', initialState));
 });
 
-app.listen(8080);
-console.log('Server is running on port 3000..');
+app.listen(port);
+console.log(`Server is running on port ${port}..`);

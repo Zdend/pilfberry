@@ -20,8 +20,7 @@ const LanguageList = ({activeLanguage, languages, languageChangeAction}) => (
 
 
 const Footer = (props) => (
-    <footer>
-        <hr />
+    <footer className="footer">
         <Grid>
             <Row>
                 <Col xs={12}>
