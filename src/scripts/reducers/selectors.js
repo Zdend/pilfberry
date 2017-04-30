@@ -20,6 +20,7 @@ export const getUser = s(getDomain, domain => domain.get('user'));
 export const getContacts = s(getDomain, domain => domain.get('contacts'));
 export const getObjectives = s(getDomain, domain => domain.get('objectives'));
 export const getRecords = s(getDomain, domain => domain.get('records'));
+export const getRestaurants = s(getDomain, domain => domain.get('restaurants'));
 export const getObjectivesWithoutNew = s(getObjectives, objectives => objectives.filterNot(filterNew));
 export const getNewObjective = s(getObjectives, objectives => objectives.find(filterNew));
 

@@ -2,8 +2,9 @@ import {OBJECTIVES} from '../actions/objective-actions';
 import {USER} from '../actions/user-actions';
 import {CONTACT} from '../actions/contact-actions';
 import {RECORD} from '../actions/record-actions';
+import {RESTAURANT} from '../actions/restaurant-actions';
 import {OrderedMap} from 'immutable';
-import {User, Objective, Contact, Record} from '../models';
+import {User, Objective, Contact, Record, Restaurant} from '../models';
 import {arrayToMapById} from '../services';
 import {NEW_ID} from '../constants';
 
@@ -51,10 +52,21 @@ function records (state = new OrderedMap(), action) {
             return state;
     }
 }
+function restaurants (state = new OrderedMap(), action) {
+    switch (action.type) {
+        case RESTAURANT.SUCCESS:
+            return arrayToMapById(action.restaurants, Restaurant, OrderedMap);
+        case RESTAURANT.FAILURE:
+            return state;
+        default:
+            return state;
+    }
+}
 
 export default {
     records,
     contacts,
     user,
-    objectives
+    objectives,
+    restaurants
 };
