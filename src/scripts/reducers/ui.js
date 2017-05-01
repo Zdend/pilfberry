@@ -1,7 +1,6 @@
 import {combineReducers} from 'redux-immutable';
 import {LOGIN} from '../actions/login-actions';
 import {LANGUAGE} from '../actions/language-actions';
-import {OBJECTIVES} from '../actions/objective-actions';
 import {USER} from '../actions/user-actions';
 import {Language} from '../models';
 import {Credentials} from '../models';

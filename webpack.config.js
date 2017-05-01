@@ -1,5 +1,4 @@
 const webpack = require('webpack');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 const path = require('path');
 
@@ -14,62 +13,22 @@ module.exports = {
         devtool: 'cheap-module-eval-source-map',
         context: __dirname,
         entry: {
-
-            // 'webpack-dev-server/client?http://localhost:3000', // WebpackDevServer host and port
-            // 'webpack/hot/only-dev-server', // "only" prevents reload on syntax errors
-            //'webpack/hot/dev-server',
-            // 'webpack-hot-middleware/client',
-            bundle: [
+            app: [
                 'babel-polyfill',
                 'react-hot-loader/patch',
                 'webpack-hot-middleware/client',
-                './src/scripts/app.js'
-            ],
-            // app: './src/styles/app.scss',
-            // vendor: './src/styles/vendor.scss'
-
-            // './src/vendor.js'
+                './src/scripts/app.js',
+                './src/styles/vendor.scss',
+                './src/styles/app.scss'
+                
+            ]
         },
-            // vendor: [
-            //     `./src/vendor.js`,
-            //     'react',
-            //     'react-bootstrap',
-            //     'react-dom',
-            //     'react-redux',
-            //     'react-router-dom',
-            //     'react-router-redux',
-            //     'redux',
-            //     'redux-immutable',
-            //     'redux-logger',
-            //     'redux-saga',
-            //     'reselect',
-            //     'axios',
-            //     'babel-polyfill',
-            //     'history',
-            //     'immutable',
-            //     'i18next',
-            //     'moment'
-            // ]
         output: {
             path: path.join(__dirname, 'build'),
             filename: '[name].js',
             chunkFilename: '[name]-[chunkhash].js',
             publicPath: PUBLIC_PATH
         },
-
-        // devServer: {
-        //     host: 'localhost',
-        //     historyApiFallback: true,
-        //     hot: true,
-        //     // enable HMR on the server
-        //
-        //     contentBase: path.resolve(__dirname, 'build'),
-        //     // match the output path
-        //
-        //     publicPath: PUBLIC_PATH,
-        //     // match the output `publicPath`
-        //     port: 3000
-        // },
 
         resolve: {
             extensions: ['.json', '.js', '.jsx', '.scss'],
@@ -110,10 +69,6 @@ module.exports = {
         plugins: [
             new webpack.HotModuleReplacementPlugin(),
             new webpack.NamedModulesPlugin(),
-            // new ExtractTextPlugin({
-            //     filename: '[name].css',
-            //     allChunks: true
-            // }),
             new webpack.DefinePlugin({
                 __DEVELOPMENT__: config.dev,
                 __DEVTOOLS__: config.dev,

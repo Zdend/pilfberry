@@ -1,9 +1,10 @@
+import 'babel-polyfill';
 import express from 'express';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 import webpack from 'webpack';
 import webpackConfig from '../webpack.config';
-import {findAllRestaurants} from './db';
+import {findAllRestaurants, uploadMockData} from './db';
 
 const port = process.env.NODE_ENV || 8080;
 
@@ -16,7 +17,6 @@ app.use(webpackDevMiddleware(compiler, {
     publicPath: webpackConfig.output.publicPath,
     hot: true,
     stats: {
-
         colors: true
     }
 }));
@@ -40,7 +40,7 @@ const layout = (body, initialState) => (`
             <script type="text/javascript" charset="utf-8">
               window.__INITIAL_STATE__ = ${initialState};
             </script>
-            <script src="/static/bundle.js"></script>
+            <script src="/static/app.js"></script>
         </body>
     </html>
 `);
@@ -72,3 +72,5 @@ app.get('*', function (req, res) {
 
 app.listen(port);
 console.log(`Server is running on port ${port}..`);
+
+uploadMockData();
