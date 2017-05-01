@@ -86,15 +86,16 @@ module.exports = {
             ]
         },
         plugins: [
+            new webpack.optimize.CommonsChunkPlugin({ name: 'vendor', filename: '[name].js' }),
+            // new webpack.optimize.CommonsChunkPlugin({
+            //     name: 'commons',
+            //     chunks: ['vendor', 'app'],
+            //     minChunks: Infinity
+            // }),
             new webpack.NamedModulesPlugin(),
             new ExtractTextPlugin({
                 filename: '[name].css',
                 allChunks: true
-            }),
-            new webpack.optimize.CommonsChunkPlugin({
-                name: 'commons',
-                chunks: ['vendor', 'app'],
-                minChunks: Infinity
             }),
             new webpack.DefinePlugin({
                 __DEVELOPMENT__: false,

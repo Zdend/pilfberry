@@ -27,15 +27,6 @@ function user (state = new Map(), action) {
         case USER.SUCCESS:
         case USER.FAILURE:
             return state.set('userIsPending', false);
-        case OBJECTIVES.REQUEST:
-            return state.set('objectivesIsPending', true);
-        case OBJECTIVES.SUCCESS:
-        case OBJECTIVES.FAILURE:
-            return state
-                    .set('objectivesIsPending', false)
-                    .set('createObjectiveOpen', false);
-        case OBJECTIVES.TOGGLE_CREATE:
-            return state.update('createObjectiveOpen', toggle => !toggle);
         default:
             return state;
     }

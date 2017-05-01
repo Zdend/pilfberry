@@ -4,7 +4,7 @@
   "description": "",
   "main": "webpack.config.js",
   "scripts": {
-    "build": "./node_modules/.bin/babel-node ./webpack.js",
+    "build": "webpack --config webpack.config.prod.js",
     "start": "./node_modules/.bin/babel-node ./server/index.js"
   },
   "repository": "git+https://github.com/Zdend/special-diet.git",
