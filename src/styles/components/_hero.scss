@@ -6,10 +6,19 @@
   background-size: cover;
 
 }
-.hero-title {
+.hero-title, .hero-subtitle {
   text-align: center;
-  margin-top: 8rem;
   color: $white;
-  font-size: 5rem;
   text-shadow: 1px 2px 7px $black;
+}
+
+.hero-title {
+  margin-top: 8rem;
+  font-size: 5rem;
+}
+.hero-subtitle {
+  margin-top: 4rem;
+  font-size: 2rem;
+  font-weight: 200;
+  line-height: 1.5;
 }
