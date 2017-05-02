@@ -72,7 +72,7 @@ class LandingPage extends Component {
                                         </InputGroup.Button>
                                     </InputGroup>
 
-                                    <h2 className="hero-subtitle">Pilfberry helps people with dietary preferences find their next meal</h2>
+                                    <h2 className="hero-subtitle"><span className="magra-bold">pilfberry</span> helps people with dietary preferences find their next meal</h2>
                                 </Col>
                             </Row>
                         </Grid>
