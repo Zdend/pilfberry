@@ -1,30 +1,27 @@
 import React from 'react';
-import {Grid, Row, Col, Button} from 'react-bootstrap';
-import {t} from 'i18next';
+import {Grid, Row, Col} from 'react-bootstrap';
+import {Link} from 'react-router-dom';
 
-const LanguageList = ({activeLanguage, languages, languageChangeAction}) => (
-    <ul className="list-inline inline-block">
-        {languages.map((language, i) => {
-            const isActive = language.get('codes').includes(activeLanguage);
-            return (
-                <li key={i}>
-                    <Button bsStyle="link" onClick={() => languageChangeAction(language.get('codes').first())}>
-                        {isActive ? <b>{language.get('label')}</b> : <span>{language.get('label')}</span>}
-                    </Button>
-                </li>
-            );
-        }
-        )}
-    </ul>
-);
+
 
 
 const Footer = (props) => (
     <footer className="footer">
         <Grid>
             <Row>
-                <Col xs={12}>
-                    {t('layout.footer.changeLanguage')}: <LanguageList {...props} />
+                <Col xs={12} md={3}>
+                    <h2 className="footer__logo">pilfberry</h2>
+                </Col>
+                <Col xs={12} md={6}>
+                    <ul className="margin-top-2x list-unstyled list-inline text-align-center text-align-left-sm">
+                        <li><Link to="/">Home</Link></li>
+                        <li><Link to="/login">Login</Link></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Privacy</a></li>
+                    </ul>
+                </Col>
+                <Col xs={12} md={3}>
+                    <div className="text-align-right text-align-left-sm margin-top-2x">© 2017 Pilfberry</div>
                 </Col>
             </Row>
 

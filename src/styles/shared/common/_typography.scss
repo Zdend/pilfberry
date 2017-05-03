@@ -34,6 +34,11 @@
     text-align: center;
   }
 }
+@media (max-width: $screen-sm-max) {
+  .text-align-left-sm {
+    text-align: left;
+  }
+}
 
 
 .text-truncate {

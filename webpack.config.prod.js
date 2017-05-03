@@ -28,6 +28,7 @@ module.exports = {
                 'react-redux',
                 'react-router-dom',
                 'react-router-redux',
+                'react-google-maps',
                 'redux',
                 'redux-immutable',
                 'redux-logger',

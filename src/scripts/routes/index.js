@@ -10,7 +10,7 @@ import PublicLayoutRoute from '../components/layouts/public-wrapper';
 export default () => (
     <App>
         <PublicLayoutRoute exact path="/" component={LandingPage} />
-        <PublicLayoutRoute path="/home" component={LoginPage}/>
+        <PublicLayoutRoute path="/login" component={LoginPage}/>
 
         <SecureLayoutRoute path="/secure" component={SecurePage}/>
     

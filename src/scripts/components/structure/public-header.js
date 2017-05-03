@@ -14,7 +14,7 @@ export default ({navigate}) => (
             </Navbar.Header>
             <Navbar.Collapse>
                 <Nav pullRight>
-                    <NavItem eventKey={1} onClick={() => navigate('/home')}>{t('common.link.login')}</NavItem>
+                    <NavItem eventKey={1} className="header-action" onClick={() => navigate('/login')}>{t('common.link.login')}</NavItem>
                     {/*<NavItem eventKey={2} onClick={() => navigate('/user')}>{t('common.link.userDetails')}</NavItem>*/}
                 </Nav>
             </Navbar.Collapse>

@@ -8,7 +8,7 @@ import {
 import {fetchRestaurantsAction} from '../actions/restaurant-actions';
 import {getRestaurants} from '../reducers/selectors';
 import RestaurantBlock from '../components/restaurant-block';
-import {OrderedMap} from 'immutable';
+import RestaurantMap from '../components/restaurant-map';
 
 class LandingPage extends Component {
     constructor(props) {
@@ -41,7 +41,7 @@ class LandingPage extends Component {
             })
             : restaurants;
         return (
-            <div className="">
+            <div>
                 <div className="hero">
                     <h1 className="hero-title">Eat without worries</h1>
 
@@ -80,7 +80,21 @@ class LandingPage extends Component {
                 </div>
 
 
-                <div className="restaurant-list padding-bottom-3x padding-top-3x">
+                <Grid className="margin-top-1x">
+                    <Row>
+                        <Col sm={12}>
+                            <ButtonToolbar className="pull-right margin-top-1x-sm">
+                                <ButtonGroup className="pull-none">
+                                    <Button bsStyle="default"><i className="fa fa-map"></i></Button>
+                                    <Button bsStyle="default"><i className="fa fa-list"></i></Button>
+                                </ButtonGroup>
+                            </ButtonToolbar>
+                            <h4>We found {filteredRestaurants ? filteredRestaurants.size : 0} restaurants for you..</h4>
+                        </Col>
+                    </Row>
+                </Grid>
+
+                <div className="restaurant-list padding-bottom-3x padding-top-2x">
                     <div className="container">
                         <div className="row">
                             {filteredRestaurants && filteredRestaurants.valueSeq().map(RestaurantBlock)}
@@ -89,6 +103,8 @@ class LandingPage extends Component {
                     </div>
 
                 </div>
+
+                <RestaurantMap />
 
             </div>
         );
