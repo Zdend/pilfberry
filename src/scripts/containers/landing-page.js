@@ -6,7 +6,8 @@ import {
     Row, Col, Grid
 } from 'react-bootstrap';
 import {fetchRestaurantsAction} from '../actions/restaurant-actions';
-import {getRestaurants} from '../reducers/selectors';
+import {landingPageChangeFilter} from '../actions/ui-actions';
+import {getRestaurants, getLandingPageUI} from '../reducers/selectors';
 import RestaurantBlock from '../components/restaurant-block';
 import RestaurantMap from '../components/restaurant-map';
 
@@ -33,6 +34,7 @@ class LandingPage extends Component {
 
 
     render() {
+        const {landingPageChangeFilter, landingPageUI} = this.props;
         const {restaurants, searchExpression} = this.state;
         const matcher = new RegExp(searchExpression, 'i');
         const filteredRestaurants = searchExpression
@@ -85,8 +87,8 @@ class LandingPage extends Component {
                         <Col sm={12}>
                             <ButtonToolbar className="pull-right margin-top-1x-sm">
                                 <ButtonGroup className="pull-none">
-                                    <Button bsStyle="default"><i className="fa fa-map"></i></Button>
-                                    <Button bsStyle="default"><i className="fa fa-list"></i></Button>
+                                    <Button bsStyle="default" onClick={() => landingPageChangeFilter('map')}><i className="fa fa-map"></i></Button>
+                                    <Button bsStyle="default" onClick={() => landingPageChangeFilter('list')}><i className="fa fa-list"></i></Button>
                                 </ButtonGroup>
                             </ButtonToolbar>
                             <h4>We found {filteredRestaurants ? filteredRestaurants.size : 0} restaurants for you..</h4>
@@ -97,14 +99,16 @@ class LandingPage extends Component {
                 <div className="restaurant-list padding-bottom-3x padding-top-2x">
                     <div className="container">
                         <div className="row">
-                            {filteredRestaurants && filteredRestaurants.valueSeq().map(RestaurantBlock)}
+                            {landingPageUI.get('displayMap') 
+                                ? <RestaurantMap /> 
+                                : filteredRestaurants && filteredRestaurants.valueSeq().map(RestaurantBlock)}
                         </div>
 
                     </div>
 
                 </div>
 
-                <RestaurantMap />
+                
 
             </div>
         );
@@ -118,11 +122,13 @@ class LandingPage extends Component {
 
 function mapStateToProps(state) {
     return {
-        restaurants: getRestaurants(state)
+        restaurants: getRestaurants(state),
+        landingPageUI: getLandingPageUI(state)
     };
 }
 const mapDispatchToProps = {
-    fetchRestaurants: fetchRestaurantsAction.request
+    fetchRestaurants: fetchRestaurantsAction.request,
+    landingPageChangeFilter
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LandingPage);

@@ -2,6 +2,7 @@ import {combineReducers} from 'redux-immutable';
 import {LOGIN} from '../actions/login-actions';
 import {LANGUAGE} from '../actions/language-actions';
 import {USER} from '../actions/user-actions';
+import {LANDING_PAGE} from '../actions/ui-actions';
 import {Language} from '../models';
 import {Credentials} from '../models';
 import {Map} from 'immutable';
@@ -43,11 +44,22 @@ function language (state = new Language(), action) {
     }
 }
 
+function landingPage (state = new Map({displayMap: false}), action) {
+    switch (action.type) {
+        case LANDING_PAGE.CHANGE_FILTER:
+            return state.set('displayMap', action.filterType === 'map');
+        default:
+            return state;
+    }
+}
+
+
 
 export default {
     pages: combineReducers({
         login: combineReducers({credentials}),
-        user
+        user,
+        landingPage
     }),
     components: combineReducers({
         footer: combineReducers({language})
