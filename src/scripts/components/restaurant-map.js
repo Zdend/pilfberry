@@ -6,6 +6,8 @@ import { SpinnerInline } from './spinner';
 const API_KEY = 'AIzaSyAfvD6DhQe5P5ZprFHCXutWx-kB3DruSlU';
 const DEFAULT_LOCATION = {lat: -33.8578957, lng: 151.1209737};
 
+// Use google api to find markers
+//http://maps.google.com/maps/api/geocode/json?address=Crows+Nest+Australia
 
 const AsyncGettingStartedExampleGoogleMap = withScriptjs(
     withGoogleMap(
