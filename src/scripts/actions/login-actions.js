@@ -1,4 +1,4 @@
-import {createRequestTypes, action} from './';
+import { createRequestTypes, action } from './';
 
 const loginTypes = createRequestTypes('LOGIN');
 export const LOGIN = {
@@ -8,8 +8,8 @@ export const LOGIN = {
 
 export const loginAction = {
     request: () => action(LOGIN.REQUEST),
-    success: (login, response) => action(LOGIN.SUCCESS, {response}),
-    failure: (error) => action(LOGIN.FAILURE, {error}),
+    success: (email, roles) => action(LOGIN.SUCCESS, { email, roles }),
+    failure: (error) => action(LOGIN.FAILURE, { error }),
 };
 
-export const credentialsChange = (key, e) => action(LOGIN.CHANGE, { newState: { [key]: e.target.value }});
+export const credentialsChange = (key, e) => action(LOGIN.CHANGE, { newState: { [key]: e.target.value } });

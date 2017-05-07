@@ -1,11 +1,11 @@
-import {fork, call, put} from 'redux-saga/effects';
-import {requestLoginWatcher} from './login-sagas';
-import {fetchUserWatcher} from './user-sagas';
-import {changeLanguageWatcher} from './language-sagas';
-import {fetchRestaurantsWatcher} from './restaurant-sagas';
-import {get, post} from 'axios';
+import { fork, call, put } from 'redux-saga/effects';
+import { requestLoginWatcher } from './login-sagas';
+import { fetchUserWatcher } from './user-sagas';
+import { changeLanguageWatcher } from './language-sagas';
+import { fetchRestaurantsWatcher } from './restaurant-sagas';
+import { get, post } from 'axios';
 
-export function* fetchEntity({success, failure}, path, resultTransformer = data => data) {
+export function* fetchEntity({ success, failure }, path, resultTransformer = data => data) {
     const response = yield call(get, path);
     try {
         if (response) {
@@ -19,7 +19,7 @@ export function* fetchEntity({success, failure}, path, resultTransformer = data 
 
 }
 
-export function* postEntity({success, failure}, path, payload, resultTransformer = data => data) {
+export function* postEntity({ success, failure }, path, payload, resultTransformer = data => data) {
     const response = yield call(post, path, payload);
     try {
         if (response) {
@@ -33,7 +33,7 @@ export function* postEntity({success, failure}, path, payload, resultTransformer
 
 }
 
-export default function* root () {
+export default function* root() {
     yield [
         fork(requestLoginWatcher),
         fork(fetchRestaurantsWatcher),

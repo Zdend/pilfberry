@@ -7,7 +7,7 @@ const API_KEY = 'AIzaSyAfvD6DhQe5P5ZprFHCXutWx-kB3DruSlU';
 const DEFAULT_LOCATION = { lat: -33.8578957, lng: 151.1209737 };
 
 // Use google api to find markers
-//http://maps.google.com/maps/api/geocode/json?address=Crows+Nest+Australia
+// http://maps.google.com/maps/api/geocode/json?address=Crows+Nest+Australia
 
 const AsyncGettingStartedExampleGoogleMap = withScriptjs(
     withGoogleMap(
@@ -86,10 +86,10 @@ function handleMapLoad(map) {
     }
 }
 
-function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-    infoWindow.setPosition(pos);
-    infoWindow.setContent(browserHasGeolocation ?
-        'Error: The Geolocation service failed.' :
-        'Error: Your browser doesn\'t support geolocation.');
-    infoWindow.open(map);
-}
+// function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+//     infoWindow.setPosition(pos);
+//     infoWindow.setContent(browserHasGeolocation ?
+//         'Error: The Geolocation service failed.' :
+//         'Error: Your browser doesn\'t support geolocation.');
+//     infoWindow.open(map);
+// }

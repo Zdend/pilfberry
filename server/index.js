@@ -4,71 +4,92 @@ import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 import webpack from 'webpack';
 import webpackConfig from '../webpack.config';
-import {findAllRestaurants, uploadMockData} from './db';
+import { uploadMockData } from './db';
+import { PUBLIC_ROUTES } from './routes';
+import helmet from 'helmet';
+import bodyParser from 'body-parser';
+import session from 'express-session';
+import morgan from 'morgan';
+import cookieParser from 'cookie-parser';
+import passport from 'passport';
+import routes from './routes';
+import { Strategy } from 'passport-local';
+import { User } from './db/schema';
 
 const port = process.env.NODE_ENV || 8080;
 
 
 const app = express();
 const compiler = webpack(webpackConfig);
-
-app.use(webpackDevMiddleware(compiler, {
+const webpackDevMiddlewareInitialized = webpackDevMiddleware(compiler, {
     noInfo: true,
     publicPath: webpackConfig.output.publicPath,
     hot: true,
     stats: {
         colors: true
     }
-}));
+});
 
+morgan.token('body', req => req && JSON.stringify(req.body));
+
+app.use(webpackDevMiddlewareInitialized);
 app.use(webpackHotMiddleware(compiler));
 app.use('/static', express.static('public'));
+app.use(cookieParser());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(morgan(':method :url :response-time :body'));
+app.use(helmet());
+app.use(session({
+    secret: 'Silvitko is a secret agent Choco',
+    resave: false,
+    saveUninitialized: false,
+    // cookie: { secure: true }
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 
-const layout = (body, initialState) => (`
-    <!DOCTYPE html>
-    <html>
-        <head>
-            <meta charset="utf-8">
-            <title>Special Diet</title>
-            <meta name="description" content="Special Diet">
-            <meta name="author" content="ZDV">
-           
-        </head>
-        <body>
-            <div id="root"><div>${body}</div></div>
-            <script type="text/javascript" charset="utf-8">
-              window.__INITIAL_STATE__ = ${initialState};
-            </script>
-            <script src="/static/app.js"></script>
-        </body>
-    </html>
-`);
-
-
-const initialState = JSON.stringify({
-    ui: {
-        pages: {
-
-        },
-        components: {
-            footer: {
-                language: { code: 'en' }
-            }
+function authenticationMiddleware() {
+    return function (req, res, next) {
+        if (req.isAuthenticated()) {
+            return next();
         }
-    },
-    domain: {}
-});
+        res.redirect('/login');
+    };
+}
 
-app.get('/api/restaurants', function (req, res) {
-    findAllRestaurants()
-        .then((restaurants) => res.json(restaurants));
-});
+passport.authenticationMiddleware = authenticationMiddleware;
 
 
-app.get('*', function (req, res) {
-    res.send(layout('', initialState));
+passport.use(new Strategy(
+    function (username, password, done) {
+        User.findOne({ email: username }, function (err, user) {
+            if (err) { return done(err); }
+            if (!user) {
+                return done(null, false, { message: 'Incorrect username.' });
+            }
+            if (!user.verifyPassword(password)) {
+                return done(null, false, { message: 'Incorrect password.' });
+            }
+            return done(null, user);
+        });
+    }
+));
+
+
+passport.serializeUser(function (user, done) {
+    done(null, user._id);
 });
+
+passport.deserializeUser(function (id, done) {
+    User.findById(id, function (err, user) {
+        done(err, user);
+    });
+});
+
+
+routes(app);
 
 app.listen(port);
 console.log(`Server is running on port ${port}..`);

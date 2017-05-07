@@ -4,6 +4,7 @@ import {NEW_ID} from '../constants';
 export const getUI = state => state.get('ui');
 export const getPages = s(getUI, ui => ui.get('pages'));
 export const getComponents = s(getUI, ui => ui.get('components'));
+export const getGlobalMessage = s(getComponents, components => components.get('globalMessage'));
 export const getFooter = s(getComponents, components => components.get('footer'));
 export const getLogin = s(getPages, pages => pages.get('login'));
 export const getUIPageUser = s(getPages, pages => pages.get('user'));

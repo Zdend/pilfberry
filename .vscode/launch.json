@@ -7,15 +7,9 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch Program",
-            "program": "${workspaceRoot}/webpack.config.js"
-        },
-        {
-            "type": "node",
-            "request": "attach",
-            "name": "Attach to Port",
-            "address": "localhost",
-            "port": 5858
+            "name": "Launch server",
+            "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/babel-node",
+            "program": "${workspaceRoot}/server/index.js"
         }
     ]
 }

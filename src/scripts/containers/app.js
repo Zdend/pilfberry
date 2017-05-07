@@ -1,32 +1,16 @@
 import React, { Component, PropTypes } from 'react';
-import {connect} from 'react-redux';
-import {getActiveLanguage, getSupportedLocales} from '../reducers/selectors';
-import {languageChangeAction} from '../actions/language-actions';
-import {push} from 'react-router-redux';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import {cyan500} from 'material-ui/styles/colors';
-
-const muiTheme = getMuiTheme({
-    palette: {
-        textColor: cyan500,
-    },
-    appBar: {
-        height: 50,
-    },
-});
-
+import { connect } from 'react-redux';
+import { getActiveLanguage, getSupportedLocales, getGlobalMessage } from '../reducers/selectors';
+import { languageChangeAction } from '../actions/language-actions';
+import { setMessageAction } from '../actions/global-message-actions';
+import { push } from 'react-router-redux';
 
 class App extends Component {
-    render () {
-        const {activeLanguage, languages, languageChangeAction, navigate, children} = this.props;
-        const childrenWithProps = React.Children.map(children, child => {
-            return (
-                <MuiThemeProvider muiTheme={muiTheme}>
-                    {React.cloneElement(child, {activeLanguage, languages, languageChangeAction, navigate})}
-                </MuiThemeProvider>
-            );
-        });
+    render() {
+        const { children, ...rest } = this.props;
+        const childrenWithProps = React.Children.map(children, child =>
+            React.cloneElement(child, { ...rest })
+        );
         return <div>{childrenWithProps}</div>;
     }
 }
@@ -39,8 +23,10 @@ App.propTypes = {
 
 export default connect(state => ({
     activeLanguage: getActiveLanguage(state),
-    languages: getSupportedLocales(state)
+    languages: getSupportedLocales(state),
+    globalMessage: getGlobalMessage(state)
 }), {
-    languageChangeAction,
-    navigate: push
-})(App);
+        languageChangeAction,
+        resetMessageAction: setMessageAction({ message: null }),
+        navigate: push
+    })(App);

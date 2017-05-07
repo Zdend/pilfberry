@@ -8,3 +8,9 @@ export const restaurants = [
     { name: 'Sushi House', address: {postcode:'2060', street: '34 Tyme Street', suburb: 'North Sydney', city: 'Sydney', state: 'NSW', country: 'Australia'} },
     { name: 'Silvia\'s Spoon', address: {postcode:'2027', street: '190 Bondi Road', suburb: 'North Bondi', city: 'Sydney', state: 'NSW', country: 'Australia'} }
 ];
+
+export const users = [
+    { email: 'admin@pilfberry.com', password: 'password', roles: ['ADMIN'] },
+    { email: 'zdenek.vecek@gmail.com', password: 'password', roles: ['ADMIN'] }
+];
+

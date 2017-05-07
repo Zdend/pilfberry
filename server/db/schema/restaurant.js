@@ -1,6 +1,6 @@
-import mongoose, {Schema} from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
-const restaurantSchema = () => new Schema({
+const restaurantSchema = new Schema({
     name: String,
     address: {
         postcode: Number,
@@ -12,4 +12,4 @@ const restaurantSchema = () => new Schema({
     }
 });
 
-export default mongoose.model('Restaurant', restaurantSchema());
+export default mongoose.model('Restaurant', restaurantSchema);

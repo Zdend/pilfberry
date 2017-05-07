@@ -1,14 +1,15 @@
-import {combineReducers} from 'redux-immutable';
-import {LOGIN} from '../actions/login-actions';
-import {LANGUAGE} from '../actions/language-actions';
-import {USER} from '../actions/user-actions';
-import {LANDING_PAGE} from '../actions/ui-actions';
-import {Language} from '../models';
-import {Credentials} from '../models';
-import {Map} from 'immutable';
+import { combineReducers } from 'redux-immutable';
+import { LOGIN } from '../actions/login-actions';
+import { LANGUAGE } from '../actions/language-actions';
+import { USER } from '../actions/user-actions';
+import { LANDING_PAGE } from '../actions/ui-actions';
+import { GLOBAL_MESSAGE } from '../actions/global-message-actions';
+import { Language } from '../models';
+import { Credentials } from '../models';
+import { Map } from 'immutable';
 
 
-function credentials (state = new Credentials(), action) {
+function credentials(state = new Credentials(), action) {
     switch (action.type) {
         case LOGIN.CHANGE:
             return state.merge(action.newState);
@@ -21,7 +22,7 @@ function credentials (state = new Credentials(), action) {
             return state;
     }
 }
-function user (state = new Map(), action) {
+function user(state = new Map(), action) {
     switch (action.type) {
         case USER.REQUEST:
             return state.set('userIsPending', true);
@@ -33,7 +34,7 @@ function user (state = new Map(), action) {
     }
 }
 
-function language (state = new Language(), action) {
+function language(state = new Language(), action) {
     switch (action.type) {
         case LANGUAGE.CHANGE:
             return state.set('code', action.code);
@@ -44,10 +45,19 @@ function language (state = new Language(), action) {
     }
 }
 
-function landingPage (state = new Map({displayMap: false}), action) {
+function landingPage(state = new Map({ displayMap: false }), action) {
     switch (action.type) {
         case LANDING_PAGE.CHANGE_FILTER:
             return state.set('displayMap', action.filterType === 'map');
+        default:
+            return state;
+    }
+}
+
+function globalMessage(state = new Map({ message: '', type: 'info' }), action) {
+    switch (action.type) {
+        case GLOBAL_MESSAGE.SET:
+            return state.merge(action.message);
         default:
             return state;
     }
@@ -57,11 +67,12 @@ function landingPage (state = new Map({displayMap: false}), action) {
 
 export default {
     pages: combineReducers({
-        login: combineReducers({credentials}),
+        login: combineReducers({ credentials }),
         user,
         landingPage
     }),
     components: combineReducers({
-        footer: combineReducers({language})
+        footer: combineReducers({ language }),
+        globalMessage
     })
 };

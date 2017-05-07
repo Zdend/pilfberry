@@ -1,7 +1,7 @@
 import Restaurant from './restaurant';
+import User from './user';
 
-export function registerModels() {
-    return {
-        Restaurant
-    };
-}
+module.exports = {
+    Restaurant,
+    User
+};
