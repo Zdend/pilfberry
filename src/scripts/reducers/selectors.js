@@ -18,5 +18,6 @@ export const getSupportedLocales = s(getLanguage, language => language.get('supp
 export const getDomain = state => state.get('domain');
 export const getUser = s(getDomain, domain => domain.get('user'));
 export const getRestaurants = s(getDomain, domain => domain.get('restaurants'));
+export const getRestaurant = id => s(getRestaurants, restaurants => restaurants.get(id));
 
 

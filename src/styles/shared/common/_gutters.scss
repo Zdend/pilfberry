@@ -1,26 +1,20 @@
 @mixin gutter-creator($position, $size, $media: "", $gutterType: "margin") {
   $postfix: if($media != "", "-#{$media}", "");
   $positionExp: if($position == "all", "", "-#{$position}");
-  $sizeExp: str-replace($size, ".", "");
 
-  .#{$gutterType}#{$positionExp}-#{$sizeExp}x#{$postfix} {
+  .#{$gutterType}#{$positionExp}-#{$size}x#{$postfix} {
     #{$gutterType}#{$positionExp}: #{$size}rem;
   }
 }
-@mixin all-gutters($size, $media, $gutterType) {
-  @include gutter-creator(all, $size, $media, $gutterType);
-  @include gutter-creator(top, $size, $media, $gutterType);
-  @include gutter-creator(bottom, $size, $media, $gutterType);
-  @include gutter-creator(left, $size, $media, $gutterType);
-  @include gutter-creator(right, $size, $media, $gutterType);
-}
 @mixin media-gutters($media: "", $gutterType: "margin") {
   @for $index from 0 through 5 {
-    @include all-gutters("#{$index}", $media, $gutterType);
+    @include gutter-creator(all, $index, $media, $gutterType);
+    @include gutter-creator(top, $index, $media, $gutterType);
+    @include gutter-creator(bottom, $index, $media, $gutterType);
+    @include gutter-creator(left, $index, $media, $gutterType);
+    @include gutter-creator(right, $index, $media, $gutterType);
   }
-  @include all-gutters("0.5", $media, $gutterType);
 }
-
 @include media-gutters();
 @include media-gutters(xs);
 

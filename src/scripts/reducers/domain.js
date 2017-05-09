@@ -1,6 +1,6 @@
 import { OrderedMap } from 'immutable';
 import { USER } from '../actions/user-actions';
-import { RESTAURANT } from '../actions/restaurant-actions';
+import { RESTAURANT, RESTAURANTS } from '../actions/restaurant-actions';
 import { User, Restaurant } from '../models';
 import { arrayToMapById } from '../services';
 
@@ -17,10 +17,13 @@ function user(state = new User(), action) {
 
 function restaurants(state = new OrderedMap(), action) {
     switch (action.type) {
-        case RESTAURANT.SUCCESS:
+        case RESTAURANTS.SUCCESS:
             return arrayToMapById(action.restaurants, Restaurant, OrderedMap);
-        case RESTAURANT.FAILURE:
+        case RESTAURANTS.FAILURE:
             return state;
+
+        case RESTAURANT.SUCCESS:
+            return state.merge({ [action.restaurant.id]: action.restaurant });
         default:
             return state;
     }

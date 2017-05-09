@@ -1,4 +1,4 @@
-import { findAllRestaurants, findUserByEmail } from '../db';
+import { findAllRestaurants, findRestaurant, findUserByEmail } from '../db';
 import view from './view';
 import passport from 'passport';
 
@@ -12,36 +12,26 @@ export const PUBLIC_ROUTES = [
 
 ];
 
-// function requireLogin(req, res, next) {
-//     if (req.isAuthenticated()) {
-//         // if (req.session.loggedIn) {
-//         next(); // allow the next route to run
-//     } else {
-//         // require the user to log in
-//         res.redirect('/login'); // or render a form, etc.
-//     }
-// }
 
 
 export default function (app) {
-    app.all('/secure/*', passport.authenticationMiddleware(), function (req, res, next) {
-        next();
-        // if the middleware allowed us to get here,
-        // just move on to the next route handler
-    });
+    const secured = passport.authenticationMiddleware();
 
-    app.get('/api/restaurants', passport.authenticationMiddleware(), function (req, res) {
+    app.all('/secure', secured, (req, res, next) => next());
+    app.all('/secure/*', secured, (req, res, next) => next());
+
+    app.get('/api/restaurants', function (req, res) {
         findAllRestaurants()
             .then(restaurants => res.json(restaurants))
             .catch(console.error);
     });
 
-    // app.post('/api/login',
-    //     passport.authenticate('local', {
-    //         successRedirect: '/secure',
-    //         failureRedirect: '/login',
-    //         failureFlash: false
-    //     }));
+    app.get('/api/restaurant/:id', secured, function (req, res) {
+        findRestaurant(req.params.id)
+            .then(restaurant => res.json(restaurant))
+            .catch(console.error);
+    });
+
     app.post('/api/login',
         passport.authenticate('local'),
         function (req, res) {
@@ -51,8 +41,6 @@ export default function (app) {
                 email: req.user.email,
                 roles: req.user.roles
             });
-
-            // res.redirect('/secure');
         });
 
     app.get('/api/logout', passport.authenticationMiddleware(), function (req, res) {
@@ -60,7 +48,7 @@ export default function (app) {
         res.redirect('/');
     });
 
-    app.get('/secure', passport.authenticationMiddleware(), view);
+    app.get('/secure', view);
 
     app.get('*', view);
 }

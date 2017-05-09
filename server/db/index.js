@@ -10,6 +10,10 @@ export function findAllRestaurants() {
     return Restaurant.find({}).exec();
 }
 
+export function findRestaurant(id) {
+    return Restaurant.findOne({ _id: id }).exec();
+}
+
 export function findUserByEmail(email) {
     return User.findOne({ email }).exec();
 }
