@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Table, Button } from 'react-bootstrap';
+import { Table, Button, Grid, Row, Col } from 'react-bootstrap';
 import { push } from 'react-router-redux';
 import { getRestaurant } from '../reducers/selectors';
-import { fetchRestaurantAction } from '../actions/restaurant-actions';
+import { fetchRestaurantAction, restaurantValueChangeAction } from '../actions/restaurant-actions';
+import InputHOC from '../components/connected-input-hoc';
+
 
 class RestaurantPage extends Component {
     componentDidMount() {
@@ -12,13 +14,48 @@ class RestaurantPage extends Component {
     }
 
     render() {
-        const { restaurant } = this.props;
+        const { match: { params: { id } }, restaurant, restaurantValueChangeAction } = this.props;
+        const handleChange = (field, e) => restaurantValueChangeAction(id, field, e.target.value);
+        const ConnectedInput = InputHOC(handleChange);
+        const RestaurantInput = ({ value, field, ...rest }) => <ConnectedInput value={restaurant.getIn([...field.split('.')])} {...{ ...rest, field }} />;
 
         return (
-            <div className="padding-top-2x padding-bottom-2x">
-                <h1>{restaurant && restaurant.get('name')}</h1>
+            <Grid className="padding-bottom-2x">
+                {restaurant &&
+                    <div>
+                        <h1>{restaurant.get('name')}</h1>
 
-            </div>
+                        <RestaurantInput label="Restaurant name" field="name" />
+
+                        <fieldset>
+                            <legend>Address</legend>
+                            <RestaurantInput label="Street" field="address.street" />
+
+                            <Row>
+                                <Col sm={6}>
+                                    <RestaurantInput label="Suburb" field="address.suburb" />
+                                </Col>
+                                <Col sm={6}>
+                                    <RestaurantInput label="Postcode" field="address.postcode" />
+                                </Col>
+                            </Row>
+
+                            <Row>
+                                <Col sm={6}>
+                                    <RestaurantInput label="City" field="address.city" />
+                                </Col>
+                                <Col sm={6}>
+                                    <RestaurantInput label="Country" field="address.country" />
+                                </Col>
+                            </Row>
+                        </fieldset>
+
+
+                    </div>
+                }
+
+
+            </Grid>
         );
     }
 }
@@ -30,6 +67,7 @@ function mapStateToProps(state, props) {
 }
 const mapDispatchToProps = {
     fetchRestaurant: fetchRestaurantAction.request,
+    restaurantValueChangeAction,
     navigate: push
 };
 export default connect(mapStateToProps, mapDispatchToProps)(RestaurantPage);

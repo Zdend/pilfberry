@@ -1,12 +1,15 @@
 import { createRequestTypes, action } from './';
 
 export const RESTAURANT = {
-    ...createRequestTypes('RESTAURANT')
+    ...createRequestTypes('RESTAURANT'),
+    CHANGE: 'RESTAURANT_CHANGE'
 };
 
 export const RESTAURANTS = {
     ...createRequestTypes('RESTAURANTS')
 };
+
+export const restaurantValueChangeAction = (id, field, value) => action(RESTAURANT.CHANGE, { id, field, value });
 
 export const fetchRestaurantAction = {
     request: id => action(RESTAURANT.REQUEST, { id }),

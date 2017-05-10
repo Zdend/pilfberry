@@ -3,7 +3,7 @@ import { t } from 'i18next';
 import { SpinnerInline } from './spinner';
 
 const LoginForm = ({ login, password, isPending, loginRequestAction, credentialsChange }) => (
-    <form className="margin-top-2x">
+    <form>
         <div className="form-group">
             <label className="control-label">{t('common.label.login')}</label>
             <input type="text" className="form-control" value={login}
