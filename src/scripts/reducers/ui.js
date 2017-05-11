@@ -8,6 +8,7 @@ import { GLOBAL_MESSAGE } from '../actions/global-message-actions';
 import { Language } from '../models';
 import { Credentials } from '../models';
 import { Map } from 'immutable';
+import { LOCATION_CHANGE } from 'react-router-redux';
 
 
 function credentials(state = new Credentials(), action) {
@@ -60,6 +61,8 @@ function globalMessage(state = new Map({ message: '', type: 'info' }), action) {
         case GLOBAL_MESSAGE.SET:
         case RESTAURANT.SAVE_SUCCESS:
             return state.merge(action.message);
+        case LOCATION_CHANGE:
+            return new Map({ message: '' });
         default:
             return state;
     }
