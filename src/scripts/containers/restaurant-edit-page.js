@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Table, Button, Grid, Row, Col } from 'react-bootstrap';
 import { push } from 'react-router-redux';
 import { getRestaurant } from '../reducers/selectors';
-import { fetchRestaurantAction, restaurantValueChangeAction } from '../actions/restaurant-actions';
+import { fetchRestaurantAction, restaurantValueChangeAction, saveRestaurantAction } from '../actions/restaurant-actions';
 import InputHOC from '../components/connected-input-hoc';
 
 
@@ -14,13 +14,13 @@ class RestaurantPage extends Component {
     }
 
     render() {
-        const { match: { params: { id } }, restaurant, restaurantValueChangeAction } = this.props;
+        const { match: { params: { id } }, restaurant, restaurantValueChangeAction, saveRestaurant } = this.props;
         const handleChange = (field, e) => restaurantValueChangeAction(id, field, e.target.value);
         const ConnectedInput = InputHOC(handleChange);
         const RestaurantInput = ({ value, field, ...rest }) => <ConnectedInput value={restaurant.getIn([...field.split('.')])} {...{ ...rest, field }} />;
 
         return (
-            <Grid className="padding-bottom-2x">
+            <div className="padding-bottom-2x">
                 {restaurant &&
                     <div>
                         <h1>{restaurant.get('name')}</h1>
@@ -50,12 +50,15 @@ class RestaurantPage extends Component {
                             </Row>
                         </fieldset>
 
-
+                        <Button bsStyle="primary" onClick={() => saveRestaurant(id)}>
+                            <i className="fa fa-save margin-right-05x" />Save
+                        </Button>
+                        
                     </div>
                 }
 
 
-            </Grid>
+            </div>
         );
     }
 }
@@ -68,6 +71,7 @@ function mapStateToProps(state, props) {
 const mapDispatchToProps = {
     fetchRestaurant: fetchRestaurantAction.request,
     restaurantValueChangeAction,
-    navigate: push
+    navigate: push,
+    saveRestaurant: saveRestaurantAction.request
 };
 export default connect(mapStateToProps, mapDispatchToProps)(RestaurantPage);

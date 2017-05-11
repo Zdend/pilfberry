@@ -18,6 +18,10 @@ export function findUserByEmail(email) {
     return User.findOne({ email }).exec();
 }
 
+export function saveRestaurant(id, restaurant) {
+    return Restaurant.findOneAndUpdate({ _id: id }, restaurant).exec();
+}
+
 
 export function uploadMockData() {
     Restaurant.count({})

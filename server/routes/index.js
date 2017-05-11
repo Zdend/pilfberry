@@ -1,4 +1,4 @@
-import { findAllRestaurants, findRestaurant, findUserByEmail } from '../db';
+import { findAllRestaurants, findRestaurant, saveRestaurant } from '../db';
 import view from './view';
 import passport from 'passport';
 
@@ -28,6 +28,12 @@ export default function (app) {
 
     app.get('/api/restaurant/:id', secured, function (req, res) {
         findRestaurant(req.params.id)
+            .then(restaurant => res.json(restaurant))
+            .catch(console.error);
+    });
+
+    app.put('/api/restaurant/:id', secured, function (req, res) {
+        saveRestaurant(req.params.id, req.body)
             .then(restaurant => res.json(restaurant))
             .catch(console.error);
     });

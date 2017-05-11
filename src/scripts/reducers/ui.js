@@ -2,6 +2,7 @@ import { combineReducers } from 'redux-immutable';
 import { LOGIN } from '../actions/login-actions';
 import { LANGUAGE } from '../actions/language-actions';
 import { USER } from '../actions/user-actions';
+import { RESTAURANT } from '../actions/restaurant-actions';
 import { LANDING_PAGE } from '../actions/ui-actions';
 import { GLOBAL_MESSAGE } from '../actions/global-message-actions';
 import { Language } from '../models';
@@ -57,6 +58,7 @@ function landingPage(state = new Map({ displayMap: false }), action) {
 function globalMessage(state = new Map({ message: '', type: 'info' }), action) {
     switch (action.type) {
         case GLOBAL_MESSAGE.SET:
+        case RESTAURANT.SAVE_SUCCESS:
             return state.merge(action.message);
         default:
             return state;

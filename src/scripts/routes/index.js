@@ -16,7 +16,7 @@ export default () => (
 
         <SecureLayoutRoute path="/secure" component={SecurePage} />
         <SecureLayoutRoute path="/secure/restaurants" component={RestaurantPage} />
-        <SecureLayoutRoute path="/secure/restaurants/:id/edit" component={RestaurantEditPage} />
+        <SecureLayoutRoute path="/secure/restaurants/:id" component={RestaurantEditPage} />
     </App>
 );
 

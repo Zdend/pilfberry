@@ -27,6 +27,6 @@ export default connect(state => ({
     globalMessage: getGlobalMessage(state)
 }), {
         languageChangeAction,
-        resetMessageAction: setMessageAction({ message: null }),
+        resetMessageAction: () => setMessageAction({ message: null }),
         navigate: push
     })(App);

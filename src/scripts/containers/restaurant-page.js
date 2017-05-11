@@ -19,7 +19,7 @@ class RestaurantPage extends Component {
                         bsSize="sm"
                         bsStyle="success"
                         className="margin-right-1x"
-                        onClick={() => navigate(`/secure/restaurants/${restaurant.get('id')}/edit`)}>
+                        onClick={() => navigate(`/secure/restaurants/${restaurant.get('id')}`)}>
                         Edit
                     </Button>
                     <Button bsSize="sm" bsStyle="danger">Delete</Button>
@@ -31,7 +31,7 @@ class RestaurantPage extends Component {
     render() {
         const { restaurants, navigate } = this.props;
         return (
-            <div className="padding-top-2x padding-bottom-2x">
+            <div className="padding-bottom-2x">
                 <h1>Restaurants</h1>
 
                 <Table responsive>
