@@ -1,6 +1,7 @@
 import { findAllRestaurants, findRestaurant, saveRestaurant, deleteRestaurant } from '../db';
 import view from './view';
 import passport from 'passport';
+import { STATUS_ACTIVE, STATUS_DELETED } from '../../shared/constants';
 
 export const PUBLIC_ROUTES = [
     '/',
@@ -22,7 +23,7 @@ export default function (app) {
     app.all('/secure/*', secured, (req, res, next) => next());
 
     app.get('/api/restaurants', function (req, res) {
-        findAllRestaurants()
+        findAllRestaurants({ status: req.query.status ? req.query.status : STATUS_ACTIVE })
             .then(restaurants => res.json(restaurants))
             .catch(logError('findAllRestaurants failed'));
     });

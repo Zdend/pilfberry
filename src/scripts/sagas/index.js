@@ -6,8 +6,8 @@ import { changeLanguageWatcher } from './language-sagas';
 import { fetchRestaurants, fetchRestaurant, saveRestaurant, deleteRestaurant } from './restaurant-sagas';
 import { RESTAURANT, RESTAURANTS } from '../actions/restaurant-actions';
 
-export function* fetchEntity({ success, failure }, path, resultTransformer = data => data) {
-    const response = yield call(get, path);
+export function* fetchEntity({ success, failure }, path, resultTransformer = data => data, payload) {
+    const response = yield call(get, path, { params: payload });
     try {
         if (response) {
             yield put(success(resultTransformer(response.data)));

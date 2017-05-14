@@ -28,7 +28,7 @@ class RestaurantPage extends Component {
             <div className="padding-bottom-2x">
                 {restaurant &&
                     <div>
-                        <h1 className="margin-top-0x">{restaurant.get('name') || '<Restaurant Name>'}</h1>
+                        <h1 className="margin-top-1x">{restaurant.get('name') || '<Restaurant Name>'}</h1>
 
                         <RestaurantInput label="Restaurant name" field="name" />
 

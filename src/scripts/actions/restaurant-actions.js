@@ -34,7 +34,7 @@ export const fetchRestaurantAction = {
 };
 
 export const fetchRestaurantsAction = {
-    request: () => action(RESTAURANTS.REQUEST, {}),
+    request: (criteria) => action(RESTAURANTS.REQUEST, { criteria }),
     success: restaurants => action(RESTAURANTS.SUCCESS, { restaurants }),
     failure: error => action(RESTAURANTS.FAILURE, { error }),
 };

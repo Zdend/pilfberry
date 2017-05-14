@@ -7,8 +7,8 @@ mongoose.Promise = global.Promise;
 const connectionURL = 'mongodb://localhost:27017/pilfberry';
 mongoose.connect(connectionURL);
 
-export function findAllRestaurants() {
-    return Restaurant.find({}).exec();
+export function findAllRestaurants(criteria = {}) {
+    return Restaurant.find(criteria).exec();
 }
 
 export function findRestaurant(id) {

@@ -1,13 +1,13 @@
-import React, {Component, PropTypes} from 'react';
-import {connect} from 'react-redux';
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 import {
     ButtonToolbar, ButtonGroup, Button, DropdownButton,
     MenuItem, InputGroup, FormControl,
     Row, Col, Grid
 } from 'react-bootstrap';
-import {fetchRestaurantsAction} from '../actions/restaurant-actions';
-import {landingPageChangeFilter} from '../actions/ui-actions';
-import {getRestaurants, getLandingPageUI} from '../reducers/selectors';
+import { fetchRestaurantsAction } from '../actions/restaurant-actions';
+import { landingPageChangeFilter } from '../actions/ui-actions';
+import { getRestaurants, getLandingPageUI } from '../reducers/selectors';
 import RestaurantBlock from '../components/restaurant-block';
 import RestaurantMap from '../components/restaurant-map';
 
@@ -34,8 +34,8 @@ class LandingPage extends Component {
 
 
     render() {
-        const {landingPageChangeFilter, landingPageUI} = this.props;
-        const {restaurants, searchExpression} = this.state;
+        const { landingPageChangeFilter, landingPageUI } = this.props;
+        const { restaurants, searchExpression } = this.state;
         const matcher = new RegExp(searchExpression, 'i');
         const filteredRestaurants = searchExpression
             ? restaurants.filter(restaurant => {
@@ -58,8 +58,8 @@ class LandingPage extends Component {
                                             <Button bsStyle="primary">Vegetarian</Button>
                                             <Button bsStyle="primary">Gluten Free</Button>
                                             <Button bsStyle="primary">Pregnant Friendly</Button>
-                                            <DropdownButton title={<span><i className="fa fa-ellipsis-h"/> More</span>}
-                                                            id="bg-justified-dropdown" bsStyle="primary">
+                                            <DropdownButton title={<span><i className="fa fa-ellipsis-h" /> More</span>}
+                                                id="bg-justified-dropdown" bsStyle="primary">
                                                 <MenuItem eventKey="1">Dairy Free</MenuItem>
                                                 <MenuItem eventKey="2">Nut Free</MenuItem>
                                             </DropdownButton>
@@ -68,9 +68,9 @@ class LandingPage extends Component {
 
 
                                     <InputGroup className="margin-top-3x">
-                                        <FormControl placeholder="Search restaurants by postcode" onChange={this.filterRestaurants}/>
+                                        <FormControl placeholder="Search restaurants by postcode" onChange={this.filterRestaurants} />
                                         <InputGroup.Button>
-                                            <Button bsStyle="primary"><i className="fa fa-search"/></Button>
+                                            <Button bsStyle="primary"><i className="fa fa-search" /></Button>
                                         </InputGroup.Button>
                                     </InputGroup>
 
@@ -99,8 +99,8 @@ class LandingPage extends Component {
                 <div className="restaurant-list padding-bottom-3x padding-top-2x">
                     <div className="container">
                         <div className="row">
-                            {landingPageUI.get('displayMap') 
-                                ? <RestaurantMap /> 
+                            {landingPageUI.get('displayMap')
+                                ? <RestaurantMap />
                                 : filteredRestaurants && filteredRestaurants.valueSeq().map(RestaurantBlock)}
                         </div>
 
@@ -108,7 +108,7 @@ class LandingPage extends Component {
 
                 </div>
 
-                
+
 
             </div>
         );
@@ -116,7 +116,7 @@ class LandingPage extends Component {
 
     filterRestaurants(e) {
         const searchExpression = e.target.value;
-        this.setState({searchExpression});
+        this.setState({ searchExpression });
     }
 }
 

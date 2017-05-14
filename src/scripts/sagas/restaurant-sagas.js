@@ -3,8 +3,8 @@ import { fetchRestaurantsAction, fetchRestaurantAction, saveRestaurantAction } f
 import { fetchEntity, updateEntity, deleteEntity } from './';
 import { getRestaurant } from '../reducers/selectors';
 
-export function* fetchRestaurants() {
-    yield fetchEntity(fetchRestaurantsAction, '/api/restaurants');
+export function* fetchRestaurants({ criteria }) {
+    yield fetchEntity(fetchRestaurantsAction, '/api/restaurants', d => d, criteria);
 }
 export function* fetchRestaurant({ id }) {
     yield fetchEntity(fetchRestaurantAction, `/api/restaurant/${id}`);

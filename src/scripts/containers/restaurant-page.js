@@ -4,7 +4,7 @@ import { Table, Button, Checkbox } from 'react-bootstrap';
 import { push } from 'react-router-redux';
 import { getSavedRestaurants } from '../reducers/selectors';
 import { fetchRestaurantsAction, createRestaurantAction, deleteRestaurantAction } from '../actions/restaurant-actions';
-import { NEW_ID, STATUS_ACTIVE } from 'constants';
+import { NEW_ID, STATUS_ACTIVE, STATUS_DELETED } from 'constants';
 
 class RestaurantPage extends Component {
     constructor(props) {
@@ -20,7 +20,8 @@ class RestaurantPage extends Component {
     }
 
     displayDeleted(e) {
-        this.setState({ displayDeleted: e.target.checked });
+        const displayDeleted = e.target.checked;
+        this.setState({ displayDeleted }, () => this.props.fetchRestaurants({ status: displayDeleted ? STATUS_DELETED : STATUS_ACTIVE }));
     }
 
     renderRow(restaurant, navigate, deleteRestaurantAction) {
