@@ -19,17 +19,21 @@ export default (inputChangeAction) => class extends Component {
         });
     }
     render() {
-        const { field, value, label, ...props } = this.props; //eslint-disable-line no-unused-vars
+        const { field, value, label, selectValues, ...props } = this.props; //eslint-disable-line no-unused-vars
+        const isSelect = selectValues && selectValues.length;
+        const customisedProps = { ...props, componentClass: isSelect ? 'select' : 'input' };
         return (
-        <FormGroup>
-            <ControlLabel>{label}</ControlLabel>
-            <FormControl onBlur={e => inputChangeAction(field, e)}
-                onChange={this.handleChange}
-                value={this.state.value}
-                className="form-control"
-                {...props}
-            />
-        </FormGroup>
+            <FormGroup>
+                <ControlLabel>{label}</ControlLabel>
+                <FormControl onBlur={e => inputChangeAction(field, e)}
+                    onChange={this.handleChange}
+                    value={this.state.value}
+                    className="form-control"
+                    {...customisedProps}
+                >
+                    {selectValues && selectValues.map(item => <option key={item} value={item}>{item}</option>)}
+                </FormControl>
+            </FormGroup>
         );
     }
 };

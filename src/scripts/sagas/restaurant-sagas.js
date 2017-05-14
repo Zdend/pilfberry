@@ -1,29 +1,19 @@
-import { takeEvery, takeLatest, select } from 'redux-saga/effects';
-import { fetchRestaurantsAction, fetchRestaurantAction, saveRestaurantAction, RESTAURANT, RESTAURANTS } from '../actions/restaurant-actions';
-import { fetchEntity, sendEntity } from './';
+import { select } from 'redux-saga/effects';
+import { fetchRestaurantsAction, fetchRestaurantAction, saveRestaurantAction } from '../actions/restaurant-actions';
+import { fetchEntity, updateEntity, deleteEntity } from './';
 import { getRestaurant } from '../reducers/selectors';
-import { put } from 'axios';
 
-function* fetchRestaurants() {
-    yield fetchEntity(fetchRestaurantsAction, '/api/restaurants',
-        restaurants => restaurants.map(r => ({ ...r, id: r['_id'] })));
+export function* fetchRestaurants() {
+    yield fetchEntity(fetchRestaurantsAction, '/api/restaurants');
 }
-function* fetchRestaurant({ id }) {
-    yield fetchEntity(fetchRestaurantAction, `/api/restaurant/${id}`, r => ({ ...r, id: r['_id'] }));
+export function* fetchRestaurant({ id }) {
+    yield fetchEntity(fetchRestaurantAction, `/api/restaurant/${id}`);
 }
-function* saveRestaurant({ id }) {
+export function* saveRestaurant({ id }) {
     const restaurant = yield select(getRestaurant(id));
-    yield sendEntity(saveRestaurantAction, `/api/restaurant/${id}`, restaurant.toJS(), r => r, put);
+    yield updateEntity(saveRestaurantAction, `/api/restaurant/${id}`, restaurant.toJS());
 }
 
-export function* saveRestaurantWatcher() {
-    yield takeLatest(RESTAURANT.SAVE_REQUEST, saveRestaurant);
-}
-
-export function* fetchRestaurantsWatcher() {
-    yield takeEvery(RESTAURANTS.REQUEST, fetchRestaurants);
-}
-
-export function* fetchRestaurantWatcher() {
-    yield takeEvery(RESTAURANT.REQUEST, fetchRestaurant);
+export function* deleteRestaurant({ id }) {
+    yield deleteEntity(saveRestaurantAction, `/api/restaurant/${id}`);
 }

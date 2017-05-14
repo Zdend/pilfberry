@@ -3,14 +3,19 @@ import { connect } from 'react-redux';
 import { Table, Button, Grid, Row, Col } from 'react-bootstrap';
 import { push } from 'react-router-redux';
 import { getRestaurant } from '../reducers/selectors';
-import { fetchRestaurantAction, restaurantValueChangeAction, saveRestaurantAction } from '../actions/restaurant-actions';
+import { fetchRestaurantAction, restaurantValueChangeAction, saveRestaurantAction, createRestaurantAction } from '../actions/restaurant-actions';
 import InputHOC from '../components/connected-input-hoc';
+import { NEW_ID, STATUSES } from 'constants';
 
 
 class RestaurantPage extends Component {
     componentDidMount() {
-        const { match: { params: { id } } } = this.props;
-        this.props.fetchRestaurant(id);
+        const { match: { params: { id } }, restaurant, createRestaurantAction } = this.props;
+        if (id !== NEW_ID) {
+            this.props.fetchRestaurant(id);
+        } else if (!restaurant) {
+            createRestaurantAction();
+        }
     }
 
     render() {
@@ -23,7 +28,7 @@ class RestaurantPage extends Component {
             <div className="padding-bottom-2x">
                 {restaurant &&
                     <div>
-                        <h1>{restaurant.get('name')}</h1>
+                        <h1 className="margin-top-0x">{restaurant.get('name') || '<Restaurant Name>'}</h1>
 
                         <RestaurantInput label="Restaurant name" field="name" />
 
@@ -49,11 +54,17 @@ class RestaurantPage extends Component {
                                 </Col>
                             </Row>
                         </fieldset>
+                        <Row>
+                            <Col sm={6}>
+                                <RestaurantInput label="Status" field="status" selectValues={STATUSES} />
+                            </Col>
+                        </Row>
+
 
                         <Button bsStyle="primary" onClick={() => saveRestaurant(id)}>
                             <i className="fa fa-save margin-right-05x" />Save
                         </Button>
-                        
+
                     </div>
                 }
 
@@ -72,6 +83,7 @@ const mapDispatchToProps = {
     fetchRestaurant: fetchRestaurantAction.request,
     restaurantValueChangeAction,
     navigate: push,
-    saveRestaurant: saveRestaurantAction.request
+    saveRestaurant: saveRestaurantAction.request,
+    createRestaurantAction
 };
 export default connect(mapStateToProps, mapDispatchToProps)(RestaurantPage);

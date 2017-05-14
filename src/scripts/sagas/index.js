@@ -1,9 +1,10 @@
-import { fork, call, put } from 'redux-saga/effects';
-import { get, post } from 'axios';
+import { fork, call, put, takeLatest, takeEvery } from 'redux-saga/effects';
+import { get, post, put as putAxios, delete as deleteAxios } from 'axios';
 import { requestLoginWatcher } from './login-sagas';
 import { fetchUserWatcher } from './user-sagas';
 import { changeLanguageWatcher } from './language-sagas';
-import { fetchRestaurantsWatcher, fetchRestaurantWatcher, saveRestaurantWatcher } from './restaurant-sagas';
+import { fetchRestaurants, fetchRestaurant, saveRestaurant, deleteRestaurant } from './restaurant-sagas';
+import { RESTAURANT, RESTAURANTS } from '../actions/restaurant-actions';
 
 export function* fetchEntity({ success, failure }, path, resultTransformer = data => data) {
     const response = yield call(get, path);
@@ -36,16 +37,25 @@ export function* sendEntity(
     } catch (e) {
         yield put(failure(response));
     }
-
 }
+
+export function* updateEntity(action, path, payload, resultTransformer = d => d) {
+    yield sendEntity(action, path, payload, resultTransformer, putAxios);
+}
+
+export function* deleteEntity(action, path, payload, resultTransformer = d => d) {
+    yield sendEntity(action, path, payload, resultTransformer, deleteAxios);
+}
+
 
 export default function* root() {
     yield [
         fork(requestLoginWatcher),
-        fork(fetchRestaurantsWatcher),
         fork(fetchUserWatcher),
         fork(changeLanguageWatcher),
-        fork(fetchRestaurantWatcher),
-        fork(saveRestaurantWatcher)
+        takeEvery(RESTAURANTS.REQUEST, fetchRestaurants),
+        takeEvery(RESTAURANT.REQUEST, fetchRestaurant),
+        takeLatest(RESTAURANT.SAVE_REQUEST, saveRestaurant),
+        takeLatest(RESTAURANT.DELETE, deleteRestaurant)
     ];
 }

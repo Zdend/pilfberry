@@ -1,5 +1,7 @@
-import {createSelector as s} from 'reselect';
-import {NEW_ID} from '../constants';
+import { createSelector as s } from 'reselect';
+import { NEW_ID } from 'constants';
+
+const isNew = entity => entity.get('id') === NEW_ID;
 
 export const getUI = state => state.get('ui');
 export const getPages = s(getUI, ui => ui.get('pages'));
@@ -18,6 +20,7 @@ export const getSupportedLocales = s(getLanguage, language => language.get('supp
 export const getDomain = state => state.get('domain');
 export const getUser = s(getDomain, domain => domain.get('user'));
 export const getRestaurants = s(getDomain, domain => domain.get('restaurants'));
+export const getSavedRestaurants = s(getRestaurants, restaurants => restaurants.filterNot(isNew));
 export const getRestaurant = id => s(getRestaurants, restaurants => restaurants.get(id));
 
 

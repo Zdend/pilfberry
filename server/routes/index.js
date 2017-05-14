@@ -1,4 +1,4 @@
-import { findAllRestaurants, findRestaurant, saveRestaurant } from '../db';
+import { findAllRestaurants, findRestaurant, saveRestaurant, deleteRestaurant } from '../db';
 import view from './view';
 import passport from 'passport';
 
@@ -12,6 +12,7 @@ export const PUBLIC_ROUTES = [
 
 ];
 
+const logError = message => e => console.error(`${message ? message + ':' : ''}${e && e.message && e.message.substr(0, 300)}`);
 
 
 export default function (app) {
@@ -23,19 +24,25 @@ export default function (app) {
     app.get('/api/restaurants', function (req, res) {
         findAllRestaurants()
             .then(restaurants => res.json(restaurants))
-            .catch(console.error);
+            .catch(logError('findAllRestaurants failed'));
     });
 
     app.get('/api/restaurant/:id', secured, function (req, res) {
         findRestaurant(req.params.id)
             .then(restaurant => res.json(restaurant))
-            .catch(console.error);
+            .catch(logError(`findRestaurant with id ${req.params.id} failed`));
     });
 
     app.put('/api/restaurant/:id', secured, function (req, res) {
         saveRestaurant(req.params.id, req.body)
             .then(restaurant => res.json(restaurant))
             .catch(console.error);
+    });
+
+    app.delete('/api/restaurant/:id', secured, function (req, res) {
+        deleteRestaurant(req.params.id)
+            .then(restaurant => res.json(restaurant))
+            .catch(logError(`delete restaurant with id ${req.params.id} failed`));
     });
 
     app.post('/api/login',

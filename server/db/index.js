@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import { Restaurant, User } from './schema';
 import { restaurants, users } from './data';
+import { NEW_ID, STATUS_DELETED } from '../../shared/constants';
 
 mongoose.Promise = global.Promise;
 const connectionURL = 'mongodb://localhost:27017/pilfberry';
@@ -18,8 +19,15 @@ export function findUserByEmail(email) {
     return User.findOne({ email }).exec();
 }
 
+export function deleteRestaurant(id) {
+    return Restaurant.findByIdAndUpdate(id, { status: STATUS_DELETED }, { new: true }).exec();
+}
+
 export function saveRestaurant(id, restaurant) {
-    return Restaurant.findOneAndUpdate({ _id: id }, restaurant).exec();
+    if (id === NEW_ID) {
+        return Restaurant.create(restaurant);
+    }
+    return Restaurant.findByIdAndUpdate(id, restaurant, { new: true }).exec();
 }
 
 

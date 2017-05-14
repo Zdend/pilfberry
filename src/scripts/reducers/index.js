@@ -1,4 +1,4 @@
-import {combineReducers} from 'redux-immutable';
+import { combineReducers } from 'redux-immutable';
 import ui from './ui';
 import domain from './domain';
 import session from './session';

@@ -6,6 +6,8 @@ export const RESTAURANT = {
     SAVE_REQUEST: 'RESTAURANT_SAVE_REQUEST',
     SAVE_SUCCESS: 'RESTAURANT_SAVE_SUCCESS',
     SAVE_FAILURE: 'RESTAURANT_SAVE_FAILURE',
+    CREATE: 'RESTAURANT_CREATE',
+    DELETE: 'RESTAURANT_DELETE'
 };
 
 export const RESTAURANTS = {
@@ -13,6 +15,9 @@ export const RESTAURANTS = {
 };
 
 export const restaurantValueChangeAction = (id, field, value) => action(RESTAURANT.CHANGE, { id, field, value });
+
+export const createRestaurantAction = () => action(RESTAURANT.CREATE);
+export const deleteRestaurantAction = id => action(RESTAURANT.DELETE, { id });
 
 export const saveRestaurantAction = {
     request: id => action(RESTAURANT.SAVE_REQUEST, { id }),
