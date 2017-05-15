@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Table, Button, Checkbox } from 'react-bootstrap';
+import { Table, Button, Checkbox, Label } from 'react-bootstrap';
 import { push } from 'react-router-redux';
 import { getSavedRestaurants } from '../reducers/selectors';
 import { fetchRestaurantsAction, createRestaurantAction, deleteRestaurantAction } from '../actions/restaurant-actions';
 import { NEW_ID, STATUS_ACTIVE, STATUS_DELETED } from 'constants';
+import RestaurantTag from '../components/restaurant-tag';
 
 class RestaurantPage extends Component {
     constructor(props) {
@@ -27,6 +28,7 @@ class RestaurantPage extends Component {
     renderRow(restaurant, navigate, deleteRestaurantAction) {
         const address = restaurant.get('address');
         const id = restaurant.get('id');
+        const tags = restaurant.get('tags').map(item => <RestaurantTag key={item} tag={item} />);
         return (
             <tr key={id}>
                 <td>{restaurant.get('name')}</td>
@@ -34,11 +36,12 @@ class RestaurantPage extends Component {
                 <td>{address.get('suburb')}</td>
                 <td>{address.get('street')}</td>
                 <td>{restaurant.get('status')}</td>
+                <td>{tags}</td>
                 <td>
                     <Button
                         bsSize="sm"
                         bsStyle="success"
-                        className="margin-right-1x"
+                        className="margin-right-05x margin-bottom-05x"
                         onClick={() => navigate(`/secure/restaurants/${id}`)}>
                         Edit
                     </Button>
@@ -46,6 +49,7 @@ class RestaurantPage extends Component {
                         <Button
                             bsSize="sm"
                             bsStyle="danger"
+                            className="margin-right-05x margin-bottom-05x"
                             onClick={() => deleteRestaurantAction(id)}>
                             Delete
                         </Button>
@@ -82,6 +86,7 @@ class RestaurantPage extends Component {
                             <th>Suburb</th>
                             <th>Street</th>
                             <th>Status</th>
+                            <th>Tags</th>
                             <th>Action</th>
                         </tr>
                     </thead>

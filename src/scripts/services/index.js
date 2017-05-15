@@ -2,7 +2,9 @@
 import { Map } from 'immutable';
 
 export const transformNestedRecords = (source: Object, nestedEntities: object = {}) => {
-    const transformedObject = Object.keys(source).reduce((result, prop) => {
+    const props = Object.keys(source).concat(Object.keys(nestedEntities))
+        .filter((item, i, ar) => ar.indexOf(item) === i);
+    const transformedObject = props.reduce((result, prop) => {
         const IEntity = nestedEntities[prop] ? nestedEntities[prop] : Map;
         const value = nestedEntities.hasOwnProperty(prop)
             ? new IEntity(source[prop]) : source[prop];

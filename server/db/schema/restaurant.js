@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
-import { STATUSES, STATUS_ACTIVE } from '../../../shared/constants';
+import { STATUSES, STATUS_ACTIVE, TAGS } from '../../../shared/constants';
 
 const restaurantSchema = new Schema({
     name: String,
@@ -15,6 +15,11 @@ const restaurantSchema = new Schema({
         type: String,
         enum: STATUSES,
         default: STATUS_ACTIVE
+    },
+    tags: {
+        type: Array,
+        enum: TAGS,
+        default: []
     }
 });
 

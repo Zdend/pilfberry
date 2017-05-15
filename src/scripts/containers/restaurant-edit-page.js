@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Table, Button, Grid, Row, Col } from 'react-bootstrap';
+import { Button, Row, Col } from 'react-bootstrap';
 import { push } from 'react-router-redux';
 import { getRestaurant } from '../reducers/selectors';
 import { fetchRestaurantAction, restaurantValueChangeAction, saveRestaurantAction, createRestaurantAction } from '../actions/restaurant-actions';
 import InputHOC from '../components/connected-input-hoc';
 import { NEW_ID, STATUSES } from 'constants';
+import RestaurantEditTag from '../components/restaurant-edit-tag';
 
 
 class RestaurantPage extends Component {
@@ -20,8 +21,9 @@ class RestaurantPage extends Component {
 
     render() {
         const { match: { params: { id } }, restaurant, restaurantValueChangeAction, saveRestaurant } = this.props;
-        const handleChange = (field, e) => restaurantValueChangeAction(id, field, e.target.value);
-        const ConnectedInput = InputHOC(handleChange);
+        const handleChange = (field, value) => restaurantValueChangeAction(id, field, value);
+        const handleChangeForEvent = (field, e) => handleChange(field, e.target.value);
+        const ConnectedInput = InputHOC(handleChangeForEvent);
         const RestaurantInput = ({ value, field, ...rest }) => <ConnectedInput value={restaurant.getIn([...field.split('.')])} {...{ ...rest, field }} />;
 
         return (
@@ -54,14 +56,24 @@ class RestaurantPage extends Component {
                                 </Col>
                             </Row>
                         </fieldset>
+
+
                         <Row>
                             <Col sm={6}>
                                 <RestaurantInput label="Status" field="status" selectValues={STATUSES} />
                             </Col>
                         </Row>
 
+                        <fieldset>
+                            <legend>Tags</legend>
+                            <RestaurantEditTag
+                                handleChange={(value) => handleChange('tags', value)}
+                                tags={restaurant.get('tags').toJS()}
+                            />
+                        </fieldset>
 
-                        <Button bsStyle="primary" onClick={() => saveRestaurant(id)}>
+
+                        <Button bsStyle="primary" className="margin-top-3x" onClick={() => saveRestaurant(id)}>
                             <i className="fa fa-save margin-right-05x" />Save
                         </Button>
 

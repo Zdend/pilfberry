@@ -1,8 +1,8 @@
-import { OrderedMap, Map, fromJS } from 'immutable';
+import { OrderedMap } from 'immutable';
 import { USER } from '../actions/user-actions';
 import { RESTAURANT, RESTAURANTS } from '../actions/restaurant-actions';
-import { User, Restaurant, Address } from '../models';
-import { arrayToMapById, transformNestedRecords, transformNestedRecordObject } from '../services';
+import { User, Restaurant, restaurantDef } from '../models';
+import { arrayToMapById, transformNestedRecordObject } from '../services';
 import { NEW_ID } from 'constants';
 
 function user(state = new User(), action) {
@@ -18,12 +18,12 @@ function user(state = new User(), action) {
 function restaurants(state = new OrderedMap(), action) {
     switch (action.type) {
         case RESTAURANTS.SUCCESS:
-            return arrayToMapById(action.restaurants, Restaurant, OrderedMap, { address: Address });
+            return arrayToMapById(action.restaurants, Restaurant, OrderedMap, restaurantDef);
         case RESTAURANTS.FAILURE:
             return state;
         case RESTAURANT.SUCCESS:
         case RESTAURANT.SAVE_SUCCESS:
-            return state.merge(transformNestedRecordObject(action.restaurant, Restaurant, { address: Address }));
+            return state.merge(transformNestedRecordObject(action.restaurant, Restaurant, restaurantDef));
         case RESTAURANT.CHANGE:
             return state.setIn([action.id, ...action.field.split('.')], action.value);
         case RESTAURANT.CREATE:

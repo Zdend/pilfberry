@@ -1,11 +1,9 @@
 import React from 'react';
-
+import RestaurantTag from './restaurant-tag';
 
 export default (restaurant) => {
 
     const restaurantType = 'japanese';
-
-    const labels = ['vegan', 'gluten free', 'pregnant women'];
     return (
         <div className="col-sm-6" key={restaurant.get('id')}>
             <div className="restaurant-block">
@@ -13,7 +11,7 @@ export default (restaurant) => {
                 <div className="restaurant-block__content">
                     <div className="restaurant-block__name">{restaurant.get('name')}</div>
                     <div className="restaurant-block__labels">
-                        {labels.map(label => <span key={label} className="label label-success margin-right-05x">{label}</span> )}
+                        {restaurant.get('tags').map(item => <RestaurantTag key={item} tag={item} />)}
                     </div>
                 </div>
             </div>

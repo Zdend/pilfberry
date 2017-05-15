@@ -1,4 +1,4 @@
-import { Record } from 'immutable';
+import { Record, List } from 'immutable';
 import { STATUS_ACTIVE } from 'constants';
 
 export const Address = Record({
@@ -9,9 +9,15 @@ export const Address = Record({
     country: undefined
 });
 
+export const restaurantDef = {
+    address: Address,
+    tags: List
+};
+
 export default Record({
     id: null,
     name: '',
     status: STATUS_ACTIVE,
-    address: new Address()
+    address: new Address(),
+    tags: new List()
 });

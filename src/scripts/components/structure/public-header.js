@@ -8,7 +8,7 @@ export default ({ navigate }) => (
         <Navbar>
             <Navbar.Header>
                 <Navbar.Brand>
-                    <Link to="/">pilfberry</Link>
+                    <Link to="/">Special Eats <i className="fa fa-pagelines" /></Link>
                 </Navbar.Brand>
                 <Navbar.Toggle />
             </Navbar.Header>
