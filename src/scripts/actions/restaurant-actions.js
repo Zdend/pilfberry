@@ -21,9 +21,7 @@ export const deleteRestaurantAction = id => action(RESTAURANT.DELETE, { id });
 
 export const saveRestaurantAction = {
     request: id => action(RESTAURANT.SAVE_REQUEST, { id }),
-    success: restaurant => action(RESTAURANT.SAVE_SUCCESS, {
-        restaurant, message: { message: 'Restaurant was saved', type: 'success' }
-    }),
+    success: restaurant => action(RESTAURANT.SAVE_SUCCESS, { restaurant }),
     failure: error => action(RESTAURANT.SAVE_FAILURE, { error }),
 };
 

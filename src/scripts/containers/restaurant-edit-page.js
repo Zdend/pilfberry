@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Button, Row, Col } from 'react-bootstrap';
+import { Button, Row, Col, FormControl, FormGroup, ControlLabel, InputGroup } from 'react-bootstrap';
 import { push } from 'react-router-redux';
 import { getRestaurant } from '../reducers/selectors';
 import { fetchRestaurantAction, restaurantValueChangeAction, saveRestaurantAction, createRestaurantAction } from '../actions/restaurant-actions';
 import InputHOC from '../components/connected-input-hoc';
 import { NEW_ID, STATUSES } from 'constants';
 import RestaurantEditTag from '../components/restaurant-edit-tag';
+import RestaurantEditLocation from '../components/restaurant-edit-location';
 
 
 class RestaurantPage extends Component {
@@ -53,6 +54,23 @@ class RestaurantPage extends Component {
                                 </Col>
                                 <Col sm={6}>
                                     <RestaurantInput label="Country" field="address.country" />
+                                </Col>
+                            </Row>
+
+
+                            <Row>
+                                <Col sm={4}>
+                                    <RestaurantInput label="Latitude" field="address.latitude" />
+                                </Col>
+                                <Col sm={4}>
+                                    <RestaurantInput label="Longitude" field="address.longitude" />
+                                </Col>
+                                <Col sm={4} className="text-align-center">
+                                    <RestaurantEditLocation
+                                        address={restaurant.get('address')}
+                                        handleChange={handleChange}
+                                    />
+
                                 </Col>
                             </Row>
                         </fieldset>

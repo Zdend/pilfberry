@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
+import { Navbar, Nav, NavItem } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { t } from 'i18next';
 
@@ -8,7 +8,7 @@ export default ({ navigate }) => (
         <Navbar>
             <Navbar.Header>
                 <Navbar.Brand>
-                    <Link to="/">Special Eats <i className="fa fa-pagelines" /></Link>
+                    <Link to="/">pilfberry <i className="fa fa-pagelines" /></Link>
                 </Navbar.Brand>
                 <Navbar.Toggle />
             </Navbar.Header>

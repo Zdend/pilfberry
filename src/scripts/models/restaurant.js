@@ -6,7 +6,9 @@ export const Address = Record({
     street: undefined,
     suburb: undefined,
     city: undefined,
-    country: undefined
+    country: undefined,
+    latitude: undefined,
+    longitude: undefined
 });
 
 export const restaurantDef = {
@@ -19,5 +21,6 @@ export default Record({
     name: '',
     status: STATUS_ACTIVE,
     address: new Address(),
-    tags: new List()
+    tags: new List(),
+
 });

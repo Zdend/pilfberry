@@ -59,7 +59,6 @@ function landingPage(state = new Map({ displayMap: false }), action) {
 function globalMessage(state = new Map({ message: '', type: 'info' }), action) {
     switch (action.type) {
         case GLOBAL_MESSAGE.SET:
-        case RESTAURANT.SAVE_SUCCESS:
             return state.merge(action.message);
         case LOCATION_CHANGE:
             return new Map({ message: '' });

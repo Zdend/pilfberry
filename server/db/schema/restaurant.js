@@ -9,7 +9,9 @@ const restaurantSchema = new Schema({
         suburb: String,
         city: String,
         state: String,
-        country: String
+        country: String,
+        latitude: Number,
+        longitude: Number
     },
     status: {
         type: String,

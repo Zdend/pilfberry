@@ -100,7 +100,7 @@ class LandingPage extends Component {
                     <div className="container">
                         <div className="row">
                             {landingPageUI.get('displayMap')
-                                ? <RestaurantMap />
+                                ? <RestaurantMap restaurants={filteredRestaurants} />
                                 : filteredRestaurants && filteredRestaurants.valueSeq().map(RestaurantBlock)}
                         </div>
 

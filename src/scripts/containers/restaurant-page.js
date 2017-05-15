@@ -29,6 +29,7 @@ class RestaurantPage extends Component {
         const address = restaurant.get('address');
         const id = restaurant.get('id');
         const tags = restaurant.get('tags').map(item => <RestaurantTag key={item} tag={item} />);
+        const hasLocation = address.get('latitude') && address.get('longitude');
         return (
             <tr key={id}>
                 <td>{restaurant.get('name')}</td>
@@ -37,6 +38,7 @@ class RestaurantPage extends Component {
                 <td>{address.get('street')}</td>
                 <td>{restaurant.get('status')}</td>
                 <td>{tags}</td>
+                <td><i className={`fa fa-${hasLocation ? 'check text-success' : 'close text-danger' }`} /></td>
                 <td>
                     <Button
                         bsSize="sm"
@@ -87,6 +89,7 @@ class RestaurantPage extends Component {
                             <th>Street</th>
                             <th>Status</th>
                             <th>Tags</th>
+                            <th>Map</th>
                             <th>Action</th>
                         </tr>
                     </thead>

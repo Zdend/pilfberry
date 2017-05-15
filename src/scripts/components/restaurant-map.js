@@ -1,15 +1,14 @@
 import React from 'react';
-import { withGoogleMap, GoogleMap, Marker } from 'react-google-maps';
+import { withGoogleMap, GoogleMap, Marker, InfoWindow } from 'react-google-maps';
 import withScriptjs from 'react-google-maps/lib/async/withScriptjs';
 import { SpinnerInline } from './spinner';
-
-const API_KEY = 'AIzaSyAfvD6DhQe5P5ZprFHCXutWx-kB3DruSlU';
-const DEFAULT_LOCATION = { lat: -33.8578957, lng: 151.1209737 };
+import { API_KEY, DEFAULT_LOCATION } from 'constants';
+import { generate } from 'shortid';
 
 // Use google api to find markers
 // http://maps.google.com/maps/api/geocode/json?address=Crows+Nest+Australia
 
-const AsyncGettingStartedExampleGoogleMap = withScriptjs(
+const AsyncGoogleMap = withScriptjs(
     withGoogleMap(
         props => (
             <GoogleMap
@@ -22,20 +21,40 @@ const AsyncGettingStartedExampleGoogleMap = withScriptjs(
                 onClick={props.onMapClick}
             >
                 {props.markers.map(marker => (
-                    <Marker
+                    <Marker key={generate()}
                         {...marker}
                         onRightClick={() => props.onMarkerRightClick(marker)}
-                    />
+                    >
+                        <InfoWindow 
+                            showingInfoWindow={true}
+                            >
+                            <span>{marker.title}</span>
+                        </InfoWindow>
+                    </Marker>
                 ))}
             </GoogleMap>
         )
     )
 );
 
-export default () => {
+export default ({ restaurants }) => {
+
+    const markers = restaurants
+        .valueSeq()
+        .filter(r => r.getIn(['address', 'latitude']) && r.getIn(['address', 'longitude']))
+        .map(r => {
+            return {
+                position: {
+                    lat: r.getIn(['address', 'latitude']),
+                    lng: r.getIn(['address', 'longitude'])
+                },
+                title: r.get('name'),
+                label: r.get('name').slice(0, 1).toUpperCase()
+            };
+        }).toJS();
 
     return (
-        <AsyncGettingStartedExampleGoogleMap
+        <AsyncGoogleMap
             googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&key=${API_KEY}`}
             loadingElement={
                 <div style={{ height: `100%` }}>
@@ -50,7 +69,7 @@ export default () => {
             }
             onMapLoad={handleMapLoad}
             onMapClick={() => { }}
-            markers={[]}
+            markers={markers}
             onMarkerRightClick={() => { }}
         />
     );
@@ -65,7 +84,7 @@ function handleMapLoad(map) {
     // infoWindow = new google.maps.InfoWindow;
 
     // Try HTML5 geolocation.
-    if (navigator.geolocation) {
+    if (map && navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function (position) {
             const pos = {
                 lat: position.coords.latitude,
@@ -85,11 +104,3 @@ function handleMapLoad(map) {
         // handleLocationError(false, infoWindow, map.getCenter());
     }
 }
-
-// function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-//     infoWindow.setPosition(pos);
-//     infoWindow.setContent(browserHasGeolocation ?
-//         'Error: The Geolocation service failed.' :
-//         'Error: Your browser doesn\'t support geolocation.');
-//     infoWindow.open(map);
-// }

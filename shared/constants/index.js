@@ -16,3 +16,6 @@ export const TAG = {
 
 
 export const TAGS = Object.keys(TAG).map(prop => TAG[prop]);
+
+export const API_KEY = 'AIzaSyAfvD6DhQe5P5ZprFHCXutWx-kB3DruSlU';
+export const DEFAULT_LOCATION = { lat: -33.8578957, lng: 151.1209737 };
