@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { withGoogleMap, GoogleMap, Marker, InfoWindow } from 'react-google-maps';
 import withScriptjs from 'react-google-maps/lib/async/withScriptjs';
 import { SpinnerInline } from './spinner';
@@ -7,6 +7,40 @@ import { generate } from 'shortid';
 
 // Use google api to find markers
 // http://maps.google.com/maps/api/geocode/json?address=Crows+Nest+Australia
+
+class MarkersContainer extends Component {
+    constructor(props) {
+        super(props);
+        this.onMarkerClick = this.onMarkerClick.bind(this);
+        this.state = { activeMarker: null };
+    }
+    onMarkerClick(marker) {
+        this.setState({
+            activeMarker: marker
+        });
+    }
+
+    render() {
+        const { markers } = this.props;
+        const { activeMarker } = this.state;
+        return (
+            <div>
+                {markers.map(marker => (
+                    <Marker key={generate()}
+                        {...marker}
+                        onClick={() => this.onMarkerClick(marker)}
+                    >
+                        {activeMarker && activeMarker.id === marker.id &&
+                            <InfoWindow>
+                                <span>{marker.title}</span>
+                            </InfoWindow>
+                        }
+                    </Marker>
+                ))}
+            </div>
+        );
+    }
+}
 
 const AsyncGoogleMap = withScriptjs(
     withGoogleMap(
@@ -20,60 +54,55 @@ const AsyncGoogleMap = withScriptjs(
                 }}
                 onClick={props.onMapClick}
             >
-                {props.markers.map(marker => (
-                    <Marker key={generate()}
-                        {...marker}
-                        onRightClick={() => props.onMarkerRightClick(marker)}
-                    >
-                        <InfoWindow 
-                            showingInfoWindow={true}
-                            >
-                            <span>{marker.title}</span>
-                        </InfoWindow>
-                    </Marker>
-                ))}
+                <MarkersContainer markers={props.markers} />
             </GoogleMap>
         )
     )
 );
 
-export default ({ restaurants }) => {
+const getMarkers = (restaurants) => restaurants.valueSeq()
+    .filter(r => r.getIn(['address', 'latitude']) && r.getIn(['address', 'longitude']))
+    .map(r => {
+        return {
+            position: {
+                lat: r.getIn(['address', 'latitude']),
+                lng: r.getIn(['address', 'longitude'])
+            },
+            title: r.get('name'),
+            label: r.get('name').slice(0, 1).toUpperCase(),
+            id: r.get('id')
+        };
+    }).toJS();
 
-    const markers = restaurants
-        .valueSeq()
-        .filter(r => r.getIn(['address', 'latitude']) && r.getIn(['address', 'longitude']))
-        .map(r => {
-            return {
-                position: {
-                    lat: r.getIn(['address', 'latitude']),
-                    lng: r.getIn(['address', 'longitude'])
-                },
-                title: r.get('name'),
-                label: r.get('name').slice(0, 1).toUpperCase()
-            };
-        }).toJS();
+export default class RestaurantMapContainer extends Component {
 
-    return (
-        <AsyncGoogleMap
-            googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&key=${API_KEY}`}
-            loadingElement={
-                <div style={{ height: `100%` }}>
-                    <SpinnerInline />
-                </div>
-            }
-            containerElement={
-                <div style={{ height: `500px`, width: '100%' }} />
-            }
-            mapElement={
-                <div style={{ height: `100%` }} />
-            }
-            onMapLoad={handleMapLoad}
-            onMapClick={() => { }}
-            markers={markers}
-            onMarkerRightClick={() => { }}
-        />
-    );
-};
+
+    render() {
+        const { restaurants } = this.props;
+        const markers = getMarkers(restaurants);
+
+        return (
+            <AsyncGoogleMap
+                googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&key=${API_KEY}`}
+                loadingElement={
+                    <div style={{ height: `100%` }}>
+                        <SpinnerInline />
+                    </div>
+                }
+                containerElement={
+                    <div style={{ height: `500px`, width: '100%' }} />
+                }
+                mapElement={
+                    <div style={{ height: `100%` }} />
+                }
+                onMapLoad={handleMapLoad}
+                onMapClick={() => { }}
+                markers={markers}
+                onMarkerRightClick={() => { }}
+            />
+        );
+    }
+}
 
 
 function handleMapLoad(map) {
