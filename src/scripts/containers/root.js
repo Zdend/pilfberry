@@ -1,13 +1,21 @@
-import React, {PropTypes} from 'react';
-import {Provider} from 'react-redux';
-import {ConnectedRouter} from 'react-router-redux';
+import React, { PropTypes } from 'react';
+import { Provider } from 'react-redux';
+import { ConnectedRouter } from 'react-router-redux';
+import { StaticRouter } from 'react-router-dom';
 
-
-const Root = ({store, Routes, history}) => (
+const Root = ({ store, Routes, history, isClient = true, location, context }) => (
     <Provider store={store}>
-        <ConnectedRouter history={history} store={store}>
-            <Routes />
-        </ConnectedRouter>
+        {isClient
+            ?
+            <ConnectedRouter history={history} store={store}>
+                <Routes />
+            </ConnectedRouter>
+            :
+            <StaticRouter location={location} context={context}>
+                <Routes />
+            </StaticRouter>
+        }
+
     </Provider>
 );
 

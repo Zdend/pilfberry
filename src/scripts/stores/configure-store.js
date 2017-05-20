@@ -1,11 +1,10 @@
-import {createStore, applyMiddleware, compose} from 'redux';
-import {combineReducers} from 'redux-immutable';
+import { createStore, applyMiddleware, compose } from 'redux';
+import { combineReducers } from 'redux-immutable';
 import createLogger from 'redux-logger';
-import createSagaMiddleware, {END} from 'redux-saga';
+import createSagaMiddleware, { END } from 'redux-saga';
 import rootReducer from '../reducers';
 import { routerReducer, routerMiddleware } from 'react-router-redux';
-import {fromJS} from 'immutable';
-import {SUPPORTED_LOCALES} from '../locales';
+import { fromJS } from 'immutable';
 
 const logger = createLogger({
     diff: true,
@@ -16,25 +15,26 @@ const logger = createLogger({
 });
 
 
-export default function configureStore (initialState, history) {
+export default function configureStore(initialState, history) {
     const sagaMiddleware = createSagaMiddleware();
     const routerMiddlewareWithHistory = routerMiddleware(history);
     const immutableInitalState = fromJS(initialState);
-    const immutableStateWithLanguages = immutableInitalState.setIn(['ui', 'components', 'footer', 'language', 'supportedLocales'], fromJS(SUPPORTED_LOCALES));
+
+    const devTools = history && window && window.devToolsExtension ? window.devToolsExtension() : f => f;
 
     const store = createStore(
         combineReducers({
             ...rootReducer,
             routing: routerReducer
         }),
-        immutableStateWithLanguages,
+        immutableInitalState,
         compose(
             applyMiddleware(
                 sagaMiddleware,
                 routerMiddlewareWithHistory,
                 logger
             ),
-            window.devToolsExtension ? window.devToolsExtension() : f => f 
+            devTools
         )
     );
 

@@ -2,7 +2,6 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import LoginForm from '../components/login-form';
 import { loginAction, credentialsChange } from '../actions/login-actions';
-import { t } from 'i18next';
 import { Grid, Row, Col } from 'react-bootstrap';
 import { getCredentials } from '../reducers/selectors';
 
@@ -10,7 +9,7 @@ const LoginPage = ({ credentials, loginRequestAction, credentialsChange }) => (
     <Grid>
         <Row className="margin-top-5x margin-bottom-5x">
             <Col sm={6} smOffset={3} lg={4} lgOffset={4}>
-                <h1>{t('page.login.h1')}</h1>
+                <h1>Login</h1>
                 <LoginForm {...{ ...credentials.toJS(), credentialsChange, loginRequestAction }} />
 
             </Col>

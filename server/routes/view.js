@@ -1,3 +1,11 @@
+import React from 'react';
+import { renderToString } from 'react-dom/server';
+import Root from '../../src/scripts/containers/root';
+import { matchPath } from 'react-router';
+import configureStore from '../../src/scripts/stores/configure-store';
+import rootSaga from '../../src/scripts/sagas/index';
+import routes from '../../src/scripts/routes/index';
+import { findAllRestaurants } from '../db';
 
 const layout = (body, initialState) => (`
     <!DOCTYPE html>
@@ -20,7 +28,7 @@ const layout = (body, initialState) => (`
 `);
 
 
-const initialState = JSON.stringify({
+const initialState = {
     ui: {
         pages: {
             login: {
@@ -36,9 +44,25 @@ const initialState = JSON.stringify({
             }
         }
     },
-    domain: {}
-});
+    domain: {
+        restaurants: {}
+    }
+};
 
 export default function (req, res) {
-    res.send(layout('', initialState));
+    const store = configureStore(initialState);
+    const rootComp = <Root store={store} Routes={routes} isClient={false} location={req.url} context={{}} />;
+
+    store.runSaga(rootSaga).done.then(() => {
+        res.status(200).send(
+            layout(
+                renderToString(rootComp),
+                JSON.stringify(store.getState())
+            )
+        );
+    }).catch((e) => {
+        res.status(500).send(e.message);
+    });
+
+    store.close();
 }
