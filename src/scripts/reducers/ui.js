@@ -1,11 +1,9 @@
 import { combineReducers } from 'redux-immutable';
 import { LOGIN } from '../actions/login-actions';
-import { LANGUAGE } from '../actions/language-actions';
 import { USER } from '../actions/user-actions';
 import { RESTAURANT } from '../actions/restaurant-actions';
 import { LANDING_PAGE } from '../actions/ui-actions';
 import { GLOBAL_MESSAGE } from '../actions/global-message-actions';
-import { Language } from '../models';
 import { Credentials } from '../models';
 import { Map } from 'immutable';
 import { LOCATION_CHANGE } from 'react-router-redux';
@@ -36,21 +34,9 @@ function user(state = new Map(), action) {
     }
 }
 
-function language(state = new Language(), action) {
+function landingPage(state = new Map({ }), action) {
     switch (action.type) {
-        case LANGUAGE.CHANGE:
-            return state.set('code', action.code);
-        case LANGUAGE.LOADED:
-            return state;
-        default:
-            return state;
-    }
-}
-
-function landingPage(state = new Map({ displayMap: false }), action) {
-    switch (action.type) {
-        case LANDING_PAGE.CHANGE_FILTER:
-            return state.set('displayMap', action.filterType === 'map');
+        
         default:
             return state;
     }
@@ -76,7 +62,6 @@ export default {
         landingPage
     }),
     components: combineReducers({
-        footer: combineReducers({ language }),
         globalMessage
     })
 };

@@ -39,9 +39,6 @@ const initialState = {
             }
         },
         components: {
-            footer: {
-                language: { code: 'en' }
-            }
         }
     },
     domain: {

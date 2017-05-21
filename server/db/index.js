@@ -25,7 +25,7 @@ export function deleteRestaurant(id) {
 
 export function saveRestaurant(id, restaurant) {
     if (id === NEW_ID) {
-        return Restaurant.create(restaurant);
+        return Restaurant.create({ ...restaurant, created: new Date() });
     }
     return Restaurant.findByIdAndUpdate(id, restaurant, { new: true }).exec();
 }

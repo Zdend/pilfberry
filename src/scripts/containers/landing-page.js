@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { Route } from 'react-router-dom';
 import {
     ButtonToolbar, ButtonGroup, Button, DropdownButton,
     MenuItem, InputGroup, FormControl,
@@ -10,6 +11,7 @@ import { landingPageChangeFilter } from '../actions/ui-actions';
 import { getRestaurants, getLandingPageUI } from '../reducers/selectors';
 import RestaurantBlock from '../components/restaurant-block';
 import RestaurantMap from '../components/restaurant-map';
+import { push } from 'react-router-redux';
 
 class LandingPage extends Component {
     constructor(props) {
@@ -32,9 +34,12 @@ class LandingPage extends Component {
         });
     }
 
+    renderList(restaurants) {
+        return restaurants ? <div>{restaurants.valueSeq().map(RestaurantBlock)}</div> : null;
+    }
 
     render() {
-        const { landingPageChangeFilter, landingPageUI } = this.props;
+        const { navigate } = this.props;
         const { restaurants, searchExpression } = this.state;
         const matcher = new RegExp(searchExpression, 'i');
         const filteredRestaurants = searchExpression
@@ -87,8 +92,8 @@ class LandingPage extends Component {
                         <Col sm={12}>
                             <ButtonToolbar className="pull-right margin-top-1x-sm">
                                 <ButtonGroup className="pull-none">
-                                    <Button bsStyle="default" onClick={() => landingPageChangeFilter('map')}><i className="fa fa-map"></i></Button>
-                                    <Button bsStyle="default" onClick={() => landingPageChangeFilter('list')}><i className="fa fa-list"></i></Button>
+                                    <Button bsStyle="default" onClick={() => navigate('/map')}><i className="fa fa-map"></i></Button>
+                                    <Button bsStyle="default" onClick={() => navigate('/list')}><i className="fa fa-list"></i></Button>
                                 </ButtonGroup>
                             </ButtonToolbar>
                             <h4>We found {filteredRestaurants ? filteredRestaurants.size : 0} restaurants for you..</h4>
@@ -99,9 +104,10 @@ class LandingPage extends Component {
                 <div className="restaurant-list padding-bottom-3x padding-top-2x">
                     <div className="container">
                         <div className="row">
-                            {landingPageUI.get('displayMap')
-                                ? <RestaurantMap restaurants={filteredRestaurants} />
-                                : filteredRestaurants && filteredRestaurants.valueSeq().map(RestaurantBlock)}
+                            <Route exact path="/" render={() => this.renderList(filteredRestaurants)} />
+                            <Route exact path="/list" render={() => this.renderList(filteredRestaurants)} />
+                            <Route exact path="/map" render={() => <RestaurantMap restaurants={filteredRestaurants} />} />
+
                         </div>
 
                     </div>
@@ -122,13 +128,12 @@ class LandingPage extends Component {
 
 function mapStateToProps(state) {
     return {
-        restaurants: getRestaurants(state),
-        landingPageUI: getLandingPageUI(state)
+        restaurants: getRestaurants(state)
     };
 }
 const mapDispatchToProps = {
     fetchRestaurants: fetchRestaurantsAction.request,
-    landingPageChangeFilter
+    navigate: push
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LandingPage);

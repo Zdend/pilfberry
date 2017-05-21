@@ -28,6 +28,8 @@ function restaurants(state = new OrderedMap(), action) {
             return state.setIn([action.id, ...action.field.split('.')], action.value);
         case RESTAURANT.CREATE:
             return state.set(NEW_ID, new Restaurant({ id: NEW_ID }));
+        case RESTAURANT.PREFILL_SUCCESS:
+            return state.mergeIn([action.id, 'address'], action.address);
         default:
             return state;
     }

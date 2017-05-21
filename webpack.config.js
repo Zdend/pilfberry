@@ -20,7 +20,6 @@ module.exports = {
             './src/scripts/app.js',
             './src/styles/vendor.scss',
             './src/styles/app.scss'
-
         ]
     },
     output: {

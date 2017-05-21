@@ -19,15 +19,14 @@ export default (inputChangeAction) => class extends Component {
         });
     }
     render() {
-        const { field, value, label, selectValues, ...props } = this.props; //eslint-disable-line no-unused-vars
-        const isSelect = selectValues && selectValues.length;
-        const customisedProps = { ...props, componentClass: isSelect ? 'select' : 'input' };
+        const { field, value, label, selectValues, type, ...props } = this.props; //eslint-disable-line no-unused-vars
+        const customisedProps = { ...props, componentClass: type };
         return (
             <FormGroup>
                 <ControlLabel>{label}</ControlLabel>
                 <FormControl onBlur={e => inputChangeAction(field, e)}
                     onChange={this.handleChange}
-                    value={this.state.value}
+                    value={this.state.value ? this.state.value : undefined}
                     className="form-control"
                     {...customisedProps}
                 >

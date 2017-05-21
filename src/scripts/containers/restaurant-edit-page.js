@@ -3,11 +3,12 @@ import { connect } from 'react-redux';
 import { Button, Row, Col, FormControl, FormGroup, ControlLabel, InputGroup } from 'react-bootstrap';
 import { push } from 'react-router-redux';
 import { getRestaurant } from '../reducers/selectors';
-import { fetchRestaurantAction, restaurantValueChangeAction, saveRestaurantAction, createRestaurantAction } from '../actions/restaurant-actions';
+import { fetchRestaurantAction, restaurantValueChangeAction, saveRestaurantAction, createRestaurantAction, prefillAddressAction } from '../actions/restaurant-actions';
 import InputHOC from '../components/connected-input-hoc';
-import { NEW_ID, STATUSES } from 'constants';
+import { NEW_ID, STATUSES, DATE_FORMAT, TAGS, CUISINES } from 'constants';
 import RestaurantEditTag from '../components/restaurant-edit-tag';
 import RestaurantEditLocation from '../components/restaurant-edit-location';
+import moment from 'moment';
 
 
 class RestaurantPage extends Component {
@@ -21,7 +22,7 @@ class RestaurantPage extends Component {
     }
 
     render() {
-        const { match: { params: { id } }, restaurant, restaurantValueChangeAction, saveRestaurant } = this.props;
+        const { match: { params: { id } }, restaurant, restaurantValueChangeAction, saveRestaurant, prefillAddress } = this.props;
         const handleChange = (field, value) => restaurantValueChangeAction(id, field, value);
         const handleChangeForEvent = (field, e) => handleChange(field, e.target.value);
         const ConnectedInput = InputHOC(handleChangeForEvent);
@@ -34,6 +35,12 @@ class RestaurantPage extends Component {
                         <h1 className="margin-top-1x">{restaurant.get('name') || '<Restaurant Name>'}</h1>
 
                         <RestaurantInput label="Restaurant name" field="name" />
+
+                        <Row>
+                            <Col sm={12}>
+                                <RestaurantInput label="Description" field="description" type="textarea" />
+                            </Col>
+                        </Row>
 
                         <fieldset>
                             <legend>Address</legend>
@@ -65,30 +72,57 @@ class RestaurantPage extends Component {
                                 <Col sm={4}>
                                     <RestaurantInput label="Longitude" field="address.longitude" />
                                 </Col>
-                                <Col sm={4} className="text-align-center">
+                                <Col sm={2} className="text-align-center">
                                     <RestaurantEditLocation
                                         address={restaurant.get('address')}
                                         handleChange={handleChange}
                                     />
-
+                                </Col>
+                                <Col sm={2} className="text-align-center">
+                                    <Button bsStyle="link" className="margin-top-2x-sm" onClick={() => prefillAddress(restaurant.get('id'))}>
+                                        <i className="fa fa-search margin-right-05x" /> Prefill address
+                                    </Button>
                                 </Col>
                             </Row>
                         </fieldset>
 
 
-                        <Row>
-                            <Col sm={6}>
-                                <RestaurantInput label="Status" field="status" selectValues={STATUSES} />
+                        <fieldset>
+                            <Row>
+                                <Col sm={6}>
+                                    <legend>Tags</legend>
+                                    <RestaurantEditTag
+                                        handleChange={(value) => handleChange('tags', value)}
+                                        tags={restaurant.get('tags').toJS()}
+                                        definedTags={TAGS}
+                                    />
+                                </Col>
+                                <Col sm={6}>
+                                    <legend>Cuisines</legend>
+                                    <RestaurantEditTag
+                                        handleChange={(value) => handleChange('cuisines', value)}
+                                        tags={restaurant.get('cuisines').toJS()}
+                                        definedTags={CUISINES}
+                                    />
+                                </Col>
+                            </Row>
+
+                        </fieldset>
+
+                        <Row className="margin-top-2x">
+                            <Col sm={4}>
+                                <RestaurantInput label="Status" field="status" type="select" selectValues={STATUSES} />
+                            </Col>
+                            <Col sm={4}>
+                                <RestaurantInput label="Website" field="url" />
+                            </Col>
+                            <Col sm={4}>
+                                <ControlLabel>Date created</ControlLabel>
+                                <FormControl.Static>
+                                    {restaurant && restaurant.get('created') && moment(restaurant.get('created')).format(DATE_FORMAT)}
+                                </FormControl.Static>
                             </Col>
                         </Row>
-
-                        <fieldset>
-                            <legend>Tags</legend>
-                            <RestaurantEditTag
-                                handleChange={(value) => handleChange('tags', value)}
-                                tags={restaurant.get('tags').toJS()}
-                            />
-                        </fieldset>
 
 
                         <Button bsStyle="primary" className="margin-top-3x" onClick={() => saveRestaurant(id)}>
@@ -114,6 +148,7 @@ const mapDispatchToProps = {
     restaurantValueChangeAction,
     navigate: push,
     saveRestaurant: saveRestaurantAction.request,
-    createRestaurantAction
+    createRestaurantAction,
+    prefillAddress: prefillAddressAction.request
 };
 export default connect(mapStateToProps, mapDispatchToProps)(RestaurantPage);

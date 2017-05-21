@@ -1,16 +1,11 @@
 import React from 'react';
 import TagsInput from 'react-tagsinput';
 import Autosuggest from 'react-autosuggest';
-import { TAGS } from 'constants';
 import { List } from 'immutable';
-
-function definedTags() {
-    return TAGS;
-}
 
 class RestaurantTagsInput extends React.Component {
     render() {
-        const { tags, handleChange } = this.props;
+        const { tags, handleChange, definedTags } = this.props;
 
         function renderTag(props) {
             let { tag, key, disabled, onRemove, classNameRemove, getTagDisplayValue, ...other } = props
@@ -36,7 +31,7 @@ class RestaurantTagsInput extends React.Component {
             const inputValue = (props.value && props.value.trim().toLowerCase()) || '';
             const inputLength = inputValue.length;
 
-            const suggestions = definedTags().filter((tag) => {
+            const suggestions = definedTags.filter((tag) => {
                 return tag.toLowerCase().slice(0, inputLength) === inputValue
                     && tags.indexOf(tag) === -1;
             });

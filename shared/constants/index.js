@@ -17,5 +17,22 @@ export const TAG = {
 
 export const TAGS = Object.keys(TAG).map(prop => TAG[prop]);
 
+export const CUISINE = {
+    JAPANESE: 'JAPANESE',
+    INDIAN: 'INDIAN',
+    THAI: 'THAI',
+    CHINESE: 'CHINESE',
+    KOREA: 'KOREA',
+    MALAYSIAN: 'MALAYSIAN',
+    EASTERN_EUROPEAN: 'EASTERN EUROPEAN',
+    AUSTRALIAN: 'AUSTRALIAN',
+    FRENCH: 'FRENCH',
+    ITALIAN: 'ITALIAN',
+    SPANISH: 'SPANISH',
+    NEPALESE: 'NEPALESE',
+    RUSSIAN: 'RUSSIAN'
+};
+export const CUISINES = Object.keys(CUISINE).map(prop => CUISINE[prop]);
+
 export const API_KEY = 'AIzaSyAfvD6DhQe5P5ZprFHCXutWx-kB3DruSlU';
 export const DEFAULT_LOCATION = { lat: -33.8578957, lng: 151.1209737 };

@@ -2,8 +2,7 @@ import { fork, call, put, takeLatest, takeEvery } from 'redux-saga/effects';
 import { get, post, put as putAxios, delete as deleteAxios } from 'axios';
 import { requestLoginWatcher } from './login-sagas';
 import { fetchUserWatcher } from './user-sagas';
-import { changeLanguageWatcher } from './language-sagas';
-import { fetchRestaurants, fetchRestaurant, saveRestaurant, deleteRestaurant } from './restaurant-sagas';
+import { fetchRestaurants, fetchRestaurant, saveRestaurant, deleteRestaurant, prefillAddress } from './restaurant-sagas';
 import { RESTAURANT, RESTAURANTS } from '../actions/restaurant-actions';
 
 export function* fetchEntity({ success, failure }, path, resultTransformer = data => data, payload) {
@@ -52,9 +51,9 @@ export default function* root() {
     yield [
         fork(requestLoginWatcher),
         fork(fetchUserWatcher),
-        fork(changeLanguageWatcher),
         takeEvery(RESTAURANTS.REQUEST, fetchRestaurants),
         takeEvery(RESTAURANT.REQUEST, fetchRestaurant),
+        takeEvery(RESTAURANT.PREFILL_REQUEST, prefillAddress),
         takeLatest(RESTAURANT.SAVE_REQUEST, saveRestaurant),
         takeLatest(RESTAURANT.DELETE, deleteRestaurant)
     ];

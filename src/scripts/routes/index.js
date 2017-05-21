@@ -12,6 +12,8 @@ import PublicLayoutRoute from '../components/layouts/public-wrapper';
 export default () => (
     <App>
         <PublicLayoutRoute exact path="/" component={LandingPage} />
+        <PublicLayoutRoute exact path="/list" component={LandingPage} />
+        <PublicLayoutRoute exact path="/map" component={LandingPage} />
         <PublicLayoutRoute path="/login" component={LoginPage} />
 
         <SecureLayoutRoute path="/secure" component={SecurePage} />

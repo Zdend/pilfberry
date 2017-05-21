@@ -60,7 +60,7 @@ export default class RestaurantEditLocation extends Component {
         const { address, handleChange } = this.props;
         const { latitude, longitude, street, postcode, city, state, country } = address;
 
-        const position = { lat: latitude, lng: longitude };
+        const position = latitude && longitude && { lat: latitude, lng: longitude };
         return (
             <div>
                 <Button bsStyle="link" className="margin-top-2x-sm" onClick={() => this.open()}>

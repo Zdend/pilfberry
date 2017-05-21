@@ -10,7 +10,6 @@ export const getGlobalMessage = s(getComponents, components => components.get('g
 export const getFooter = s(getComponents, components => components.get('footer'));
 export const getLogin = s(getPages, pages => pages.get('login'));
 export const getUIPageUser = s(getPages, pages => pages.get('user'));
-export const getLandingPageUI = s(getPages, pages => pages.get('landingPage'));
 export const getCredentials = s(getLogin, loginPage => loginPage.get('credentials'));
 export const getLanguage = s(getFooter, footer => footer.get('language'));
 export const getActiveLanguage = s(getLanguage, language => language.get('code'));

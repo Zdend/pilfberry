@@ -22,7 +22,14 @@ const restaurantSchema = new Schema({
         type: Array,
         enum: TAGS,
         default: []
-    }
+    },
+    cuisines: {
+        type: Array,
+        default: []
+    },
+    description: String,
+    url: String,
+    created: Date
 });
 
 export default mongoose.model('Restaurant', restaurantSchema);

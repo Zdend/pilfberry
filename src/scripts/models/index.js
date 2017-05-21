@@ -2,10 +2,9 @@
 import { SchemaRegister } from '../services/schema-services';
 import User from './user';
 import Credentials from './credentials';
-import Language from './language';
 import Restaurant, { restaurantDef } from './restaurant';
 
-const Models = { User, Credentials, Language, Restaurant };
+const Models = { User, Credentials, Restaurant };
 const ModelDefinitions = { restaurantDef };
 
 const sessionInitialiser = SchemaRegister(Models);
