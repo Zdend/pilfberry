@@ -22,7 +22,7 @@ class RestaurantPage extends Component {
     }
 
     render() {
-        const { match: { params: { id } }, restaurant, restaurantValueChangeAction, saveRestaurant, prefillAddress } = this.props;
+        const { match: { params: { id } }, restaurant, restaurantValueChangeAction, saveRestaurant, prefillAddress, navigate } = this.props;
         const handleChange = (field, value) => restaurantValueChangeAction(id, field, value);
         const handleChangeForEvent = (field, e) => handleChange(field, e.target.value);
         const ConnectedInput = InputHOC(handleChangeForEvent);
@@ -125,8 +125,12 @@ class RestaurantPage extends Component {
                         </Row>
 
 
-                        <Button bsStyle="primary" className="margin-top-3x" onClick={() => saveRestaurant(id)}>
+                        <Button bsStyle="primary" className="margin-top-3x margin-right-1x" onClick={() => saveRestaurant(id)}>
                             <i className="fa fa-save margin-right-05x" />Save
+                        </Button>
+
+                        <Button bsStyle="default" className="margin-top-3x" onClick={() => navigate('/secure/restaurants')}>
+                            Back
                         </Button>
 
                     </div>
