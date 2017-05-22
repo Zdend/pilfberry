@@ -1,4 +1,5 @@
 import { findAllRestaurants, findRestaurant, saveRestaurant, deleteRestaurant } from '../db';
+import { uploadPhotosToRestaurant } from '../db/file-upload';
 import view from './view';
 import passport from 'passport';
 import { STATUS_ACTIVE, STATUS_DELETED } from '../../shared/constants';
@@ -39,6 +40,8 @@ export default function (app) {
             .then(restaurant => res.json(restaurant))
             .catch(console.error);
     });
+
+    app.put('/api/restaurant/:id/photos', secured, uploadPhotosToRestaurant);
 
     app.delete('/api/restaurant/:id', secured, function (req, res) {
         deleteRestaurant(req.params.id)

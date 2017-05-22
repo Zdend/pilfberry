@@ -34,8 +34,17 @@ function restaurants(state = new OrderedMap(), action) {
             return state;
     }
 }
+function restaurantPhotos(state = { id: null, files: [] }, action) {
+    switch (action.type) {
+        case RESTAURANT.FILE_CHANGE:
+            return { id: action.id, files: action.files };
+        default:
+            return state;
+    }
+}
 
 export default {
     user,
-    restaurants
+    restaurants,
+    restaurantPhotos
 };

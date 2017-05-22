@@ -29,7 +29,9 @@ export function* sendEntity(
     const response = yield call(requestType, path, payload);
     try {
         if (response) {
-            yield put(success(resultTransformer(response.data)));
+            const transformedData = resultTransformer(response.data);
+            yield put(success(transformedData));
+            yield transformedData;
         } else {
             yield put(failure(response));
         }

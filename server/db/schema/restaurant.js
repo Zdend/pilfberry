@@ -29,7 +29,11 @@ const restaurantSchema = new Schema({
     },
     description: String,
     url: String,
-    created: Date
+    created: Date,
+    photos: {
+        type: Array,
+        default: []
+    }
 });
 
 export default mongoose.model('Restaurant', restaurantSchema);

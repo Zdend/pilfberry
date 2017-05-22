@@ -1,10 +1,10 @@
-import { select, put, call } from 'redux-saga/effects';
+import { select, put, call, fork } from 'redux-saga/effects';
 import { fetchRestaurantsAction, fetchRestaurantAction, saveRestaurantAction, prefillAddressAction } from '../actions/restaurant-actions';
 import { fetchEntity, updateEntity, deleteEntity } from './';
-import { getRestaurant } from '../reducers/selectors';
+import { getRestaurant, getRestaurantPhotos } from '../reducers/selectors';
 import { push } from 'react-router-redux';
 import { setMessageAction } from '../actions/global-message-actions';
-import { get } from 'axios';
+import { get, put as putAxios } from 'axios';
 
 export function* fetchRestaurants({ criteria }) {
     yield fetchEntity(fetchRestaurantsAction, '/api/restaurants', d => d, criteria);
@@ -15,9 +15,35 @@ export function* fetchRestaurant({ id }) {
 export function* saveRestaurant({ id }) {
     const restaurant = yield select(getRestaurant(id));
     yield updateEntity(saveRestaurantAction, `/api/restaurant/${id}`, restaurant.toJS());
+    yield uploadFiles(id);
     yield put(push('/secure/restaurants'));
     yield put(setMessageAction({ message: `Restaurant "${restaurant.get('name')}" was saved`, type: 'success' }));
 }
+
+function* uploadFile(id, file) {
+    try {
+        const response = yield call(putAxios, `/api/restaurant/${id}/photos`, file, {
+            headers: {
+                'Content-Type': file.type
+            }
+        });
+        if (response && response.status === 200) {
+            yield put(setMessageAction({ message: `Photo has been added`, type: 'success' }));
+        } else {
+            yield put(setMessageAction({ message: `There was a problem with uploading a photo`, type: 'danger' }));
+        }
+    } catch (e) {
+        yield put(setMessageAction({ message: `There was a problem with uploading a photo`, type: 'danger' }));
+    }
+}
+
+export function* uploadFiles(id) {
+    const files = yield select(getRestaurantPhotos(id));
+    if (files && files.length) {
+        yield files.map(file => fork(uploadFile, id, file));
+    }
+}
+
 
 export function* deleteRestaurant({ id }) {
     yield deleteEntity(saveRestaurantAction, `/api/restaurant/${id}`);
@@ -53,7 +79,7 @@ export function* prefillAddress({ id }) {
 function parseAddressResponse(results) {
     return getAddressUntilNonEmpty(results, 0, {});
 }
-//TODO make it recursive
+
 function getAddressUntilNonEmpty(results, index, initialAddress) {
     const getComponent = result => name => {
         const componentMatch = component => component.types && component.types.indexOf(name) !== -1;

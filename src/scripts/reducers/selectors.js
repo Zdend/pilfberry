@@ -21,5 +21,6 @@ export const getUser = s(getDomain, domain => domain.get('user'));
 export const getRestaurants = s(getDomain, domain => domain.get('restaurants'));
 export const getSavedRestaurants = s(getRestaurants, restaurants => restaurants.filterNot(isNew));
 export const getRestaurant = id => s(getRestaurants, restaurants => restaurants.get(id));
+export const getRestaurantPhotos = id => s(getDomain, domain => domain.get('restaurantPhotos').id === id && domain.get('restaurantPhotos').files);
 
 

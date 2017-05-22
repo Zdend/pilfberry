@@ -2,13 +2,21 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Button, Row, Col, FormControl, FormGroup, ControlLabel, InputGroup } from 'react-bootstrap';
 import { push } from 'react-router-redux';
-import { getRestaurant } from '../reducers/selectors';
-import { fetchRestaurantAction, restaurantValueChangeAction, saveRestaurantAction, createRestaurantAction, prefillAddressAction } from '../actions/restaurant-actions';
+import { getRestaurant, getRestaurantPhotos } from '../reducers/selectors';
+import { 
+    fetchRestaurantAction, 
+    restaurantValueChangeAction, 
+    saveRestaurantAction, 
+    createRestaurantAction, 
+    prefillAddressAction, 
+    fileChangeAction } from '../actions/restaurant-actions';
 import InputHOC from '../components/connected-input-hoc';
 import { NEW_ID, STATUSES, DATE_FORMAT, TAGS, CUISINES } from 'constants';
 import RestaurantEditTag from '../components/restaurant-edit-tag';
 import RestaurantEditLocation from '../components/restaurant-edit-location';
+import RestaurantPhoto from '../components/restaurant-photo';
 import moment from 'moment';
+import { bindActionCreators } from 'redux';
 
 
 class RestaurantPage extends Component {
@@ -22,7 +30,7 @@ class RestaurantPage extends Component {
     }
 
     render() {
-        const { match: { params: { id } }, restaurant, restaurantValueChangeAction, saveRestaurant, prefillAddress, navigate } = this.props;
+        const { match: { params: { id } }, restaurant, restaurantValueChangeAction, saveRestaurant, prefillAddress, navigate, fileChange, files } = this.props;
         const handleChange = (field, value) => restaurantValueChangeAction(id, field, value);
         const handleChangeForEvent = (field, e) => handleChange(field, e.target.value);
         const ConnectedInput = InputHOC(handleChangeForEvent);
@@ -119,10 +127,19 @@ class RestaurantPage extends Component {
                             <Col sm={4}>
                                 <ControlLabel>Date created</ControlLabel>
                                 <FormControl.Static>
-                                    {restaurant && restaurant.get('created') && moment(restaurant.get('created')).format(DATE_FORMAT)}
+                                    {restaurant.get('created') ? moment(restaurant.get('created')).format(DATE_FORMAT) : 'Not Specified' }
                                 </FormControl.Static>
                             </Col>
                         </Row>
+
+                        <fieldset>
+                            <Row>
+                                <Col sm={12}>
+                                    <legend>Photo</legend>
+                                    <RestaurantPhoto files={files} handleChange={fileChange} />
+                                </Col>
+                            </Row>
+                        </fieldset>
 
 
                         <Button bsStyle="primary" className="margin-top-3x margin-right-1x" onClick={() => saveRestaurant(id)}>
@@ -144,15 +161,20 @@ class RestaurantPage extends Component {
 function mapStateToProps(state, props) {
     const { match: { params: { id } } } = props;
     return {
-        restaurant: getRestaurant(id)(state)
+        restaurant: getRestaurant(id)(state),
+        files: getRestaurantPhotos(id)(state)
     };
 }
-const mapDispatchToProps = {
-    fetchRestaurant: fetchRestaurantAction.request,
-    restaurantValueChangeAction,
-    navigate: push,
-    saveRestaurant: saveRestaurantAction.request,
-    createRestaurantAction,
-    prefillAddress: prefillAddressAction.request
+const mapDispatchToProps = (dispatch, props) => {
+    const { match: { params: { id } } } = props;
+    return {
+        fetchRestaurant: bindActionCreators(fetchRestaurantAction.request, dispatch),
+        restaurantValueChangeAction: bindActionCreators(restaurantValueChangeAction, dispatch),
+        navigate: bindActionCreators(push, dispatch),
+        saveRestaurant: bindActionCreators(saveRestaurantAction.request, dispatch),
+        createRestaurantAction: bindActionCreators(createRestaurantAction, dispatch),
+        prefillAddress: bindActionCreators(prefillAddressAction.request, dispatch),
+        fileChange: bindActionCreators(fileChangeAction(id), dispatch)
+    };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(RestaurantPage);

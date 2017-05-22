@@ -27,5 +27,6 @@ export default Record({
     description: '',
     url: '',
     created: null,
-    cuisines: new List()
+    cuisines: new List(),
+    photos: new List()
 });
