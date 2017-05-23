@@ -3,13 +3,14 @@ import { connect } from 'react-redux';
 import { Button, Row, Col, FormControl, FormGroup, ControlLabel, InputGroup } from 'react-bootstrap';
 import { push } from 'react-router-redux';
 import { getRestaurant, getRestaurantPhotos } from '../reducers/selectors';
-import { 
-    fetchRestaurantAction, 
-    restaurantValueChangeAction, 
-    saveRestaurantAction, 
-    createRestaurantAction, 
-    prefillAddressAction, 
-    fileChangeAction } from '../actions/restaurant-actions';
+import {
+    fetchRestaurantAction,
+    restaurantValueChangeAction,
+    saveRestaurantAction,
+    createRestaurantAction,
+    prefillAddressAction,
+    fileChangeAction
+} from '../actions/restaurant-actions';
 import InputHOC from '../components/connected-input-hoc';
 import { NEW_ID, STATUSES, DATE_FORMAT, TAGS, CUISINES } from 'constants';
 import RestaurantEditTag from '../components/restaurant-edit-tag';
@@ -127,7 +128,7 @@ class RestaurantPage extends Component {
                             <Col sm={4}>
                                 <ControlLabel>Date created</ControlLabel>
                                 <FormControl.Static>
-                                    {restaurant.get('created') ? moment(restaurant.get('created')).format(DATE_FORMAT) : 'Not Specified' }
+                                    {restaurant.get('created') ? moment(restaurant.get('created')).format(DATE_FORMAT) : 'Not Specified'}
                                 </FormControl.Static>
                             </Col>
                         </Row>
@@ -137,6 +138,8 @@ class RestaurantPage extends Component {
                                 <Col sm={12}>
                                     <legend>Photo</legend>
                                     <RestaurantPhoto files={files} handleChange={fileChange} />
+
+                                    <img style={{height: '300px' }} className="img-thumbnail" src={`/files/restaurants/${restaurant.get('id')}/${restaurant.get('photos')[0].filename}`} />
                                 </Col>
                             </Row>
                         </fieldset>

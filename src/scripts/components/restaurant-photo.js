@@ -11,6 +11,7 @@ export default class RestaurantFilePicker extends Component {
         this.onDrop = this.onDrop.bind(this);
         this.onDragEnter = this.onDragEnter.bind(this);
         this.onDragLeave = this.onDragLeave.bind(this);
+        this.onChange = this.onChange.bind(this);
     }
 
     onDragEnter() {
@@ -30,6 +31,10 @@ export default class RestaurantFilePicker extends Component {
         this.setState({
             dropzoneActive: false
         });
+    }
+
+    onChange(e) {
+        this.props.handleChange(e.target.value);
     }
 
     applyMimeTypes(event) {
@@ -61,6 +66,9 @@ export default class RestaurantFilePicker extends Component {
                 onDrop={this.onDrop}
                 onDragEnter={this.onDragEnter}
                 onDragLeave={this.onDragLeave}
+                inputProps={{
+                    onChange: this.onChange
+                }}
             >
                 {dropzoneActive && <div style={overlayStyle}>Drop files...</div>}
                 <h3 className="text-center"><a href="javascript:void(0);">Click here</a> or drop files</h3>

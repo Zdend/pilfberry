@@ -1,2 +1,4 @@
-export const FILE_PATH = '~/pilfberry';
-export const RESTAURANTS_PATH = FILE_PATH + '/restaurants';
+export const HOME = process.env.HOME;
+
+export const ROOT_PATH = HOME + '/pilfberry';
+export const RESTAURANTS_PATH = ROOT_PATH + '/restaurants';

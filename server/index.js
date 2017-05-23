@@ -15,6 +15,7 @@ import passport from 'passport';
 import routes from './routes';
 import { Strategy } from 'passport-local';
 import { User } from './db/schema';
+import { ROOT_PATH } from './config';
 
 const port = process.env.NODE_ENV || 8080;
 
@@ -35,6 +36,7 @@ morgan.token('body', req => req && JSON.stringify(req.body));
 app.use(webpackDevMiddlewareInitialized);
 app.use(webpackHotMiddleware(compiler));
 app.use('/static', express.static('public'));
+app.use('/files', express.static(ROOT_PATH));
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));

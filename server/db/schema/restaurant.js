@@ -30,10 +30,13 @@ const restaurantSchema = new Schema({
     description: String,
     url: String,
     created: Date,
-    photos: {
-        type: Array,
-        default: []
-    }
+    photos: [
+        {
+            photoType: String,
+            filename: String,
+            contentType: String
+        }
+    ]
 });
 
 export default mongoose.model('Restaurant', restaurantSchema);

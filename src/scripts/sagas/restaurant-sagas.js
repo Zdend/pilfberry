@@ -22,10 +22,12 @@ export function* saveRestaurant({ id }) {
 
 function* uploadFile(id, file) {
     try {
-        const response = yield call(putAxios, `/api/restaurant/${id}/photos`, file, {
-            headers: {
-                'Content-Type': file.type
-            }
+        const data = new FormData();
+        data.append('file', file);
+        const response = yield call(putAxios, `/api/restaurant/${id}/photos`, data, {
+            // headers: {
+            //     'Content-Type': file.type
+            // }
         });
         if (response && response.status === 200) {
             yield put(setMessageAction({ message: `Photo has been added`, type: 'success' }));

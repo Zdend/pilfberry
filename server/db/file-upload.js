@@ -1,7 +1,9 @@
 import { Restaurant, User } from './schema';
-import { RESTAURANTS_PATH } from '../config';
+import { RESTAURANTS_PATH, ROOT_PATH } from '../config';
 import { generate } from 'shortid';
 import { saveRestaurant } from './';
+import mkdirp from 'mkdirp';
+import fs from 'fs';
 
 import formidable from 'formidable';
 
@@ -13,19 +15,48 @@ export function uploadPhotosToRestaurant(req, res) {
     }
     const form = new formidable.IncomingForm();
 
-    form.uploadDir = `${RESTAURANTS_PATH}/${restaurantId}`;
+    const path = `${RESTAURANTS_PATH}/${restaurantId}`;
+    mkdirp(path);
+
+    form.uploadDir = path;
+    form.maxFieldsSize = 2 * 1024 * 1024;
+    form.keepExtensions = true;
 
     form.parse(req);
 
-    form.on('fileBegin', function (name, file) {
-        file.path = file.name;
-    });
+    // form.on('fileBegin', function (name, file) {
+        // mkdirp(`${RESTAURANTS_PATH}/${restaurantId}`, function (error) {
+        // if (error) return console.error(error);
+        // const filename = `${generate()}.${getExtension(file.name)}`;
+        // file.name = filename;
+        // file.path = `${RESTAURANTS_PATH}/${restaurantId}`;
+        // fs.writeFile(`${RESTAURANTS_PATH}/${restaurantId}`, file, function (err) {
+        //     if (err) return console.log(err);
+        //     console.log('The file was saved!');
+        // });
+
+        // });
+    // });
 
     form.on('file', function (name, file) {
+        const filename = `${generate()}.${getExtension(file.name)}`;
+        fs.rename(`${file.path}`, `${path}/${filename}`, function (err) {
 
-        saveRestaurant(restaurantId, { photos: [file.name] })
-            .then(restaurant => res.json(restaurant))
-            .catch(console.error);
-        console.log('Uploaded ' + file.name);
+            const newFile = {
+                filename,
+                photoType: 'square',
+                contentType: file.type
+            };
+            saveRestaurant(restaurantId, { photos: [newFile] })
+                .then(restaurant => res.json(restaurant))
+                .catch(console.error);
+            console.log('Uploaded ' + file.name);
+
+            if (err) console.log('ERROR: ' + err);
+        });
     });
+}
+
+function getExtension(filename) {
+    return filename.substr(filename.lastIndexOf('.') + 1, filename.length);
 }
