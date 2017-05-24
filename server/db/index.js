@@ -21,6 +21,9 @@ export function deleteRestaurant(id) {
 }
 
 export function saveRestaurant(id, restaurant) {
+    if (restaurant.photos && !Array.isArray(restaurant.photos)) {
+        restaurant.photos = Object.keys(restaurant.photos).map(prop => restaurant.photos[prop]);
+    }
     if (id === NEW_ID) {
         return Restaurant.create({ ...restaurant, created: new Date() });
     }

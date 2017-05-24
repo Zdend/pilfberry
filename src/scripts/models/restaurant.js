@@ -1,5 +1,6 @@
-import { Record, List } from 'immutable';
+import { Record, List, Map } from 'immutable';
 import { STATUS_ACTIVE } from 'constants';
+import { arrayToMapById } from '../services';
 
 export const Address = Record({
     postcode: undefined,
@@ -12,10 +13,18 @@ export const Address = Record({
     state: undefined
 });
 
+export const Photo = Record({
+    id: null,
+    filename: undefined,
+    photoType: undefined,
+    contentType: undefined
+});
+
 export const restaurantDef = {
     address: Address,
     tags: List,
-    cuisines: List
+    cuisines: List,
+    photos: photos => arrayToMapById(photos, Photo, Map)
 };
 
 export default Record({

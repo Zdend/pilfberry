@@ -1,8 +1,12 @@
 import mongoose, { Schema } from 'mongoose';
-import { STATUSES, STATUS_ACTIVE, TAGS } from '../../../shared/constants';
+import { STATUSES, STATUS_ACTIVE, TAGS, PHOTO_TYPES, PHOTO_TYPE } from '../../../shared/constants';
 
 const photoSchema = new Schema({
-    photoType: String,
+    photoType: {
+        type: String,
+        enum: PHOTO_TYPES,
+        default: PHOTO_TYPE.AVATAR
+    },
     filename: String,
     contentType: String
 });

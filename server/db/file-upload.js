@@ -47,8 +47,8 @@ export function deletePhoto(req, res) {
     const photoId = req.params.photoId;
 
     Restaurant.findOne({ _id: restaurantId }).exec()
-        .then(restaurant => deleteFile(`${RESTAURANTS_PATH}/${restaurantId}/${restaurant.photos.id(photoId).filename}`))
-        .then(() => saveRestaurant(restaurantId, { $pull: { photos: { _id: photoId } } }))
+        .then(restaurant => deleteFile(`${RESTAURANTS_PATH}/${restaurantId}/${restaurant.photos.id(photoId).filename}`).catch(console.error))
+        .then(() => saveRestaurant(restaurantId, { $pull: { photos: [{ _id: photoId }] } }))
         .then(restaurant => res.json(restaurant))
         .catch(console.error);
 }

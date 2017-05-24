@@ -6,8 +6,12 @@ export const transformNestedRecords = (source: Object, nestedEntities: object = 
         .filter((item, i, ar) => ar.indexOf(item) === i);
     const transformedObject = props.reduce((result, prop) => {
         const IEntity = nestedEntities[prop] ? nestedEntities[prop] : Map;
-        const value = nestedEntities.hasOwnProperty(prop)
-            ? new IEntity(source[prop]) : source[prop];
+        let value;
+        if (nestedEntities.hasOwnProperty(prop)) {
+            value = testConstructor(IEntity) ? new IEntity(source[prop]) : IEntity(source[prop]);
+        } else {
+            value = source[prop];
+        }
         result[prop] = value;
         return result;
     }, {});
@@ -30,3 +34,12 @@ export const arrayToMapById = (collection: Array<Object>, Record: any = Map, Map
 };
 
 export const idsArrayToMapOfRecords = (ids: Array<string>, records: any) => Map(ids.map(id => [id, records.get(id)]));
+
+
+function testConstructor(fn) {
+    try {
+        return !!new fn();
+    } catch (e) {
+        return false;
+    }
+}
