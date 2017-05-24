@@ -9,13 +9,15 @@ import {
     saveRestaurantAction,
     createRestaurantAction,
     prefillAddressAction,
-    fileChangeAction
+    fileChangeAction,
+    deletePhotoAction
 } from '../actions/restaurant-actions';
 import InputHOC from '../components/connected-input-hoc';
 import { NEW_ID, STATUSES, DATE_FORMAT, TAGS, CUISINES } from 'constants';
 import RestaurantEditTag from '../components/restaurant-edit-tag';
 import RestaurantEditLocation from '../components/restaurant-edit-location';
 import RestaurantPhoto from '../components/restaurant-photo';
+import RestaurantGallery from '../components/restaurant-gallery';
 import moment from 'moment';
 import { bindActionCreators } from 'redux';
 
@@ -31,7 +33,7 @@ class RestaurantPage extends Component {
     }
 
     render() {
-        const { match: { params: { id } }, restaurant, restaurantValueChangeAction, saveRestaurant, prefillAddress, navigate, fileChange, files } = this.props;
+        const { match: { params: { id } }, restaurant, restaurantValueChangeAction, saveRestaurant, prefillAddress, navigate, fileChange, files, deletePhotoAction } = this.props;
         const handleChange = (field, value) => restaurantValueChangeAction(id, field, value);
         const handleChangeForEvent = (field, e) => handleChange(field, e.target.value);
         const ConnectedInput = InputHOC(handleChangeForEvent);
@@ -138,8 +140,7 @@ class RestaurantPage extends Component {
                                 <Col sm={12}>
                                     <legend>Photo</legend>
                                     <RestaurantPhoto files={files} handleChange={fileChange} />
-
-                                    <img style={{height: '300px' }} className="img-thumbnail" src={`/files/restaurants/${restaurant.get('id')}/${restaurant.get('photos')[0].filename}`} />
+                                    <RestaurantGallery restaurantId={id} photos={restaurant.get('photos')} deleteAction={deletePhotoAction} />
                                 </Col>
                             </Row>
                         </fieldset>
@@ -177,7 +178,8 @@ const mapDispatchToProps = (dispatch, props) => {
         saveRestaurant: bindActionCreators(saveRestaurantAction.request, dispatch),
         createRestaurantAction: bindActionCreators(createRestaurantAction, dispatch),
         prefillAddress: bindActionCreators(prefillAddressAction.request, dispatch),
-        fileChange: bindActionCreators(fileChangeAction(id), dispatch)
+        fileChange: bindActionCreators(fileChangeAction(id), dispatch),
+        deletePhotoAction: bindActionCreators(deletePhotoAction(id), dispatch),
     };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(RestaurantPage);

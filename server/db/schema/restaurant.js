@@ -1,6 +1,12 @@
 import mongoose, { Schema } from 'mongoose';
 import { STATUSES, STATUS_ACTIVE, TAGS } from '../../../shared/constants';
 
+const photoSchema = new Schema({
+    photoType: String,
+    filename: String,
+    contentType: String
+});
+
 const restaurantSchema = new Schema({
     name: String,
     address: {
@@ -30,13 +36,7 @@ const restaurantSchema = new Schema({
     description: String,
     url: String,
     created: Date,
-    photos: [
-        {
-            photoType: String,
-            filename: String,
-            contentType: String
-        }
-    ]
+    photos: [photoSchema]
 });
 
 export default mongoose.model('Restaurant', restaurantSchema);

@@ -24,20 +24,6 @@ export function uploadPhotosToRestaurant(req, res) {
 
     form.parse(req);
 
-    // form.on('fileBegin', function (name, file) {
-        // mkdirp(`${RESTAURANTS_PATH}/${restaurantId}`, function (error) {
-        // if (error) return console.error(error);
-        // const filename = `${generate()}.${getExtension(file.name)}`;
-        // file.name = filename;
-        // file.path = `${RESTAURANTS_PATH}/${restaurantId}`;
-        // fs.writeFile(`${RESTAURANTS_PATH}/${restaurantId}`, file, function (err) {
-        //     if (err) return console.log(err);
-        //     console.log('The file was saved!');
-        // });
-
-        // });
-    // });
-
     form.on('file', function (name, file) {
         const filename = `${generate()}.${getExtension(file.name)}`;
         fs.rename(`${file.path}`, `${path}/${filename}`, function (err) {
@@ -47,16 +33,44 @@ export function uploadPhotosToRestaurant(req, res) {
                 photoType: 'square',
                 contentType: file.type
             };
-            saveRestaurant(restaurantId, { photos: [newFile] })
+            saveRestaurant(restaurantId, { $push: { photos: newFile } })
                 .then(restaurant => res.json(restaurant))
                 .catch(console.error);
-            console.log('Uploaded ' + file.name);
 
             if (err) console.log('ERROR: ' + err);
         });
     });
 }
 
+export function deletePhoto(req, res) {
+    const restaurantId = req.params.id;
+    const photoId = req.params.photoId;
+
+    Restaurant.findOne({ _id: restaurantId }).exec()
+        .then(restaurant => deleteFile(`${RESTAURANTS_PATH}/${restaurantId}/${restaurant.photos.id(photoId).filename}`))
+        .then(() => saveRestaurant(restaurantId, { $pull: { photos: { _id: photoId } } }))
+        .then(restaurant => res.json(restaurant))
+        .catch(console.error);
+}
+
 function getExtension(filename) {
     return filename.substr(filename.lastIndexOf('.') + 1, filename.length);
+}
+
+function deleteFile(path) {
+    return new Promise((resolve, reject) => {
+        fs.stat(path, function (err, stats) {
+            console.log(stats);
+            if (err) {
+                return reject(err);
+            }
+
+            fs.unlink(path, function (error) {
+                if (error) return reject(error);
+                resolve();
+                console.log('file deleted successfully');
+            });
+        });
+
+    });
 }

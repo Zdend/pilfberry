@@ -24,11 +24,7 @@ function* uploadFile(id, file) {
     try {
         const data = new FormData();
         data.append('file', file);
-        const response = yield call(putAxios, `/api/restaurant/${id}/photos`, data, {
-            // headers: {
-            //     'Content-Type': file.type
-            // }
-        });
+        const response = yield call(putAxios, `/api/restaurant/${id}/photos`, data);
         if (response && response.status === 200) {
             yield put(setMessageAction({ message: `Photo has been added`, type: 'success' }));
         } else {
@@ -49,6 +45,10 @@ export function* uploadFiles(id) {
 
 export function* deleteRestaurant({ id }) {
     yield deleteEntity(saveRestaurantAction, `/api/restaurant/${id}`);
+}
+
+export function* deletePhoto({ restaurantId, photoId }) {
+    yield deleteEntity(saveRestaurantAction, `/api/restaurant/${restaurantId}/photo/${photoId}`);
 }
 
 export function* prefillAddress({ id }) {

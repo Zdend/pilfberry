@@ -1,5 +1,6 @@
 import 'babel-polyfill';
 import express from 'express';
+import mongoose from 'mongoose';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 import webpack from 'webpack';
@@ -17,7 +18,13 @@ import { Strategy } from 'passport-local';
 import { User } from './db/schema';
 import { ROOT_PATH } from './config';
 
+const MongoStore = require('connect-mongo')(session);
+
 const port = process.env.NODE_ENV || 8080;
+
+mongoose.Promise = global.Promise;
+const connectionURL = 'mongodb://localhost:27017/pilfberry';
+mongoose.connect(connectionURL);
 
 
 const app = express();
@@ -44,8 +51,9 @@ app.use(morgan(':method :url :response-time :body'));
 app.use(helmet());
 app.use(session({
     secret: 'Silvitko is a secret agent Choco',
-    resave: false,
+    resave: true,
     saveUninitialized: false,
+    store: new MongoStore({ mongooseConnection: mongoose.connection })
     // cookie: { secure: true }
 }));
 app.use(passport.initialize());

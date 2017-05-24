@@ -4,6 +4,7 @@ import { RESTAURANT, RESTAURANTS } from '../actions/restaurant-actions';
 import { User, Restaurant, restaurantDef } from '../models';
 import { arrayToMapById, transformNestedRecordObject } from '../services';
 import { NEW_ID } from 'constants';
+import { LOCATION_CHANGE } from 'react-router-redux';
 
 function user(state = new User(), action) {
     switch (action.type) {
@@ -38,6 +39,8 @@ function restaurantPhotos(state = { id: null, files: [] }, action) {
     switch (action.type) {
         case RESTAURANT.FILE_CHANGE:
             return { id: action.id, files: action.files };
+        case LOCATION_CHANGE:
+            return { files: [] };
         default:
             return state;
     }

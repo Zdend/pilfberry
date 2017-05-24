@@ -11,7 +11,8 @@ export const RESTAURANT = {
     PREFILL_REQUEST: 'RESTAURANT_PREFILL_REQUEST',
     PREFILL_SUCCESS: 'RESTAURANT_PREFILL_SUCCESS',
     PREFILL_FAILURE: 'RESTAURANT_PREFILL_FAILURE',
-    FILE_CHANGE: 'RESTAURANT_FILE_CHANGE'
+    FILE_CHANGE: 'RESTAURANT_FILE_CHANGE',
+    DELETE_PHOTO: 'RESTAURANT_DELETE_PHOTO'
 };
 
 export const RESTAURANTS = {
@@ -22,6 +23,8 @@ export const restaurantValueChangeAction = (id, field, value) => action(RESTAURA
 
 export const createRestaurantAction = () => action(RESTAURANT.CREATE);
 export const deleteRestaurantAction = id => action(RESTAURANT.DELETE, { id });
+
+export const deletePhotoAction = restaurantId => photoId => action(RESTAURANT.DELETE_PHOTO, { restaurantId, photoId });
 
 export const fileChangeAction = id => files => action(RESTAURANT.FILE_CHANGE, { id, files });
 

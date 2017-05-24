@@ -1,11 +1,8 @@
-import mongoose from 'mongoose';
 import { Restaurant, User } from './schema';
 import { restaurants, users } from './data';
 import { NEW_ID, STATUS_DELETED } from '../../shared/constants';
 
-mongoose.Promise = global.Promise;
-const connectionURL = 'mongodb://localhost:27017/pilfberry';
-mongoose.connect(connectionURL);
+
 
 export function findAllRestaurants(criteria = {}) {
     return Restaurant.find(criteria).exec();

@@ -1,5 +1,5 @@
 import { findAllRestaurants, findRestaurant, saveRestaurant, deleteRestaurant } from '../db';
-import { uploadPhotosToRestaurant } from '../db/file-upload';
+import { uploadPhotosToRestaurant, deletePhoto } from '../db/file-upload';
 import view from './view';
 import passport from 'passport';
 import { STATUS_ACTIVE, STATUS_DELETED } from '../../shared/constants';
@@ -42,6 +42,8 @@ export default function (app) {
     });
 
     app.put('/api/restaurant/:id/photos', secured, uploadPhotosToRestaurant);
+
+    app.delete('/api/restaurant/:id/photo/:photoId', secured, deletePhoto);
 
     app.delete('/api/restaurant/:id', secured, function (req, res) {
         deleteRestaurant(req.params.id)
