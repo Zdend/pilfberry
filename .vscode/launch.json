@@ -9,7 +9,15 @@
             "request": "launch",
             "name": "Launch server",
             "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/babel-node",
-            "program": "${workspaceRoot}/server/index.js"
+            "program": "${workspaceRoot}/server/index.js",
+             "cwd": "${workspaceRoot}",
+             "stopOnEntry": false
+        },
+        {
+            "type": "node",
+            "request": "attach",
+            "name": "Attach to Process",
+            "port": 5858
         }
     ]
 }

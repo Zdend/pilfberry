@@ -24,6 +24,8 @@
 
 .restaurant-block__image {
   position: absolute;
+  background-size: cover;
+  background-position: 50% 50%;
   top: 50%;
   transform: translateY(-50%);
   transition: all 0.2s ease-in-out;

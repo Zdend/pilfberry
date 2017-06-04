@@ -27,7 +27,6 @@ export default (inputChangeAction) => class extends Component {
                 <FormControl onBlur={e => inputChangeAction(field, e)}
                     onChange={this.handleChange}
                     value={this.state.value ? this.state.value : undefined}
-                    className="form-control"
                     {...customisedProps}
                 >
                     {selectValues && selectValues.map(item => <option key={item} value={item}>{item}</option>)}

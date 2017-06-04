@@ -140,7 +140,7 @@ class RestaurantPage extends Component {
                                 <Col sm={12}>
                                     <legend>Photo</legend>
                                     <RestaurantPhoto files={files} handleChange={fileChange} />
-                                    <RestaurantGallery restaurantId={id} photos={restaurant.get('photos')} deleteAction={deletePhotoAction} />
+                                    <RestaurantGallery restaurantId={id} photos={restaurant.get('photos')} deleteAction={deletePhotoAction} handleTypeChange={handleChangeForEvent} />
                                 </Col>
                             </Row>
                         </fieldset>

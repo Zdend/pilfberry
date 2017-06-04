@@ -30,7 +30,6 @@ export function uploadPhotosToRestaurant(req, res) {
 
             const newFile = {
                 filename,
-                photoType: 'square',
                 contentType: file.type
             };
             saveRestaurant(restaurantId, { $push: { photos: newFile } })
@@ -48,7 +47,7 @@ export function deletePhoto(req, res) {
 
     Restaurant.findOne({ _id: restaurantId }).exec()
         .then(restaurant => deleteFile(`${RESTAURANTS_PATH}/${restaurantId}/${restaurant.photos.id(photoId).filename}`).catch(console.error))
-        .then(() => saveRestaurant(restaurantId, { $pull: { photos: [{ _id: photoId }] } }))
+        .then(() => Restaurant.findByIdAndUpdate(restaurantId, { $pull: { photos: { _id: photoId } } }, { new: true }).exec())
         .then(restaurant => res.json(restaurant))
         .catch(console.error);
 }
@@ -60,7 +59,6 @@ function getExtension(filename) {
 function deleteFile(path) {
     return new Promise((resolve, reject) => {
         fs.stat(path, function (err, stats) {
-            console.log(stats);
             if (err) {
                 return reject(err);
             }

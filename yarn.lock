@@ -830,6 +830,14 @@ babel-types@^6.19.0, babel-types@^6.23.0, babel-types@^6.24.1:
     lodash "^4.2.0"
     to-fast-properties "^1.0.1"
 
+babel-watch@2.0.6:
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/babel-watch/-/babel-watch-2.0.6.tgz#dfbd7eac9ddf687d411275d9f8599c2c1d78d4aa"
+  dependencies:
+    chokidar "^1.4.3"
+    commander "^2.9.0"
+    source-map-support "^0.4.0"
+
 babylon@^6.11.0, babylon@^6.15.0, babylon@^6.17.0:
   version "6.17.0"
   resolved "https://registry.yarnpkg.com/babylon/-/babylon-6.17.0.tgz#37da948878488b9c4e3c4038893fa3314b3fc932"
@@ -5606,7 +5614,7 @@ source-list-map@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/source-list-map/-/source-list-map-1.1.1.tgz#1a33ac210ca144d1e561f906ebccab5669ff4cb4"
 
-source-map-support@^0.4.2:
+source-map-support@^0.4.0, source-map-support@^0.4.2:
   version "0.4.15"
   resolved "https://registry.yarnpkg.com/source-map-support/-/source-map-support-0.4.15.tgz#03202df65c06d2bd8c7ec2362a193056fef8d3b1"
   dependencies:

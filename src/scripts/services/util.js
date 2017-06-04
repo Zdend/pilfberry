@@ -1,0 +1,1 @@
+export const createPhotoLink = (restaurantId, filename) => `/files/restaurants/${restaurantId}/${filename}`;

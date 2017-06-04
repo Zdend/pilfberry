@@ -1,8 +1,21 @@
 .rs-photo {
-    position: relative;
     display: inline-block;
+    position: relative;
     margin-right: 1rem;
     margin-top: 2rem;
+}
+.rs-photo--editing {
+    margin-bottom: 50px;
+}
+.rs-photo__selector {
+    position: absolute;
+    bottom: -50px;
+    left: 0;
+    width: 100%;
+}
+.rs-photo__frame {
+    position: relative;
+    
     &:hover, &:focus {
         .rs-photo__btn-toolbar {
             height: 3.4rem;
@@ -10,7 +23,7 @@
     }
 }
 .rs-photo__image {
-    height: 200px;   
+    height: 200px;
 }
 .rs-photo__btn-toolbar {
     position: absolute;

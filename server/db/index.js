@@ -21,13 +21,25 @@ export function deleteRestaurant(id) {
 }
 
 export function saveRestaurant(id, restaurant) {
-    if (restaurant.photos && !Array.isArray(restaurant.photos)) {
-        restaurant.photos = Object.keys(restaurant.photos).map(prop => restaurant.photos[prop]);
-    }
+    const photos = restaurant.photos;
+    delete restaurant.photos;
     if (id === NEW_ID) {
         return Restaurant.create({ ...restaurant, created: new Date() });
     }
-    return Restaurant.findByIdAndUpdate(id, restaurant, { new: true }).exec();
+    return Restaurant.findById(id)
+        .then(doc => {
+            const persistedPhotos = doc.photos;
+            if (!photos || !persistedPhotos) {
+                return;
+            }
+            photos.forEach(photo => {
+                const persistedPhoto = persistedPhotos.id(photo.id);
+                if (persistedPhoto) {
+                    persistedPhoto.photoType = photo.photoType;
+                }
+            });
+            return doc.save();
+        }).then(() => Restaurant.findByIdAndUpdate(id, restaurant, { new: true }).exec());
 }
 
 

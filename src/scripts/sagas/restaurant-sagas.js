@@ -5,6 +5,7 @@ import { getRestaurant, getRestaurantPhotos } from '../reducers/selectors';
 import { push } from 'react-router-redux';
 import { setMessageAction } from '../actions/global-message-actions';
 import { get, put as putAxios } from 'axios';
+import { transformClientRestaurantToServer } from '../transformers/restaurant-transformer';
 
 export function* fetchRestaurants({ criteria }) {
     yield fetchEntity(fetchRestaurantsAction, '/api/restaurants', d => d, criteria);
@@ -14,7 +15,7 @@ export function* fetchRestaurant({ id }) {
 }
 export function* saveRestaurant({ id }) {
     const restaurant = yield select(getRestaurant(id));
-    yield updateEntity(saveRestaurantAction, `/api/restaurant/${id}`, restaurant.toJS());
+    yield updateEntity(saveRestaurantAction, `/api/restaurant/${id}`, transformClientRestaurantToServer(restaurant.toJS()));
     yield uploadFiles(id);
     yield put(push('/secure/restaurants'));
     yield put(setMessageAction({ message: `Restaurant "${restaurant.get('name')}" was saved`, type: 'success' }));
@@ -91,7 +92,7 @@ function getAddressUntilNonEmpty(results, index, initialAddress) {
     const finder = getComponent(results[index]);
     const address = {
         postcode: finder('postal_code'),
-        street: `${finder('street_number')} ${finder('route')}`,
+        street: `${finder('street_number') ? finder('street_number') : ''} ${finder('route')}`,
         suburb: finder('locality'),
         state: finder('administrative_area_level_1'),
         country: finder('country'),
