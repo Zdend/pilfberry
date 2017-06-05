@@ -6,6 +6,21 @@ import configureStore from '../../src/scripts/stores/configure-store';
 import rootSaga from '../../src/scripts/sagas/index';
 import routes from '../../src/scripts/routes/index';
 import { findAllRestaurants } from '../db';
+import { isDev } from '../config';
+
+const styleDefinitions = `
+    <link rel="stylesheet" type="text/css" href="/static/vendor.css" />
+    <link rel="stylesheet" type="text/css" href="/static/app.css" />
+`;
+
+const scriptDefinitionsDev = `
+    <script src="/static/app.js"></script>
+`;
+
+const scriptDefinitionsProd = `
+    <script src="/static/vendor.js"></script>
+    <script src="/static/app.js"></script>
+`;
 
 const layout = (body, initialState) => (`
     <!DOCTYPE html>
@@ -15,14 +30,14 @@ const layout = (body, initialState) => (`
             <title>Special Diet</title>
             <meta name="description" content="Special Diet">
             <meta name="author" content="ZDV">
-           
+            ${isDev ? '' : styleDefinitions}
         </head>
         <body>
             <div id="root"><div>${body}</div></div>
             <script type="text/javascript" charset="utf-8">
               window.__INITIAL_STATE__ = ${initialState};
             </script>
-            <script src="/static/app.js"></script>
+            ${isDev ? scriptDefinitionsDev : scriptDefinitionsProd}
         </body>
     </html>
 `);

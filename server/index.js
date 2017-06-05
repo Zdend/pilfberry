@@ -16,33 +16,35 @@ import passport from 'passport';
 import routes from './routes';
 import { Strategy } from 'passport-local';
 import { User } from './db/schema';
-import { ROOT_PATH } from './config';
+import { ROOT_PATH, CONNECTION_URL, SERVER_PORT, isDev } from './config';
 
 const MongoStore = require('connect-mongo')(session);
 
-const port = process.env.NODE_ENV || 8080;
+const port = process.env.port || SERVER_PORT;
 
 mongoose.Promise = global.Promise;
-const connectionURL = 'mongodb://localhost:27017/pilfberry';
-mongoose.connect(connectionURL);
-
+mongoose.connect(CONNECTION_URL);
 
 const app = express();
 const compiler = webpack(webpackConfig);
-const webpackDevMiddlewareInitialized = webpackDevMiddleware(compiler, {
-    noInfo: true,
-    publicPath: webpackConfig.output.publicPath,
-    hot: true,
-    stats: {
-        colors: true
-    }
-});
 
 morgan.token('body', req => req && JSON.stringify(req.body));
 
-app.use(webpackDevMiddlewareInitialized);
-app.use(webpackHotMiddleware(compiler));
+if (isDev) {
+    const webpackDevMiddlewareInitialized = webpackDevMiddleware(compiler, {
+        noInfo: true,
+        publicPath: webpackConfig.output.publicPath,
+        hot: true,
+        stats: {
+            colors: true
+        }
+    });
+
+    app.use(webpackDevMiddlewareInitialized);
+    app.use(webpackHotMiddleware(compiler));
+}
 app.use('/static', express.static('public'));
+app.use('/static', express.static('build'));
 app.use('/files', express.static(ROOT_PATH));
 app.use(cookieParser());
 app.use(bodyParser.json());
