@@ -16,27 +16,28 @@ export function uploadPhotosToRestaurant(req, res) {
     const form = new formidable.IncomingForm();
 
     const path = `${RESTAURANTS_PATH}/${restaurantId}`;
-    mkdirp(path);
+    mkdirp(path, err => {
+        if (err) throw err;
+        form.uploadDir = path;
+        form.maxFieldsSize = 2 * 1024 * 1024;
+        form.keepExtensions = true;
 
-    form.uploadDir = path;
-    form.maxFieldsSize = 2 * 1024 * 1024;
-    form.keepExtensions = true;
+        form.parse(req);
 
-    form.parse(req);
+        form.on('file', function (name, file) {
+            const filename = `${generate()}.${getExtension(file.name)}`;
+            fs.rename(`${file.path}`, `${path}/${filename}`, function (err) {
 
-    form.on('file', function (name, file) {
-        const filename = `${generate()}.${getExtension(file.name)}`;
-        fs.rename(`${file.path}`, `${path}/${filename}`, function (err) {
+                const newFile = {
+                    filename,
+                    contentType: file.type
+                };
+                saveRestaurant(restaurantId, { $push: { photos: newFile } })
+                    .then(restaurant => res.json(restaurant))
+                    .catch(console.error);
 
-            const newFile = {
-                filename,
-                contentType: file.type
-            };
-            saveRestaurant(restaurantId, { $push: { photos: newFile } })
-                .then(restaurant => res.json(restaurant))
-                .catch(console.error);
-
-            if (err) console.log('ERROR: ' + err);
+                if (err) console.log('ERROR: ' + err);
+            });
         });
     });
 }
