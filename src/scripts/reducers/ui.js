@@ -16,8 +16,9 @@ function credentials(state = new Credentials(), action) {
         case LOGIN.REQUEST:
             return state.set('isPending', true);
         case LOGIN.SUCCESS:
+            return state.merge({ password: '', isPending: false, isLogged: true });
         case LOGIN.FAILURE:
-            return state.set('password', '');
+            return state.merge({ password: '', isPending: false, isLogged: false });
         default:
             return state;
     }

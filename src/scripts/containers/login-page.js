@@ -1,22 +1,34 @@
-import React, { PropTypes } from 'react';
+import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import LoginForm from '../components/login-form';
 import { loginAction, credentialsChange } from '../actions/login-actions';
 import { Grid, Row, Col } from 'react-bootstrap';
 import { getCredentials } from '../reducers/selectors';
+import { push } from 'react-router-redux';
 
-const LoginPage = ({ credentials, loginRequestAction, credentialsChange }) => (
-    <Grid>
-        <Row className="margin-top-5x margin-bottom-5x">
-            <Col sm={6} smOffset={3} lg={4} lgOffset={4}>
-                <h1>Login</h1>
-                <LoginForm {...{ ...credentials.toJS(), credentialsChange, loginRequestAction }} />
+class LoginPage extends Component {
+    componentDidMount() {
+        if (this.props.credentials.get('isLogged')) {
+            this.props.navigate('/secure');
+        }
+    }
+    render() {
+        const { credentials, loginRequestAction, credentialsChange } = this.props;
+        return (
+            <Grid>
+                <Row className="margin-top-5x margin-bottom-5x">
+                    <Col sm={6} smOffset={3} lg={4} lgOffset={4}>
+                        <h1>Login</h1>
+                        <LoginForm {...{ ...credentials.toJS(), credentialsChange, loginRequestAction }} />
 
-            </Col>
-        </Row>
-    </Grid>
+                    </Col>
+                </Row>
+            </Grid>
 
-);
+        );
+    }
+
+}
 
 
 LoginPage.propTypes = {
@@ -31,5 +43,6 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps, {
     loginRequestAction: loginAction.request,
-    credentialsChange: credentialsChange
+    credentialsChange: credentialsChange,
+    navigate: push
 })(LoginPage);
