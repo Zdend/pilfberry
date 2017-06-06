@@ -1,6 +1,6 @@
 import React from 'react';
 import RestaurantTag from './restaurant-tag';
-import { PHOTO_TYPE } from 'constants';
+import { PHOTO_TYPE } from '../../../shared/constants';
 import { createPhotoLink } from '../services/util';
 
 const DEFAULT_IMAGE_URL = '/static/images/restaurant-type/japanese.jpg';

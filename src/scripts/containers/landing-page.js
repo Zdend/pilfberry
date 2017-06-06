@@ -7,11 +7,13 @@ import {
     Row, Col, Grid
 } from 'react-bootstrap';
 import { fetchRestaurantsAction } from '../actions/restaurant-actions';
-import { landingPageChangeFilter } from '../actions/ui-actions';
-import { getRestaurants, getLandingPageUI } from '../reducers/selectors';
+import { landingPageChangeFilter, landingPageTagChange } from '../actions/ui-actions';
+import { getRestaurants, getLandingPageUI, getTagToggle } from '../reducers/selectors';
 import RestaurantBlock from '../components/restaurant-block';
 import RestaurantMap from '../components/restaurant-map';
+import TagFilter from '../components/landing-tag-filter';
 import { push } from 'react-router-redux';
+
 
 class LandingPage extends Component {
     constructor(props) {
@@ -39,14 +41,20 @@ class LandingPage extends Component {
     }
 
     render() {
-        const { navigate } = this.props;
+        const { navigate, tagToggle, landingPageTagChange } = this.props;
         const { restaurants, searchExpression } = this.state;
         const matcher = new RegExp(searchExpression, 'i');
-        const filteredRestaurants = searchExpression
+        const stringFilteredRestaurants = searchExpression
             ? restaurants.filter(restaurant => {
                 return matcher.test(restaurant.get('address').postcode);
             })
             : restaurants;
+        const activeTags = tagToggle.filter(item => item).keySeq().toJS();
+        const filteredRestaurants = activeTags.length
+            ? stringFilteredRestaurants.filter(restaurant => {
+                return activeTags.some(tag => restaurant.get('tags').filter(item => item === tag).size);
+            })
+            : stringFilteredRestaurants;
         return (
             <div>
                 <div className="hero">
@@ -54,23 +62,12 @@ class LandingPage extends Component {
 
 
                     <div className="text-align-center margin-top-5x">
+
+                        <TagFilter tagToggle={tagToggle} onChange={landingPageTagChange} />
+
                         <Grid>
                             <Row>
                                 <Col smOffset={2} sm={8} mdOffset={3} md={6}>
-                                    <ButtonToolbar>
-                                        <ButtonGroup className="pull-none">
-                                            <Button bsStyle="primary">Vegan</Button>
-                                            <Button bsStyle="primary">Vegetarian</Button>
-                                            <Button bsStyle="primary">Gluten Free</Button>
-                                            <Button bsStyle="primary">Pregnant Friendly</Button>
-                                            <DropdownButton title={<span><i className="fa fa-ellipsis-h" /> More</span>}
-                                                id="bg-justified-dropdown" bsStyle="primary">
-                                                <MenuItem eventKey="1">Dairy Free</MenuItem>
-                                                <MenuItem eventKey="2">Nut Free</MenuItem>
-                                            </DropdownButton>
-                                        </ButtonGroup>
-                                    </ButtonToolbar>
-
 
                                     <InputGroup className="margin-top-3x">
                                         <FormControl placeholder="Search restaurants by postcode" onChange={this.filterRestaurants} />
@@ -107,11 +104,8 @@ class LandingPage extends Component {
                             <Route exact path="/" render={() => this.renderList(filteredRestaurants)} />
                             <Route exact path="/list" render={() => this.renderList(filteredRestaurants)} />
                             <Route exact path="/map" render={() => <RestaurantMap restaurants={filteredRestaurants} />} />
-
                         </div>
-
                     </div>
-
                 </div>
 
 
@@ -128,12 +122,14 @@ class LandingPage extends Component {
 
 function mapStateToProps(state) {
     return {
-        restaurants: getRestaurants(state)
+        restaurants: getRestaurants(state),
+        tagToggle: getTagToggle(state)
     };
 }
 const mapDispatchToProps = {
     fetchRestaurants: fetchRestaurantsAction.request,
-    navigate: push
+    navigate: push,
+    landingPageTagChange
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LandingPage);

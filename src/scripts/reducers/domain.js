@@ -3,7 +3,7 @@ import { USER } from '../actions/user-actions';
 import { RESTAURANT, RESTAURANTS } from '../actions/restaurant-actions';
 import { User, Restaurant, restaurantDef } from '../models';
 import { arrayToMapById, transformNestedRecordObject } from '../services';
-import { NEW_ID } from 'constants';
+import { NEW_ID } from '../../../shared/constants';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
 function user(state = new User(), action) {

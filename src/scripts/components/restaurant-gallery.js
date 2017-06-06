@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Tooltip, OverlayTrigger, FormControl } from 'react-bootstrap';
 import { generate } from 'shortid';
-import { PHOTO_TYPES } from 'constants';
+import { PHOTO_TYPES } from '../../../shared/constants';
 import { createPhotoLink } from '../services/util';
 
 const makeTooltip = text => <Tooltip id={generate()}>{text}</Tooltip>;

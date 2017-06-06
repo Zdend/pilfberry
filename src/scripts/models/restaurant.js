@@ -1,5 +1,5 @@
 import { Record, List, Map } from 'immutable';
-import { STATUS_ACTIVE } from 'constants';
+import { STATUS_ACTIVE } from '../../../shared/constants';
 import { arrayToMapById } from '../services';
 
 export const Address = Record({

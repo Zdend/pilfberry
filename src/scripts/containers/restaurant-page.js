@@ -4,7 +4,7 @@ import { Table, Button, Checkbox, Label } from 'react-bootstrap';
 import { push } from 'react-router-redux';
 import { getSavedRestaurants } from '../reducers/selectors';
 import { fetchRestaurantsAction, createRestaurantAction, deleteRestaurantAction } from '../actions/restaurant-actions';
-import { NEW_ID, STATUS_ACTIVE, STATUS_DELETED } from 'constants';
+import { NEW_ID, STATUS_ACTIVE, STATUS_DELETED } from '../../../shared/constants';
 import RestaurantTag from '../components/restaurant-tag';
 
 class RestaurantPage extends Component {

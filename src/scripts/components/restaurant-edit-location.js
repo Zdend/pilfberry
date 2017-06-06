@@ -3,7 +3,7 @@ import { Modal, Button } from 'react-bootstrap';
 import { withGoogleMap, GoogleMap, Marker } from 'react-google-maps';
 import withScriptjs from 'react-google-maps/lib/async/withScriptjs';
 import { SpinnerInline } from './spinner';
-import { API_KEY, DEFAULT_LOCATION } from 'constants';
+import { API_KEY, DEFAULT_LOCATION } from '../../../shared/constants';
 import { generate } from 'shortid';
 
 

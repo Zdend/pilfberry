@@ -58,10 +58,7 @@ module.exports = {
         modules: [
             path.join(__dirname, 'src'),
             'node_modules'
-        ],
-        alias: {
-            constants: path.resolve(__dirname, 'shared/constants')
-        }
+        ]
     },
     module: {
         rules: [

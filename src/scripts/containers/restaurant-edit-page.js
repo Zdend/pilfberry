@@ -13,7 +13,7 @@ import {
     deletePhotoAction
 } from '../actions/restaurant-actions';
 import InputHOC from '../components/connected-input-hoc';
-import { NEW_ID, STATUSES, DATE_FORMAT, TAGS, CUISINES } from 'constants';
+import { NEW_ID, STATUSES, DATE_FORMAT, TAGS, CUISINES } from '../../../shared/constants';
 import RestaurantEditTag from '../components/restaurant-edit-tag';
 import RestaurantEditLocation from '../components/restaurant-edit-location';
 import RestaurantPhoto from '../components/restaurant-photo';
@@ -46,12 +46,6 @@ class RestaurantPage extends Component {
                         <h1 className="margin-top-1x">{restaurant.get('name') || '<Restaurant Name>'}</h1>
 
                         <RestaurantInput label="Restaurant name" field="name" />
-
-                        <Row>
-                            <Col sm={12}>
-                                <RestaurantInput label="Description" field="description" type="textarea" />
-                            </Col>
-                        </Row>
 
                         <fieldset>
                             <legend>Address</legend>
@@ -132,6 +126,12 @@ class RestaurantPage extends Component {
                                 <FormControl.Static>
                                     {restaurant.get('created') ? moment(restaurant.get('created')).format(DATE_FORMAT) : 'Not Specified'}
                                 </FormControl.Static>
+                            </Col>
+                        </Row>
+
+                        <Row>
+                            <Col sm={12}>
+                                <RestaurantInput label="Description" field="description" type="textarea" />
                             </Col>
                         </Row>
 

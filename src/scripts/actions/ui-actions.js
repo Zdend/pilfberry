@@ -1,7 +1,9 @@
 import { createRequestTypes, action } from './';
 
 export const LANDING_PAGE = {
-    CHANGE_FILTER: 'LANDING_PAGE_CHANGE_FILTER'
+    CHANGE_FILTER: 'LANDING_PAGE_CHANGE_FILTER',
+    TAG_CHANGE: 'TAG_CHANGE'
 };
 
 export const landingPageChangeFilter = filterType => action(LANDING_PAGE.CHANGE_FILTER, { filterType });
+export const landingPageTagChange = tag => action(LANDING_PAGE.TAG_CHANGE, { tag });
