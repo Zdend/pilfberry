@@ -1,7 +1,6 @@
 import { combineReducers } from 'redux-immutable';
 import { LOGIN } from '../actions/login-actions';
 import { USER } from '../actions/user-actions';
-import { RESTAURANT } from '../actions/restaurant-actions';
 import { LANDING_PAGE } from '../actions/ui-actions';
 import { GLOBAL_MESSAGE } from '../actions/global-message-actions';
 import { Credentials } from '../models';

@@ -5,3 +5,13 @@
 .navbar {
   background-color: rgba(255, 255, 255, 0.9);
 }
+
+.condition-list {
+  & > li {
+    font-weight: 600;
+  }
+  & > li > ol > li {
+    margin: 1rem 0;
+    font-weight: 400;
+  }
+}

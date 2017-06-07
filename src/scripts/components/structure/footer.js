@@ -2,9 +2,6 @@ import React from 'react';
 import {Grid, Row, Col} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 
-
-
-
 const Footer = (props) => (
     <footer className="footer">
         <Grid>
@@ -16,8 +13,8 @@ const Footer = (props) => (
                     <ul className="margin-top-2x list-unstyled list-inline text-align-center text-align-left-sm">
                         <li><Link to="/">Home</Link></li>
                         <li><Link to="/login">Login</Link></li>
-                        <li><a href="#">Contact</a></li>
-                        <li><a href="#">Privacy</a></li>
+                        <li><a href="/terms">Terms and Conditions</a></li>
+                        <li><a href="/privacy">Privacy</a></li>
                     </ul>
                 </Col>
                 <Col xs={12} md={3}>
