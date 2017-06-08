@@ -30,6 +30,7 @@ const layout = (body, initialState) => (`
             <title>Special Diet</title>
             <meta name="description" content="Special Diet">
             <meta name="author" content="ZDV">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
             ${isDev ? '' : styleDefinitions}
         </head>
         <body>
