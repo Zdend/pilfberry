@@ -47,7 +47,7 @@ export function uploadMockData() {
     Restaurant.count({})
         .then(count => {
             if (count) return [];
-            return Restaurant.insertMany(restaurants).exec();
+            return Restaurant.insertMany(restaurants);
         })
         .then(docs => console.log('Restaurants uploaded', docs.length))
         .catch(console.error);
@@ -55,7 +55,7 @@ export function uploadMockData() {
     User.count({})
         .then(count => {
             if (count) return [];
-            return User.insertMany(users).exec();
+            return User.insertMany(users);
         })
         .then(docs => console.log('Users uploaded', docs.length))
         .catch(console.error);
