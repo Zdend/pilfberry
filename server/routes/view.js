@@ -49,8 +49,8 @@ const initialState = {
         pages: {
             login: {
                 credentials: {
-                    login: 'zdenek.vecek@gmail.com',
-                    password: 'password'
+                    login: isDev ? 'zdenek.vecek@gmail.com' : '',
+                    password: isDev ? 'password' : ''
                 }
             }
         },
