@@ -5,7 +5,7 @@ const photoSchema = new Schema({
     photoType: {
         type: String,
         enum: PHOTO_TYPES,
-        default: PHOTO_TYPE.GALLERY
+        default: PHOTO_TYPE.AVATAR
     },
     filename: String,
     contentType: String
