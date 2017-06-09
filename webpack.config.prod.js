@@ -91,11 +91,6 @@ module.exports = {
     },
     plugins: [
         new webpack.optimize.CommonsChunkPlugin({ name: 'vendor', filename: '[name].js' }),
-        // new webpack.optimize.CommonsChunkPlugin({
-        //     name: 'commons',
-        //     chunks: ['vendor', 'app'],
-        //     minChunks: Infinity
-        // }),
         new webpack.NamedModulesPlugin(),
         new ExtractTextPlugin({
             filename: '[name].css',
@@ -107,7 +102,8 @@ module.exports = {
             'process.env': {
                 'NODE_ENV': JSON.stringify('production')
             }
-        })
+        }),
+        new webpack.optimize.UglifyJsPlugin()
     ]
 };
 

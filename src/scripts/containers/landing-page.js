@@ -13,6 +13,7 @@ import RestaurantBlock from '../components/restaurant-block';
 import RestaurantMap from '../components/restaurant-map';
 import TagFilter from '../components/landing-tag-filter';
 import { push } from 'react-router-redux';
+import throttle from '../../../shared/throttle';
 
 
 class LandingPage extends Component {
@@ -24,7 +25,7 @@ class LandingPage extends Component {
             restaurants: props.restaurants,
             searchExpression: ''
         };
-        this.handleScroll = this.handleScroll.bind(this);
+        this.handleScroll = throttle(this.handleScroll.bind(this), 100);
     }
 
     handleScroll(e) {

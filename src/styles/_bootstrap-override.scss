@@ -13,4 +13,7 @@
   .navbar-nav {
     margin: 5px -15px;
   }
+  .navbar-right > .pull-right {
+    float: none !important;
+  }
 }

@@ -86,7 +86,6 @@ module.exports = {
 function makeStyleLoader(config) {
     return {
         test: exts('scss'),
-        // use: ExtractTextPlugin.extract({
         use: [
             {
                 loader: 'style-loader',

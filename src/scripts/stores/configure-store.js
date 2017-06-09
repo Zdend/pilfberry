@@ -22,6 +22,12 @@ export default function configureStore(initialState, history) {
 
     const devTools = history && window && window.devToolsExtension ? window.devToolsExtension() : f => f;
 
+    const middleware = [
+        sagaMiddleware,
+        routerMiddlewareWithHistory,
+        process.env.NODE_ENV !== 'production' && logger
+    ].filter(Boolean);
+
     const store = createStore(
         combineReducers({
             ...rootReducer,
@@ -29,11 +35,7 @@ export default function configureStore(initialState, history) {
         }),
         immutableInitalState,
         compose(
-            applyMiddleware(
-                sagaMiddleware,
-                routerMiddlewareWithHistory,
-                logger
-            ),
+            applyMiddleware(...middleware),
             devTools
         )
     );

@@ -13,10 +13,10 @@ export default ({ navigate }) => (
             </Navbar.Header>
             <Navbar.Collapse>
                 <Nav>
-                    <NavItem eventKey={1} onClick={() => navigate('/secure/restaurants')}>Restaurants</NavItem>
+                    <NavItem className="header-action" eventKey={1} onClick={() => navigate('/secure/restaurants')}>Restaurants</NavItem>
                 </Nav>
                 <Nav pullRight>
-                    <NavItem eventKey={1} href="/api/logout" className="pull-right">Logout</NavItem>
+                    <NavItem eventKey={2} href="/api/logout" className="pull-right header-action">Logout</NavItem>
                 </Nav>
             </Navbar.Collapse>
         </Navbar>
