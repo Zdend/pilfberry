@@ -6,3 +6,11 @@
   font-weight: 700;
   font-family: $font-titles;
 }
+.navbar-toggle {
+  padding: 9px;
+}
+@media (max-width: $screen-xs-max) {
+  .navbar-nav {
+    margin: 5px -15px;
+  }
+}

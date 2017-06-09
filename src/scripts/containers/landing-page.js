@@ -24,16 +24,26 @@ class LandingPage extends Component {
             restaurants: props.restaurants,
             searchExpression: ''
         };
+        this.handleScroll = this.handleScroll.bind(this);
+    }
+
+    handleScroll(e) {
+        this.title.className = `hero-title animated ${window.scrollY > 100 ? 'fadeOutUp' : 'fadeInDown'}`;
     }
 
     componentDidMount() {
         this.fetchRestaurants();
+        window.addEventListener('scroll', this.handleScroll);
     }
 
     componentWillReceiveProps(nextProps) {
         this.setState({
             restaurants: nextProps.restaurants
         });
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('scroll', this.handleScroll);
     }
 
     renderList(restaurants) {
@@ -58,8 +68,7 @@ class LandingPage extends Component {
         return (
             <div>
                 <div className="hero">
-                    <h1 className="hero-title">Eat without worries</h1>
-
+                    <h1 className="hero-title animated fadeInDown" ref={ref => this.title = ref}>Eat without worries</h1>
 
                     <div className="text-align-center margin-top-5x">
 

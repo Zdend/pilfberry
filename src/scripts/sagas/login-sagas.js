@@ -18,11 +18,11 @@ function* postLogin() {
             yield put(LoginActions.loginAction.success(response.data));
             yield put(push('/secure'));
         } else {
-            yield put(LoginActions.loginAction.failure('Login failed'));
+            yield put(LoginActions.loginAction.failure());
             yield put(setMessageAction({ message: 'Login failed', type: 'danger' }));
         }
     } catch (e) {
-        // yield put(LoginActions.loginAction.failure('Something went wrong: ' + e));
+        yield put(LoginActions.loginAction.failure());
         yield put(setMessageAction({ message: `Login failed`, type: 'danger' }));
     }
 }
