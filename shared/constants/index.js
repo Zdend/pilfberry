@@ -1,6 +1,7 @@
 export const DATE_FORMAT = 'DD/MM/YYYY';
 export const NEW_ID = 'new';
 
+export const DEFAULT_AVATAR_URL = '/static/images/restaurant-type/japanese.jpg';
 
 export const STATUS_ACTIVE = 'ACTIVE';
 export const STATUS_DELETED = 'DELETED';
@@ -14,6 +15,12 @@ export const TAG = {
     DAIRY_FREE: 'DAIRY FREE',
     PREGNANT_FRIENDLY: 'PREGNANT FRIENDLY',
     NUT_FREE: 'NUT FREE',
+    FAMILY: 'FAMILY',
+    TAKEAWAY: 'TAKEAWAY',
+    PESCATARIAN: 'PESCATARIAN',
+    PALEO: 'PALEO',
+    FOOD_COURT: 'FOOD_COURT',
+    BAR: 'BAR'
 };
 
 
@@ -32,7 +39,14 @@ export const CUISINE = {
     ITALIAN: 'ITALIAN',
     SPANISH: 'SPANISH',
     NEPALESE: 'NEPALESE',
-    RUSSIAN: 'RUSSIAN'
+    RUSSIAN: 'RUSSIAN',
+    VIETNAMESE: 'VIETNAMESE',
+    TAIWANESE: 'TAIWANESE',
+    BURGERS: 'BURGERS',
+    FUSION: 'FUSION',
+    CAFE: 'CAFE',
+    GROCER: 'GROCER',
+    DESSERT: 'DESSERT'
 };
 export const CUISINES = Object.keys(CUISINE).map(prop => CUISINE[prop]);
 
@@ -46,3 +60,12 @@ export const PHOTO_TYPES = Object.keys(PHOTO_TYPE).map(prop => PHOTO_TYPE[prop])
 
 export const API_KEY = 'AIzaSyAfvD6DhQe5P5ZprFHCXutWx-kB3DruSlU';
 export const DEFAULT_LOCATION = { lat: -33.8578957, lng: 151.1209737 };
+
+
+
+// UI ONLY CONSTANTS
+export const GEO_PREFILL = {
+    BY_ADDRESS: 'BY_ADDRESS',
+    BY_NAME: 'BY_NAME',
+    BY_COORDINATES: 'BY_COORDINATES'
+};

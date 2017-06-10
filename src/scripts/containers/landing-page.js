@@ -47,8 +47,10 @@ class LandingPage extends Component {
         window.removeEventListener('scroll', this.handleScroll);
     }
 
-    renderList(restaurants) {
-        return restaurants ? <div>{restaurants.valueSeq().map(RestaurantBlock)}</div> : null;
+    renderList(restaurants, navigate) {
+        return restaurants
+            ? <div>{restaurants.valueSeq().map(r => <RestaurantBlock restaurant={r} navigate={navigate} key={r.get('id')} />)}</div>
+            : null;
     }
 
     render() {
@@ -111,8 +113,8 @@ class LandingPage extends Component {
                 <div className="restaurant-list padding-bottom-3x padding-top-2x">
                     <div className="container">
                         <div className="row">
-                            <Route exact path="/" render={() => this.renderList(filteredRestaurants)} />
-                            <Route exact path="/list" render={() => this.renderList(filteredRestaurants)} />
+                            <Route exact path="/" render={() => this.renderList(filteredRestaurants, navigate)} />
+                            <Route exact path="/list" render={() => this.renderList(filteredRestaurants, navigate)} />
                             <Route exact path="/map" render={() => <RestaurantMap restaurants={filteredRestaurants} />} />
                         </div>
                     </div>

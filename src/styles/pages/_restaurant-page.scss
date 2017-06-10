@@ -1,0 +1,20 @@
+.restaurant-page__avatar {
+  float: right;
+  width: 200px;
+  margin-left: 2rem;
+}
+.restaurant-page__avatar-pic {
+  background-size: cover;
+  background-position: 50% 50%;
+  transition: all 0.2s ease-in-out;
+  height: 200px;
+  width: 100%;
+}
+
+@media (max-width: $screen-xs-max) {
+  .restaurant-page__avatar {
+    width: 100%;
+    float: none;
+    margin: 1rem 0;
+  }
+}

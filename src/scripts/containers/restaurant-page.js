@@ -1,119 +1,53 @@
 import React, { Component } from 'react';
+import { fetchRestaurantAction } from '../actions/restaurant-actions';
+import { getRestaurant } from '../reducers/selectors';
 import { connect } from 'react-redux';
-import { Table, Button, Checkbox, Label } from 'react-bootstrap';
-import { push } from 'react-router-redux';
-import { getSavedRestaurants } from '../reducers/selectors';
-import { fetchRestaurantsAction, createRestaurantAction, deleteRestaurantAction } from '../actions/restaurant-actions';
-import { NEW_ID, STATUS_ACTIVE, STATUS_DELETED } from '../../../shared/constants';
+import { bindActionCreators } from 'redux';
+import { Grid, Row, Col } from 'react-bootstrap';
+import { findFirstAvatarPicture } from '../services/util';
+import { SpinnerInline } from '../components/spinner';
 import RestaurantTag from '../components/restaurant-tag';
+import { Link } from 'react-router-dom';
 
 class RestaurantPage extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            displayDeleted: false
-        };
-        this.displayDeleted = this.displayDeleted.bind(this);
-    }
     componentDidMount() {
-        this.props.fetchRestaurants();
-        this.navigateToNewRestaurant = () => this.props.navigate(`/secure/restaurants/${NEW_ID}`);
+        const { match: { params: { id } }, fetchRestaurant } = this.props;
+        fetchRestaurant(id);
     }
-
-    displayDeleted(e) {
-        const displayDeleted = e.target.checked;
-        this.setState({ displayDeleted }, () => this.props.fetchRestaurants({ status: displayDeleted ? STATUS_DELETED : STATUS_ACTIVE }));
-    }
-
-    renderRow(restaurant, navigate, deleteRestaurantAction) {
-        const address = restaurant.get('address');
-        const id = restaurant.get('id');
-        const tags = restaurant.get('tags').map(item => <RestaurantTag key={item} tag={item} />);
-        const hasLocation = address.get('latitude') && address.get('longitude');
-        return (
-            <tr key={id}>
-                <td>{restaurant.get('name')}</td>
-                <td>{address.get('postcode')}</td>
-                <td>{address.get('suburb')}</td>
-                <td>{address.get('street')}</td>
-                <td>{restaurant.get('status')}</td>
-                <td>{tags}</td>
-                <td><i className={`fa fa-${hasLocation ? 'check text-success' : 'close text-danger' }`} /></td>
-                <td>
-                    <Button
-                        bsSize="sm"
-                        bsStyle="success"
-                        className="margin-right-05x margin-bottom-05x"
-                        onClick={() => navigate(`/secure/restaurants/${id}`)}>
-                        Edit
-                    </Button>
-                    {restaurant.get('status') === STATUS_ACTIVE &&
-                        <Button
-                            bsSize="sm"
-                            bsStyle="danger"
-                            className="margin-right-05x margin-bottom-05x"
-                            onClick={() => deleteRestaurantAction(id)}>
-                            Delete
-                        </Button>
-                    }
-                </td>
-            </tr>
-        );
-    }
-
-    renderRestaurants(restaurants, navigate, deleteRestaurantAction, displayDeleted) {
-        if (restaurants) {
-            return restaurants
-                .filter(r => displayDeleted ? true : r.get('status') === STATUS_ACTIVE)
-                .valueSeq()
-                .map(r => this.renderRow(r, navigate, deleteRestaurantAction));
-        }
-    }
-
     render() {
-        const { restaurants, navigate, deleteRestaurantAction } = this.props;
+        const { restaurant } = this.props;
+        if (!restaurant) {
+            return (<Grid><Row><Col sm={12} className="padding-top-2x padding-bottom-2x"><SpinnerInline /></Col></Row></Grid>);
+        }
+
+        const avatarURL = findFirstAvatarPicture(restaurant);
         return (
-            <div className="padding-bottom-2x">
-                <Button bsStyle="primary" onClick={this.navigateToNewRestaurant} className="pull-right">
-                    <i className="fa fa-plus" /> Create Restaurant
-                </Button>
-                <h1>Restaurants</h1>
+            <Grid>
+                <Row>
+                    <Col sm={12} className="padding-top-2x padding-bottom-2x">
+                        <div className="restaurant-page__avatar img-thumbnail"><div className="restaurant-page__avatar-pic" style={{ backgroundImage: `url('${avatarURL}')` }} /></div>
+                        <h1 className="margin-top-0x">{restaurant.get('name')}</h1>
+                        <div>{restaurant.get('tags').map(item => <RestaurantTag key={item} tag={item} />)}</div>
+                        <div>{restaurant.get('cuisines').map(item => <RestaurantTag key={item} tag={item} type="info" />)}</div>
+                
+                        <p className="margin-top-2x">{restaurant.get('description')}</p>
 
 
-                <Table responsive>
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Postcode</th>
-                            <th>Suburb</th>
-                            <th>Street</th>
-                            <th>Status</th>
-                            <th>Tags</th>
-                            <th>Map</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {this.renderRestaurants(restaurants, navigate, deleteRestaurantAction, this.state.displayDeleted)}
-                    </tbody>
-                </Table>
-
-                <Checkbox checked={this.state.displayDeleted} readOnly onClick={this.displayDeleted}>
-                    Display deleted
-                </Checkbox>
-            </div>
+                        <Link to="/"><i className="fa fa-chevron-left margin-right-05x" /> Back</Link>
+                    </Col>
+                </Row>
+            </Grid>
         );
     }
 }
-function mapStateToProps(state) {
+
+function mapStateToProps(state, props) {
+    const { match: { params: { id } } } = props;
     return {
-        restaurants: getSavedRestaurants(state)
+        restaurant: getRestaurant(id)(state)
     };
 }
 const mapDispatchToProps = {
-    fetchRestaurants: fetchRestaurantsAction.request,
-    createRestaurantAction,
-    navigate: push,
-    deleteRestaurantAction
+    fetchRestaurant: fetchRestaurantAction.request
 };
 export default connect(mapStateToProps, mapDispatchToProps)(RestaurantPage);
