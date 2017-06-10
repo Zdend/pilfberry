@@ -27,10 +27,14 @@ class RestaurantPage extends Component {
                     <Col sm={12} className="padding-top-2x padding-bottom-2x">
                         <div className="restaurant-page__avatar img-thumbnail"><div className="restaurant-page__avatar-pic" style={{ backgroundImage: `url('${avatarURL}')` }} /></div>
                         <h1 className="margin-top-0x">{restaurant.get('name')}</h1>
-                        <div>{restaurant.get('tags').map(item => <RestaurantTag key={item} tag={item} />)}</div>
-                        <div>{restaurant.get('cuisines').map(item => <RestaurantTag key={item} tag={item} type="info" />)}</div>
-                
+                        <div>
+                            {restaurant.get('tags').map(item => <RestaurantTag key={item} tag={item} />)}
+                            {restaurant.get('cuisines').map(item => <RestaurantTag key={item} tag={item} type="info" />)}
+                        </div>
+
+                        <div className="margin-top-2x"><a href={restaurant.get('url')} target="_blank">{restaurant.get('url')}</a></div>
                         <p className="margin-top-2x">{restaurant.get('description')}</p>
+
 
 
                         <Link to="/"><i className="fa fa-chevron-left margin-right-05x" /> Back</Link>

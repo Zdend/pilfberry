@@ -19,21 +19,13 @@ const AsyncGoogleMap = withScriptjs(
                 }}
                 onClick={props.onMapClick}
             >
-                {/*<div>*/}
-                {/*<SearchBox
-                        inputPlaceholder="Search"
-                        controlPosition={google.maps.ControlPosition.TOP_RIGHT}
-                        inputClassName="form-control gmap-search"
-                        onPlacesChanged={bla => console.log(bla)}
-                    />*/}
-
                 {props.markers.map(marker => (
                     <Marker key={generate()}
                         {...marker}
                         onRightClick={() => props.onMarkerRightClick(marker)}
                     />
                 ))}
-                {/*</div>*/}
+
             </GoogleMap>
         )
     )
@@ -44,6 +36,7 @@ export default class RestaurantEditLocation extends Component {
         super(props);
         this.state = { showModal: false };
         this.onMapClick = this.onMapClick.bind(this);
+        this.onPlacesResult = this.onPlacesResult.bind(this);
     }
 
     close() {
@@ -57,6 +50,11 @@ export default class RestaurantEditLocation extends Component {
     onMapClick(args) {
         const lat = args.latLng.lat();
         const lng = args.latLng.lng();
+        this.props.handleChange('address.latitude', lat);
+        this.props.handleChange('address.longitude', lng);
+    }
+
+    onPlacesResult({ lat, lng }) {
         this.props.handleChange('address.latitude', lat);
         this.props.handleChange('address.longitude', lng);
     }
@@ -76,7 +74,7 @@ export default class RestaurantEditLocation extends Component {
                         <Modal.Title>Select location of the restaurant</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <input type="text" ref={input => this.searchBox = input} className="formControl" />
+                        <input type="text" ref={input => this.searchBox = input} className="form-control gmap-search" style={{ display: 'none' }} />
                         <AsyncGoogleMap
                             googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&key=${API_KEY}&libraries=places`}
                             loadingElement={
@@ -90,14 +88,14 @@ export default class RestaurantEditLocation extends Component {
                             mapElement={
                                 <div style={{ height: `100%` }} />
                             }
-                            onMapLoad={map => handleMapLoad(map, position, this.searchBox)}
+                            onMapLoad={map => handleMapLoad(map, position, this.searchBox, this.onPlacesResult)}
                             onMapClick={this.onMapClick}
                             markers={[{ position }]}
                             onMarkerRightClick={() => { }}
                         />
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button onClick={() => this.close()}>Close</Button>
+                        <Button onClick={() => this.close()}>Ok</Button>
                     </Modal.Footer>
                 </Modal>
             </div>
@@ -106,29 +104,21 @@ export default class RestaurantEditLocation extends Component {
 }
 
 
-function handleMapLoad(map, position, searchBox) {
+function handleMapLoad(map, position, searchBox, handlePlacesResult) {
     if (map && position && position.lat && position.lng) {
         map.panTo(position);
     }
     if (map && searchBox) {
-        initAutocomplete(map, searchBox);
+        initAutocomplete(map, searchBox, handlePlacesResult);
     }
 }
 
-function initAutocomplete(mapComponent, input) {
-    // var map = new google.maps.Map(document.getElementById('map'), {
-    //   center: {lat: -33.8688, lng: 151.2195},
-    //   zoom: 13,
-    //   mapTypeId: 'roadmap'
-    // });
-
+function initAutocomplete(mapComponent, input, handlePlacesResult) {
     const map = mapComponent.context.__SECRET_MAP_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
-    // const map = mapComponent.props.refs.map;
 
-    
+    input.style = '';
     // Create the search box and link it to the UI element.
-    // var input = document.getElementById('pac-input');
-    var searchBox = new google.maps.places.SearchBox(input);
+    const searchBox = new google.maps.places.SearchBox(input);
     map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 
     // Bias the SearchBox results towards current map's viewport.
@@ -136,11 +126,11 @@ function initAutocomplete(mapComponent, input) {
         searchBox.setBounds(map.getBounds());
     });
 
-    var markers = [];
+    let markers = [];
     // Listen for the event fired when the user selects a prediction and retrieve
     // more details for that place.
     searchBox.addListener('places_changed', function () {
-        var places = searchBox.getPlaces();
+        const places = searchBox.getPlaces();
 
         if (places.length == 0) {
             return;
@@ -153,27 +143,33 @@ function initAutocomplete(mapComponent, input) {
         markers = [];
 
         // For each place, get the icon, name and location.
-        var bounds = new google.maps.LatLngBounds();
+        const bounds = new google.maps.LatLngBounds();
         places.forEach(function (place) {
             if (!place.geometry) {
-                console.log("Returned place contains no geometry");
+                console.log('Returned place contains no geometry');
                 return;
             }
-            var icon = {
-                url: place.icon,
-                size: new google.maps.Size(71, 71),
-                origin: new google.maps.Point(0, 0),
-                anchor: new google.maps.Point(17, 34),
-                scaledSize: new google.maps.Size(25, 25)
-            };
+            // var icon = {
+            //     url: place.icon,
+            //     size: new google.maps.Size(40, 40),
+            //     origin: new google.maps.Point(0, 0),
+            //     anchor: new google.maps.Point(17, 34),
+            //     scaledSize: new google.maps.Size(25, 25)
+            // };
 
+
+            handlePlacesResult({
+                lat: place.geometry.location.lat(),
+                lng: place.geometry.location.lng()
+            });
             // Create a marker for each place.
-            markers.push(new google.maps.Marker({
-                map: map,
-                icon: icon,
-                title: place.name,
-                position: place.geometry.location
-            }));
+            // markers.push(new google.maps.Marker({
+            //     map: map,
+            //     icon: icon,
+            //     title: place.name,
+            //     position: place.geometry.location
+            // }));
+
 
             if (place.geometry.viewport) {
                 // Only geocodes have viewport.
