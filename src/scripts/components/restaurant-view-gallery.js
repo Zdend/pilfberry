@@ -44,11 +44,14 @@ export default class RestaurantViewGallery extends Component {
             .filter(photo => photo.get('photoType') === PHOTO_TYPE.GALLERY)
             .valueSeq()
             .map((photo, index) => {
-                return <div key={photo.get('id')}
-                    className="restaurant-page__gallery-pic"
-                    onClick={() => this.openLightbox(index)}
-                    style={{ backgroundImage: `url('${createPhotoLink(restaurant.get('id'), photo.get('filename'))}')` }}
-                />;
+                return (
+                    <div className="restaurant-page__gallery-container" key={photo.get('id')}>
+                        <div className="restaurant-page__gallery-pic"
+                            onClick={() => this.openLightbox(index)}
+                            style={{ backgroundImage: `url('${createPhotoLink(restaurant.get('id'), photo.get('filename'))}')` }}
+                        />
+                    </div>
+                );
             });
 
     }

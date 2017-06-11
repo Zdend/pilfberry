@@ -1,19 +1,22 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Table, Button, Checkbox, Label } from 'react-bootstrap';
+import { Table, Button, Checkbox, Label, FormControl } from 'react-bootstrap';
 import { push } from 'react-router-redux';
 import { getSavedRestaurants } from '../reducers/selectors';
 import { fetchRestaurantsAction, createRestaurantAction, deleteRestaurantAction } from '../actions/restaurant-actions';
 import { NEW_ID, STATUS_ACTIVE, STATUS_DELETED } from '../../../shared/constants';
 import RestaurantTag from '../components/restaurant-tag';
+import { matchesSomeFields } from '../services/util';
 
 class RestaurantListPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            displayDeleted: false
+            displayDeleted: false,
+            searchQuery: ''
         };
         this.displayDeleted = this.displayDeleted.bind(this);
+        this.onSeachQueryChange = this.onSeachQueryChange.bind(this);
     }
     componentDidMount() {
         this.props.fetchRestaurants();
@@ -23,6 +26,10 @@ class RestaurantListPage extends Component {
     displayDeleted(e) {
         const displayDeleted = e.target.checked;
         this.setState({ displayDeleted }, () => this.props.fetchRestaurants({ status: displayDeleted ? STATUS_DELETED : STATUS_ACTIVE }));
+    }
+
+    onSeachQueryChange(e) {
+        this.setState({ searchQuery: e.target.value });
     }
 
     renderRow(restaurant, navigate, deleteRestaurantAction) {
@@ -38,7 +45,7 @@ class RestaurantListPage extends Component {
                 <td>{address.get('street')}</td>
                 <td>{restaurant.get('status')}</td>
                 <td>{tags}</td>
-                <td><i className={`fa fa-${hasLocation ? 'check text-success' : 'close text-danger' }`} /></td>
+                <td><i className={`fa fa-${hasLocation ? 'check text-success' : 'close text-danger'}`} /></td>
                 <td>
                     <Button
                         bsSize="sm"
@@ -61,9 +68,17 @@ class RestaurantListPage extends Component {
         );
     }
 
-    renderRestaurants(restaurants, navigate, deleteRestaurantAction, displayDeleted) {
+    renderRestaurants(restaurants, navigate, deleteRestaurantAction, displayDeleted, searchExpression) {
         if (restaurants) {
-            return restaurants
+            const matcher = new RegExp(searchExpression, 'i');
+            const filteredRestaurants = searchExpression
+                ? restaurants.filter(restaurant => matchesSomeFields(restaurant, matcher, [
+                    'name', 'address.postcode', 'address.suburb', 'address.city', 'address.street',
+                    'url', 'tags', 'cuisines', 'description'
+                ]
+                ))
+                : restaurants;
+            return filteredRestaurants
                 .filter(r => displayDeleted ? true : r.get('status') === STATUS_ACTIVE)
                 .valueSeq()
                 .map(r => this.renderRow(r, navigate, deleteRestaurantAction));
@@ -74,6 +89,11 @@ class RestaurantListPage extends Component {
         const { restaurants, navigate, deleteRestaurantAction } = this.props;
         return (
             <div className="padding-bottom-2x">
+                <FormControl
+                    className="margin-bottom-1x margin-top-1x"
+                    placeholder="Type in to filter.."
+                    onChange={this.onSeachQueryChange} />
+
                 <Button bsStyle="primary" onClick={this.navigateToNewRestaurant} className="pull-right">
                     <i className="fa fa-plus" /> Create Restaurant
                 </Button>
@@ -94,7 +114,7 @@ class RestaurantListPage extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {this.renderRestaurants(restaurants, navigate, deleteRestaurantAction, this.state.displayDeleted)}
+                        {this.renderRestaurants(restaurants, navigate, deleteRestaurantAction, this.state.displayDeleted, this.state.searchQuery)}
                     </tbody>
                 </Table>
 
