@@ -131,7 +131,7 @@ class RestaurantPage extends Component {
 
                         <Row>
                             <Col sm={12}>
-                                <RestaurantInput label="Description" field="description" type="textarea" />
+                                <RestaurantInput label="Description" field="description" type="textarea" rows={5} />
                             </Col>
                         </Row>
 

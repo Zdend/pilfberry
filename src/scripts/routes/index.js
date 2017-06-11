@@ -8,6 +8,7 @@ import RestaurantListPage from '../containers/restaurant-list-page';
 import RestaurantEditPage from '../containers/restaurant-edit-page';
 import PrivacyPage from '../containers/privacy-page';
 import TermsPage from '../containers/terms-page';
+import ContactPage from '../containers/contact-page';
 import SecureLayoutRoute from '../components/layouts/secure-wrapper';
 import PublicLayoutRoute from '../components/layouts/public-wrapper';
 
@@ -20,6 +21,7 @@ export default () => (
         <PublicLayoutRoute path="/login" component={LoginPage} />
         <PublicLayoutRoute path="/privacy" component={PrivacyPage} />
         <PublicLayoutRoute path="/terms" component={TermsPage} />
+        <PublicLayoutRoute path="/contact" component={ContactPage} />
         <PublicLayoutRoute path="/restaurant/:id" component={RestaurantPage} />
 
         <SecureLayoutRoute path="/secure" component={SecurePage} />

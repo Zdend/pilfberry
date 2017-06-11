@@ -15,6 +15,7 @@ const Footer = (props) => (
                         <li><Link to="/login">Login</Link></li>
                         <li><a href="/terms">Terms and Conditions</a></li>
                         <li><a href="/privacy">Privacy</a></li>
+                        <li><a href="/contact">Contact Us</a></li>
                     </ul>
                 </Col>
                 <Col xs={12} md={3}>

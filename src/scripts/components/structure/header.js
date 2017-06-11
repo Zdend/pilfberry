@@ -7,7 +7,7 @@ export default ({ navigate }) => (
         <Navbar>
             <Navbar.Header>
                 <Navbar.Brand>
-                    <Link to="/secure">pilfberry</Link>
+                    <Link to="/">pilfberry</Link>
                 </Navbar.Brand>
                 <Navbar.Toggle />
             </Navbar.Header>

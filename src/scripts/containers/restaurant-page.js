@@ -8,12 +8,15 @@ import { findFirstAvatarPicture } from '../services/util';
 import { SpinnerInline } from '../components/spinner';
 import RestaurantTag from '../components/restaurant-tag';
 import { Link } from 'react-router-dom';
+import RestaurantViewGallery from '../components/restaurant-view-gallery';
+
 
 class RestaurantPage extends Component {
     componentDidMount() {
         const { match: { params: { id } }, fetchRestaurant } = this.props;
         fetchRestaurant(id);
     }
+
     render() {
         const { restaurant } = this.props;
         if (!restaurant) {
@@ -35,9 +38,11 @@ class RestaurantPage extends Component {
                         <div className="margin-top-2x"><a href={restaurant.get('url')} target="_blank">{restaurant.get('url')}</a></div>
                         <p className="margin-top-2x">{restaurant.get('description')}</p>
 
+                        <div className="clearfix" />
 
-
-                        <Link to="/"><i className="fa fa-chevron-left margin-right-05x" /> Back</Link>
+                        <RestaurantViewGallery restaurant={restaurant} />
+                        
+                        <div className="margin-top-2x"><Link to="/"><i className="fa fa-chevron-left margin-right-05x" /> Back</Link></div>
                     </Col>
                 </Row>
             </Grid>

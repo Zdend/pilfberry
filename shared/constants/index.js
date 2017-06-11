@@ -19,7 +19,7 @@ export const TAG = {
     TAKEAWAY: 'TAKEAWAY',
     PESCATARIAN: 'PESCATARIAN',
     PALEO: 'PALEO',
-    FOOD_COURT: 'FOOD_COURT',
+    FOOD_COURT: 'FOOD COURT',
     BAR: 'BAR'
 };
 

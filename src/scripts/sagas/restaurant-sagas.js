@@ -108,7 +108,7 @@ function getAddressUntilNonEmpty(results, index, initialAddress) {
     const finder = getComponent(results[index]);
     const address = {
         postcode: finder('postal_code'),
-        street: `${finder('street_number') ? finder('street_number') : ''} ${finder('route')}`,
+        street: `${finder('street_number') ? finder('street_number') : ''} ${finder('route') ? finder('route') : ''}`.trim(),
         suburb: finder('locality'),
         state: finder('administrative_area_level_1'),
         country: finder('country'),
