@@ -46,7 +46,8 @@ export const CUISINE = {
     FUSION: 'FUSION',
     CAFE: 'CAFE',
     GROCER: 'GROCER',
-    DESSERT: 'DESSERT'
+    DESSERT: 'DESSERT',
+    INTERNATIONAL: 'INTERNATIONAL'
 };
 export const CUISINES = Object.keys(CUISINE).map(prop => CUISINE[prop]);
 
