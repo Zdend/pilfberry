@@ -28,6 +28,6 @@ $navbar-default-brand-hover-color:         darken($navbar-default-brand-color, 1
 $navbar-default-brand-hover-bg:            transparent !default;
 
 // Navbar toggle
-$navbar-default-toggle-hover-bg:           lighten($brand-primary,10%) !default;
+$navbar-default-toggle-hover-bg:           lighten(#000, 90%) !default;
 $navbar-default-toggle-icon-bar-bg:        $brand-primary !default;
 $navbar-default-toggle-border-color:       $brand-primary !default;

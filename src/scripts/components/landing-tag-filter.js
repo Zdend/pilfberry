@@ -17,6 +17,8 @@ export default class TagFilter extends Component {
         const { tagToggle, onChange } = this.props;
         const ToggleButton = ToggleButtonHOC(tagToggle, onChange);
         const ToggleMenuItem = ToggleMenuItemHOC(tagToggle, onChange);
+        const isMoreActive = [TAG.DAIRY_FREE, TAG.NUT_FREE, TAG.PREGNANT_FRIENDLY, TAG.RAW_VEGAN]
+            .some(item => tagToggle.get(item));
         return (
 
             <ButtonToolbar>
@@ -26,7 +28,7 @@ export default class TagFilter extends Component {
                     <ToggleButton tag={TAG.GLUTEN_FREE} />
                     <ToggleButton tag={TAG.DAIRY_FREE} className="hidden-xs" />
                     <DropdownButton title={<span><i className="fa fa-ellipsis-h" /> More</span>}
-                        id="bg-justified-dropdown" bsStyle="primary">
+                        id="bg-justified-dropdown" bsStyle="primary" pullRight active={isMoreActive}>
                         <ToggleMenuItem tag={TAG.DAIRY_FREE} className="visible-xs" />
                         <ToggleMenuItem tag={TAG.NUT_FREE} />
                         <ToggleMenuItem tag={TAG.PREGNANT_FRIENDLY} />
