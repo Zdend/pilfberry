@@ -29,11 +29,22 @@ export function findFirstCoverPicture(restaurant) {
 export function matchesSomeFields(restaurant, matcher, fields) {
     return fields.some(field => {
         const fieldValue = restaurant.getIn(field.split('.'));
-        
+
         if (List.isList(fieldValue)) {
             return !!fieldValue.filter(value => matcher.test(value)).size;
         }
-        
+
         return matcher.test(fieldValue);
     });
+}
+
+export function getHumanAddress(restaurant) {
+    if (!restaurant) {
+        return '';
+    }
+    const a = restaurant.get('address');
+    return [a.get('street'), a.get('suburb'), a.get('postcode')]
+        .map(value => `${value}`)
+        .filter(value => value && value.trim())
+        .join(', ');
 }

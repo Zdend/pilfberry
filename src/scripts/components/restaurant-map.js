@@ -5,9 +5,8 @@ import { SpinnerInline } from './spinner';
 import { API_KEY, DEFAULT_LOCATION } from '../../../shared/constants';
 import { generate } from 'shortid';
 import { Row, Col } from 'react-bootstrap';
-
-// Use google api to find markers
-// http://maps.google.com/maps/api/geocode/json?address=Crows+Nest+Australia
+import { Link } from 'react-router-dom';
+import { getHumanAddress } from '../services/util';
 
 class MarkersContainer extends Component {
     constructor(props) {
@@ -33,7 +32,11 @@ class MarkersContainer extends Component {
                     >
                         {activeMarker && activeMarker.id === marker.id &&
                             <InfoWindow>
-                                <span>{marker.title}</span>
+                                <div>
+                                    <div><b>{marker.title}</b></div>
+                                    <div>{marker.humanAddress}</div>
+                                    <div className="margin-top-1x margin-left-2x text-center"><Link to={`/restaurant/${marker.id}`}>View more</Link></div>
+                                </div>
                             </InfoWindow>
                         }
                     </Marker>
@@ -71,6 +74,7 @@ const getMarkers = (restaurants) => restaurants.valueSeq()
             },
             title: r.get('name'),
             label: r.get('name').slice(0, 1).toUpperCase(),
+            humanAddress: getHumanAddress(r),
             id: r.get('id')
         };
     }).toJS();

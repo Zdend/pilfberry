@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import { fetchRestaurantAction } from '../actions/restaurant-actions';
 import { getRestaurant } from '../reducers/selectors';
 import { connect } from 'react-redux';
-import { Grid, Row, Col } from 'react-bootstrap';
-import { findFirstAvatarPicture, findFirstCoverPicture } from '../services/util';
+import { Grid, Row, Col, Button } from 'react-bootstrap';
+import { findFirstAvatarPicture, findFirstCoverPicture, getHumanAddress } from '../services/util';
 import { SpinnerInline } from '../components/spinner';
 import RestaurantTag from '../components/restaurant-tag';
 import { Link } from 'react-router-dom';
 import RestaurantViewGallery from '../components/restaurant-view-gallery';
+import RestaurantViewMap from '../components/restaurant-view-map';
 
 
 class RestaurantPage extends Component {
@@ -26,7 +27,7 @@ class RestaurantPage extends Component {
         const coverPhotoURL = findFirstCoverPicture(restaurant);
         return (
             <div>
-                {coverPhotoURL && 
+                {coverPhotoURL &&
                     <div className="restaurant-page__cover" style={{ backgroundImage: `url('${coverPhotoURL}')` }}>
                         <h1 className="restaurant-page__cover-title">{restaurant.get('name')}</h1>
                     </div>
@@ -41,7 +42,11 @@ class RestaurantPage extends Component {
                                 {restaurant.get('cuisines').map(item => <RestaurantTag key={item} tag={item} type="info" />)}
                             </div>
 
-                            <div className="margin-top-2x"><a href={restaurant.get('url')} target="_blank">{restaurant.get('url')}</a></div>
+                            <div className="margin-top-2x">
+                                {getHumanAddress(restaurant)}
+                                <RestaurantViewMap address={restaurant.get('address')} />
+                            </div>
+                            <div><a href={restaurant.get('url')} target="_blank">{restaurant.get('url')}</a></div>
                             <p className="margin-top-2x">{restaurant.get('description')}</p>
 
                             <div className="clearfix" />

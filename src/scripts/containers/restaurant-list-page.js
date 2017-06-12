@@ -6,7 +6,9 @@ import { getSavedRestaurants } from '../reducers/selectors';
 import { fetchRestaurantsAction, createRestaurantAction, deleteRestaurantAction } from '../actions/restaurant-actions';
 import { NEW_ID, STATUS_ACTIVE, STATUS_DELETED } from '../../../shared/constants';
 import RestaurantTag from '../components/restaurant-tag';
-import { matchesSomeFields } from '../services/util';
+import { matchesSomeFields, getHumanAddress } from '../services/util';
+
+const CheckValue = ({hasValue}) => <i className={`fa fa-${hasValue ? 'check text-success' : 'close text-danger'}`} />;
 
 class RestaurantListPage extends Component {
     constructor(props) {
@@ -33,30 +35,22 @@ class RestaurantListPage extends Component {
     }
 
     renderRow(restaurant, navigate, deleteRestaurantAction) {
-        const address = restaurant.get('address');
         const id = restaurant.get('id');
-        const tags = restaurant.get('tags').map(item => <RestaurantTag key={item} tag={item} />);
-        const hasLocation = address.get('latitude') && address.get('longitude');
+        
         return (
-            <tr key={id}>
+            <tr key={id} className="clickable" onClick={() => navigate(`/secure/restaurants/${id}`)}>
                 <td>{restaurant.get('name')}</td>
-                <td>{address.get('postcode')}</td>
-                <td>{address.get('suburb')}</td>
-                <td>{address.get('street')}</td>
+                <td><CheckValue hasValue={restaurant.getIn(['address', 'postcode']) && restaurant.getIn(['address', 'street'])} /></td>
+                <td><CheckValue hasValue={!!restaurant.get('cuisines').size} /></td>
+                <td><CheckValue hasValue={!!restaurant.get('tags').size} /></td>
+                <td><CheckValue hasValue={restaurant.get('url')} /></td>
+                <td><CheckValue hasValue={!!restaurant.get('photos').size} /></td>
+                <td><CheckValue hasValue={restaurant.getIn(['address', 'latitude']) && restaurant.getIn(['address', 'longitude'])} /></td>
                 <td>{restaurant.get('status')}</td>
-                <td>{tags}</td>
-                <td><i className={`fa fa-${hasLocation ? 'check text-success' : 'close text-danger'}`} /></td>
                 <td>
-                    <Button
-                        bsSize="sm"
-                        bsStyle="success"
-                        className="margin-right-05x margin-bottom-05x"
-                        onClick={() => navigate(`/secure/restaurants/${id}`)}>
-                        Edit
-                    </Button>
                     {restaurant.get('status') === STATUS_ACTIVE &&
                         <Button
-                            bsSize="sm"
+                            bsSize="xs"
                             bsStyle="danger"
                             className="margin-right-05x margin-bottom-05x"
                             onClick={() => deleteRestaurantAction(id)}>
@@ -100,16 +94,17 @@ class RestaurantListPage extends Component {
                 <h1>Restaurants</h1>
 
 
-                <Table responsive>
+                <Table responsive hover>
                     <thead>
                         <tr>
                             <th>Name</th>
-                            <th>Postcode</th>
-                            <th>Suburb</th>
-                            <th>Street</th>
-                            <th>Status</th>
+                            <th>Address</th>
+                            <th>Cuisines</th>
                             <th>Tags</th>
+                            <th>Web</th>
+                            <th>Photos</th>
                             <th>Map</th>
+                            <th>Status</th>
                             <th>Action</th>
                         </tr>
                     </thead>
