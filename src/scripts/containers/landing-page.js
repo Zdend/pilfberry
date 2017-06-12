@@ -1,9 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Route } from 'react-router-dom';
+import { generate } from 'shortid';
 import {
     ButtonToolbar, ButtonGroup, Button, DropdownButton,
-    MenuItem, InputGroup, FormControl,
+    MenuItem, InputGroup, FormControl, OverlayTrigger, Tooltip,
     Row, Col, Grid
 } from 'react-bootstrap';
 import { fetchRestaurantsAction } from '../actions/restaurant-actions';
@@ -14,8 +15,19 @@ import RestaurantMap from '../components/restaurant-map';
 import TagFilter from '../components/landing-tag-filter';
 import { push } from 'react-router-redux';
 import throttle from '../../../shared/throttle';
-import { matchesSomeFields } from '../services/util';
+import { matchesSomeFields, getDistanceFromLatLonInKm } from '../services/util';
 
+function sortByDistance(restaurants, currentLocation) {
+    if (!currentLocation.get('lat') || !currentLocation.get('lng')) {
+        return restaurants;
+    }
+    return restaurants.sort((r1, r2) => {
+        const d1 = getDistanceFromLatLonInKm(r1.getIn(['address', 'latitude']), r1.getIn(['address', 'longitude']), currentLocation.get('lat'), currentLocation.get('lng'));
+        const d2 = getDistanceFromLatLonInKm(r2.getIn(['address', 'latitude']), r2.getIn(['address', 'longitude']), currentLocation.get('lat'), currentLocation.get('lng'));
+        if (d1 === d2) return 0;
+        return d1 < d2 ? -1 : 1;
+    });
+}
 
 class LandingPage extends Component {
     constructor(props) {
@@ -24,9 +36,11 @@ class LandingPage extends Component {
         this.filterRestaurants = this.filterRestaurants.bind(this);
         this.state = {
             restaurants: props.restaurants,
-            searchExpression: ''
+            searchExpression: '',
+            closestFirst: false
         };
         this.handleScroll = throttle(this.handleScroll.bind(this), 100);
+        this.toggleSortByDistance = this.toggleSortByDistance.bind(this);
     }
 
     handleScroll(e) {
@@ -49,6 +63,10 @@ class LandingPage extends Component {
         window.removeEventListener('scroll', this.handleScroll);
     }
 
+    toggleSortByDistance() {
+        this.setState(state => ({ closestFirst: !state.closestFirst }));
+    }
+
     renderList(restaurants, navigate, currentLocation) {
         return restaurants
             ? <div>{restaurants.valueSeq().map(r => <RestaurantBlock restaurant={r} navigate={navigate} key={r.get('id')} currentLocation={currentLocation} />)}</div>
@@ -57,7 +75,7 @@ class LandingPage extends Component {
 
     render() {
         const { navigate, tagToggle, landingPageTagChange, currentLocation } = this.props;
-        const { restaurants, searchExpression } = this.state;
+        const { restaurants, searchExpression, closestFirst } = this.state;
         const stringFilteredRestaurants = searchExpression
             ? restaurants.filter(restaurant => matchesSomeFields(restaurant, searchExpression, [
                 'name', 'address.postcode', 'address.suburb', 'address.city', 'address.street',
@@ -65,11 +83,14 @@ class LandingPage extends Component {
             ]))
             : restaurants;
         const activeTags = tagToggle.filter(item => item).keySeq().toJS();
-        const filteredRestaurants = activeTags.length
+        const filteredRestaurantsByTag = activeTags.length
             ? stringFilteredRestaurants.filter(restaurant => {
                 return activeTags.some(tag => restaurant.get('tags').filter(item => item === tag).size);
             })
             : stringFilteredRestaurants;
+        const filteredRestaurants = closestFirst
+            ? sortByDistance(filteredRestaurantsByTag, currentLocation)
+            : filteredRestaurantsByTag;
         return (
             <div>
                 <div className="hero">
@@ -102,9 +123,20 @@ class LandingPage extends Component {
                     <Row>
                         <Col sm={12}>
                             <ButtonToolbar className="pull-right margin-top-1x-sm">
+                                {currentLocation.get('lat') && currentLocation.get('lng') &&
+                                    <OverlayTrigger placement="top" overlay={<Tooltip id={generate()}>Sort by closest</Tooltip>}>
+                                        <Button bsStyle="link" onClick={this.toggleSortByDistance} active={closestFirst}>
+                                            <i className="fa fa-sort-amount-asc" />
+                                        </Button>
+                                    </OverlayTrigger>
+                                }
                                 <ButtonGroup className="pull-none">
-                                    <Button bsStyle="default" onClick={() => navigate('/map')}><i className="fa fa-map"></i></Button>
-                                    <Button bsStyle="default" onClick={() => navigate('/list')}><i className="fa fa-list"></i></Button>
+                                    <OverlayTrigger placement="top" overlay={<Tooltip id={generate()}>Display map</Tooltip>}>
+                                        <Button bsStyle="default" onClick={() => navigate('/map')}><i className="fa fa-map"></i></Button>
+                                    </OverlayTrigger>
+                                    <OverlayTrigger placement="top" overlay={<Tooltip id={generate()}>Display list</Tooltip>}>
+                                        <Button bsStyle="default" onClick={() => navigate('/list')}><i className="fa fa-list"></i></Button>
+                                    </OverlayTrigger>
                                 </ButtonGroup>
                             </ButtonToolbar>
                             <h4>We found {filteredRestaurants ? filteredRestaurants.size : 0} restaurants for you..</h4>
