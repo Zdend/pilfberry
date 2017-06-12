@@ -7,7 +7,7 @@ import {
     Row, Col, Grid
 } from 'react-bootstrap';
 import { fetchRestaurantsAction } from '../actions/restaurant-actions';
-import { landingPageTagChange, updateLocationAction } from '../actions/ui-actions';
+import { landingPageTagChange, checkCurrentLocationAction } from '../actions/ui-actions';
 import { getRestaurants, getLandingPageUI, getTagToggle, getCurrentLocation } from '../reducers/selectors';
 import RestaurantBlock from '../components/restaurant-block';
 import RestaurantMap from '../components/restaurant-map';
@@ -36,7 +36,7 @@ class LandingPage extends Component {
     componentDidMount() {
         this.fetchRestaurants();
         window.addEventListener('scroll', this.handleScroll);
-
+        this.props.checkCurrentLocationAction();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -49,14 +49,14 @@ class LandingPage extends Component {
         window.removeEventListener('scroll', this.handleScroll);
     }
 
-    renderList(restaurants, navigate) {
+    renderList(restaurants, navigate, currentLocation) {
         return restaurants
-            ? <div>{restaurants.valueSeq().map(r => <RestaurantBlock restaurant={r} navigate={navigate} key={r.get('id')} />)}</div>
+            ? <div>{restaurants.valueSeq().map(r => <RestaurantBlock restaurant={r} navigate={navigate} key={r.get('id')} currentLocation={currentLocation} />)}</div>
             : null;
     }
 
     render() {
-        const { navigate, tagToggle, landingPageTagChange } = this.props;
+        const { navigate, tagToggle, landingPageTagChange, currentLocation } = this.props;
         const { restaurants, searchExpression } = this.state;
         const stringFilteredRestaurants = searchExpression
             ? restaurants.filter(restaurant => matchesSomeFields(restaurant, searchExpression, [
@@ -115,8 +115,8 @@ class LandingPage extends Component {
                 <div className="restaurant-list padding-bottom-3x padding-top-2x">
                     <div className="container">
                         <div className="row">
-                            <Route exact path="/" render={() => this.renderList(filteredRestaurants, navigate)} />
-                            <Route exact path="/list" render={() => this.renderList(filteredRestaurants, navigate)} />
+                            <Route exact path="/" render={() => this.renderList(filteredRestaurants, navigate, currentLocation)} />
+                            <Route exact path="/list" render={() => this.renderList(filteredRestaurants, navigate, currentLocation)} />
                             <Route exact path="/map" render={() => <RestaurantMap restaurants={filteredRestaurants} />} />
                         </div>
                     </div>
@@ -145,7 +145,7 @@ const mapDispatchToProps = {
     fetchRestaurants: fetchRestaurantsAction.request,
     navigate: push,
     landingPageTagChange,
-    updateLocationAction
+    checkCurrentLocationAction
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LandingPage);

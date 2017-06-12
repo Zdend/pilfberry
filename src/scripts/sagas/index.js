@@ -4,6 +4,7 @@ import { requestLoginWatcher } from './login-sagas';
 import { fetchUserWatcher } from './user-sagas';
 import { fetchRestaurants, fetchRestaurant, saveRestaurant, deleteRestaurant, prefillAddress, deletePhoto } from './restaurant-sagas';
 import { RESTAURANT, RESTAURANTS } from '../actions/restaurant-actions';
+import { COORDINATES, updateLocationAction } from '../actions/ui-actions';
 
 export function* fetchEntity({ success, failure }, path, resultTransformer = data => data, payload) {
     const response = yield call(get, path, { params: payload });
@@ -48,6 +49,29 @@ export function* deleteEntity(action, path, payload, resultTransformer = d => d)
     yield sendEntity(action, path, payload, resultTransformer, deleteAxios);
 }
 
+function getCurrentLocation() {
+    return new Promise(function (resolve, reject) {
+        if (!window.navigator.geolocation) {
+            return reject('Geolocation is not enabled');
+        }
+        window.navigator.geolocation.getCurrentPosition(function (position) {
+            resolve({
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+            });
+        });
+    });
+}
+
+export function* checkCurrentLocation() {
+    try {
+        const position = yield call(getCurrentLocation);
+        yield put(updateLocationAction(position));
+    } catch (e) {
+        // Not enabled
+    }
+}
+
 export default function* root() {
     yield [
         fork(requestLoginWatcher),
@@ -57,6 +81,7 @@ export default function* root() {
         takeEvery(RESTAURANT.PREFILL_REQUEST, prefillAddress),
         takeLatest(RESTAURANT.SAVE_REQUEST, saveRestaurant),
         takeLatest(RESTAURANT.DELETE, deleteRestaurant),
-        takeLatest(RESTAURANT.DELETE_PHOTO, deletePhoto)
+        takeLatest(RESTAURANT.DELETE_PHOTO, deletePhoto),
+        takeLatest(COORDINATES.REQUEST, checkCurrentLocation)
     ];
 }
