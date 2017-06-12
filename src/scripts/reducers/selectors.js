@@ -6,6 +6,8 @@ const isNew = entity => entity.get('id') === NEW_ID;
 export const getUI = state => state.get('ui');
 export const getPages = s(getUI, ui => ui.get('pages'));
 export const getComponents = s(getUI, ui => ui.get('components'));
+export const getCurrentLocation = s(getUI, ui => ui.get('currentLocation'));
+
 export const getGlobalMessage = s(getComponents, components => components.get('globalMessage'));
 export const getFooter = s(getComponents, components => components.get('footer'));
 export const getLogin = s(getPages, pages => pages.get('login'));

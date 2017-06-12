@@ -7,13 +7,14 @@ import {
     Row, Col, Grid
 } from 'react-bootstrap';
 import { fetchRestaurantsAction } from '../actions/restaurant-actions';
-import { landingPageChangeFilter, landingPageTagChange } from '../actions/ui-actions';
-import { getRestaurants, getLandingPageUI, getTagToggle } from '../reducers/selectors';
+import { landingPageTagChange, updateLocationAction } from '../actions/ui-actions';
+import { getRestaurants, getLandingPageUI, getTagToggle, getCurrentLocation } from '../reducers/selectors';
 import RestaurantBlock from '../components/restaurant-block';
 import RestaurantMap from '../components/restaurant-map';
 import TagFilter from '../components/landing-tag-filter';
 import { push } from 'react-router-redux';
 import throttle from '../../../shared/throttle';
+import { matchesSomeFields } from '../services/util';
 
 
 class LandingPage extends Component {
@@ -35,6 +36,7 @@ class LandingPage extends Component {
     componentDidMount() {
         this.fetchRestaurants();
         window.addEventListener('scroll', this.handleScroll);
+
     }
 
     componentWillReceiveProps(nextProps) {
@@ -56,11 +58,11 @@ class LandingPage extends Component {
     render() {
         const { navigate, tagToggle, landingPageTagChange } = this.props;
         const { restaurants, searchExpression } = this.state;
-        const matcher = new RegExp(searchExpression, 'i');
         const stringFilteredRestaurants = searchExpression
-            ? restaurants.filter(restaurant => {
-                return matcher.test(restaurant.get('address').postcode);
-            })
+            ? restaurants.filter(restaurant => matchesSomeFields(restaurant, searchExpression, [
+                'name', 'address.postcode', 'address.suburb', 'address.city', 'address.street',
+                'url', 'tags', 'cuisines', 'description'
+            ]))
             : restaurants;
         const activeTags = tagToggle.filter(item => item).keySeq().toJS();
         const filteredRestaurants = activeTags.length
@@ -82,7 +84,7 @@ class LandingPage extends Component {
                                 <Col smOffset={2} sm={8} mdOffset={3} md={6}>
 
                                     <InputGroup className="margin-top-3x">
-                                        <FormControl placeholder="Search restaurants by postcode" onChange={this.filterRestaurants} />
+                                        <FormControl placeholder="Filter restaurants by address, name or dieatary" onChange={this.filterRestaurants} />
                                         <InputGroup.Button>
                                             <Button bsStyle="primary"><i className="fa fa-search" /></Button>
                                         </InputGroup.Button>
@@ -135,13 +137,15 @@ class LandingPage extends Component {
 function mapStateToProps(state) {
     return {
         restaurants: getRestaurants(state),
-        tagToggle: getTagToggle(state)
+        tagToggle: getTagToggle(state),
+        currentLocation: getCurrentLocation(state)
     };
 }
 const mapDispatchToProps = {
     fetchRestaurants: fetchRestaurantsAction.request,
     navigate: push,
-    landingPageTagChange
+    landingPageTagChange,
+    updateLocationAction
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LandingPage);

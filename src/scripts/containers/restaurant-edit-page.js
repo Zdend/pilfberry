@@ -61,16 +61,6 @@ class RestaurantPage extends Component {
                             </Row>
 
                             <Row>
-                                <Col sm={6}>
-                                    <RestaurantInput label="City" field="address.city" />
-                                </Col>
-                                <Col sm={6}>
-                                    <RestaurantInput label="Country" field="address.country" />
-                                </Col>
-                            </Row>
-
-
-                            <Row>
                                 <Col sm={4}>
                                     <RestaurantInput label="Latitude" field="address.latitude" />
                                 </Col>

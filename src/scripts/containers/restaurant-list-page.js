@@ -40,6 +40,7 @@ class RestaurantListPage extends Component {
         return (
             <tr key={id} className="clickable" onClick={() => navigate(`/secure/restaurants/${id}`)}>
                 <td>{restaurant.get('name')}</td>
+                <td><CheckValue hasValue={restaurant.get('description')} /></td>
                 <td><CheckValue hasValue={restaurant.getIn(['address', 'postcode']) && restaurant.getIn(['address', 'street'])} /></td>
                 <td><CheckValue hasValue={!!restaurant.get('cuisines').size} /></td>
                 <td><CheckValue hasValue={!!restaurant.get('tags').size} /></td>
@@ -64,9 +65,8 @@ class RestaurantListPage extends Component {
 
     renderRestaurants(restaurants, navigate, deleteRestaurantAction, displayDeleted, searchExpression) {
         if (restaurants) {
-            const matcher = new RegExp(searchExpression, 'i');
             const filteredRestaurants = searchExpression
-                ? restaurants.filter(restaurant => matchesSomeFields(restaurant, matcher, [
+                ? restaurants.filter(restaurant => matchesSomeFields(restaurant, searchExpression, [
                     'name', 'address.postcode', 'address.suburb', 'address.city', 'address.street',
                     'url', 'tags', 'cuisines', 'description'
                 ]
@@ -98,6 +98,7 @@ class RestaurantListPage extends Component {
                     <thead>
                         <tr>
                             <th>Name</th>
+                            <th>Description</th>
                             <th>Address</th>
                             <th>Cuisines</th>
                             <th>Tags</th>
