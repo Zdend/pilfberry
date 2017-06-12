@@ -48,7 +48,6 @@ export function* deleteEntity(action, path, payload, resultTransformer = d => d)
     yield sendEntity(action, path, payload, resultTransformer, deleteAxios);
 }
 
-
 export default function* root() {
     yield [
         fork(requestLoginWatcher),
