@@ -21,6 +21,14 @@
     font-weight: 400;
   }
 }
+@media (max-width: $screen-xs-min) {
+  .condition-list {
+    padding-left: 2rem;
+    ol {
+      padding-left: 2rem;
+    }
+  }
+}
 
 .clickable {
   cursor: pointer;

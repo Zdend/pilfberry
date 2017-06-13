@@ -26,8 +26,10 @@ export function findFirstCoverPicture(restaurant) {
     return createPhotoLink(restaurant.get('id'), coverPhoto.get('filename'));
 }
 
-export function matchesSomeFields(restaurant, searchExpression, fields) {
-    const orExpression = searchExpression.split(/(,|\s)/).filter(exp => exp && exp.trim() && exp !== ',').join('|');
+export const splitSearchExpression = searchExpression => searchExpression.split(/(,|\s)/).filter(exp => exp && exp.trim() && exp !== ',');
+
+export function matchesSomeFields(restaurant, searchExpressions, fields) {
+    const orExpression = searchExpressions.join('|');
     const matcher = new RegExp(`(${orExpression})`, 'i');
     return fields.some(field => {
         const fieldValue = restaurant.getIn(field.split('.'));

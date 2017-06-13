@@ -13,6 +13,7 @@ import { getRestaurants, getLandingPageUI, getTagToggle, getCurrentLocation } fr
 import RestaurantBlock from '../components/restaurant-block';
 import RestaurantMap from '../components/restaurant-map';
 import TagFilter from '../components/landing-tag-filter';
+import SearchBox from '../components/landing-search';
 import { push } from 'react-router-redux';
 import throttle from '../../../shared/throttle';
 import { matchesSomeFields, getDistanceFromLatLonInKm } from '../services/util';
@@ -36,7 +37,7 @@ class LandingPage extends Component {
         this.filterRestaurants = this.filterRestaurants.bind(this);
         this.state = {
             restaurants: props.restaurants,
-            searchExpression: '',
+            searchExpressions: [],
             closestFirst: false
         };
         this.handleScroll = throttle(this.handleScroll.bind(this), 100);
@@ -67,6 +68,10 @@ class LandingPage extends Component {
         this.setState(state => ({ closestFirst: !state.closestFirst }));
     }
 
+    filterRestaurants(values) {
+        this.setState({ searchExpressions: values });
+    }
+
     renderList(restaurants, navigate, currentLocation) {
         return restaurants
             ? <div>{restaurants.valueSeq().map(r => <RestaurantBlock restaurant={r} navigate={navigate} key={r.get('id')} currentLocation={currentLocation} />)}</div>
@@ -75,9 +80,9 @@ class LandingPage extends Component {
 
     render() {
         const { navigate, tagToggle, landingPageTagChange, currentLocation } = this.props;
-        const { restaurants, searchExpression, closestFirst } = this.state;
-        const stringFilteredRestaurants = searchExpression
-            ? restaurants.filter(restaurant => matchesSomeFields(restaurant, searchExpression, [
+        const { restaurants, searchExpressions, closestFirst } = this.state;
+        const stringFilteredRestaurants = searchExpressions && searchExpressions.length
+            ? restaurants.filter(restaurant => matchesSomeFields(restaurant, searchExpressions, [
                 'name', 'address.postcode', 'address.suburb', 'address.city', 'address.street',
                 'url', 'tags', 'cuisines', 'description'
             ]))
@@ -103,13 +108,7 @@ class LandingPage extends Component {
                         <Grid>
                             <Row>
                                 <Col smOffset={2} sm={8} mdOffset={3} md={6}>
-
-                                    <InputGroup className="margin-top-3x">
-                                        <FormControl placeholder="Filter restaurants by address, name or dieatary" onChange={this.filterRestaurants} />
-                                        <InputGroup.Button>
-                                            <Button bsStyle="primary"><i className="fa fa-search" /></Button>
-                                        </InputGroup.Button>
-                                    </InputGroup>
+                                    <SearchBox handleSearch={this.filterRestaurants} value={searchExpressions} />
 
                                     <h2 className="hero-subtitle"><span className="magra-bold">pilfberry</span> helps people with dietary preferences find their next meal</h2>
                                 </Col>
@@ -158,11 +157,6 @@ class LandingPage extends Component {
 
             </div>
         );
-    }
-
-    filterRestaurants(e) {
-        const searchExpression = e.target.value;
-        this.setState({ searchExpression });
     }
 }
 

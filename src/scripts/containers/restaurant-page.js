@@ -43,7 +43,7 @@ class RestaurantPage extends Component {
                             </div>
 
                             <div className="margin-top-2x">
-                                {getHumanAddress(restaurant)}
+                                <div className="visible-xs-block visible-sm-inline-block visible-md-inline-block visible-lg-inline-block">{getHumanAddress(restaurant)}</div>
                                 <RestaurantViewMap address={restaurant.get('address')} />
                             </div>
                             <div><a href={restaurant.get('url')} target="_blank">{restaurant.get('url')}</a></div>

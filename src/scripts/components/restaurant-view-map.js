@@ -50,7 +50,7 @@ export default class RestaurantEditLocation extends Component {
         const position = latitude && longitude && { lat: latitude, lng: longitude };
         return (
             <div className="inline-block">
-                <Button bsStyle="link" className="margin-left-1x" onClick={() => this.open()}>
+                <Button bsStyle="link" className="margin-left-1x-sm margin-left-0x padding-left-1x-sm padding-left-0x" onClick={() => this.open()}>
                     <i className="fa fa-map margin-right-05x" />Show on map
                 </Button>
                 <Modal show={this.state.showModal} onHide={() => this.close()}>
