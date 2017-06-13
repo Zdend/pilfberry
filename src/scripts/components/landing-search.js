@@ -1,12 +1,8 @@
 import React from 'react';
 import TagsInput from 'react-tagsinput';
-import { Button, InputGroup, FormControl } from 'react-bootstrap';
-import { splitSearchExpression } from '../services/util';
-
-
+import { Button, InputGroup } from 'react-bootstrap';
 
 export default ({ handleSearch, value }) => {
-    // const tags = splitSearchExpression(value);
     return (
         <InputGroup className="margin-top-3x">
             <TagsInput
@@ -16,7 +12,7 @@ export default ({ handleSearch, value }) => {
                 inputProps={{
                     placeholder: 'Filter restaurants by address, name or diet'
                 }}
-            />;
+            />
 
             <InputGroup.Button className="landing-page__tags-btn">
                 <Button bsStyle="primary"><i className="fa fa-search" /></Button>
@@ -24,5 +20,3 @@ export default ({ handleSearch, value }) => {
         </InputGroup>
     );
 };
-
-//*<FormControl placeholder="Filter restaurants by address, name or dieatary" onChange={handleSearch} />*/}
