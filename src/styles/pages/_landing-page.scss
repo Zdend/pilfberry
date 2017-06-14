@@ -1,7 +1,13 @@
+.landing-page__tags-wrapper {
+    position: relative;
+
+}
 .landing-page__tags-input {
     height: auto;
     text-align: left;
     padding: 6px;
+    border-top-left-radius: 4px !important;
+    border-bottom-left-radius: 4px !important;
     .react-tagsinput-input{
         margin-bottom: 0;
         padding: 0;
@@ -19,8 +25,8 @@
         margin-right: -5px;
         margin-bottom: -5px;
     }
-    &.react-tagsinput-input--focused { 
-
+    &.react-tagsinput--focused { 
+        position: absolute !important;
     }
 }
 .landing-page__tags-btn {

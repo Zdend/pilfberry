@@ -73,3 +73,7 @@ export const hashCode = s => {
 };
 
 export const arrayUnique = a => a.filter(function (item, i, ar) { return ar.indexOf(item) === i; });
+
+export function escapeRegexCharacters(str) {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
