@@ -1,8 +1,9 @@
 import React from 'react';
 import RestaurantTag from './restaurant-tag';
-import { findFirstAvatarPicture, getDistanceFromLatLonInKm } from '../services/util';
+import { findFirstAvatarPicture, getDistanceFromLatLonInKm, hashCode } from '../services/util';
 import { Tooltip, OverlayTrigger, Label } from 'react-bootstrap';
 import { generate } from 'shortid';
+import { DEFAULT_AVATAR_COLOURS } from '../../../shared/constants/colours';
 
 function renderDistance(restaurant, currentLocation) {
     const restaurantCoordinates = {
@@ -28,6 +29,21 @@ function renderDistance(restaurant, currentLocation) {
     );
 }
 
+const BlockImage = ({ name, url }) => {
+    if (!url) {
+        const hash = hashCode(name);
+        const randomIndex = `${hash}`.split('').find(number => number >= 0 && number < DEFAULT_AVATAR_COLOURS.length);
+        const randomCoulour = DEFAULT_AVATAR_COLOURS[parseInt(randomIndex, 10)];
+        return (
+            <div className="restaurant-block__empty-image" style={{ backgroundColor: randomCoulour }}>{name.slice(0, 1).toUpperCase()}</div>
+        );
+    }
+    return (
+        <div className="restaurant-block__image" style={{ backgroundImage: `url('${url}')` }} />
+    );
+};
+
+
 export default ({ restaurant, navigate, currentLocation }) => {
     const photoURL = findFirstAvatarPicture(restaurant);
 
@@ -36,18 +52,18 @@ export default ({ restaurant, navigate, currentLocation }) => {
     return (
         <div className="col-sm-6">
             <div className="restaurant-block" onClick={() => navigate(`/restaurant/${restaurant.get('id')}`)}>
-                <div className="restaurant-block__image" style={{ backgroundImage: `url('${photoURL}')` }} />
+                <BlockImage url={photoURL} name={restaurant.get('name')} />
                 <div className="restaurant-block__content">
                     {renderDistance(restaurant, currentLocation)}
                     <div className="restaurant-block__name">{restaurant.get('name')}</div>
                     <div className="restaurant-block__labels">
                         {restaurant.get('tags').slice(0, 3).map(item => <RestaurantTag key={item} tag={item} />)}
-                        {restaurant.get('tags').size > 3 && 
+                        {restaurant.get('tags').size > 3 &&
                             <OverlayTrigger placement="top" overlay={tooltipElement}>
                                 <Label bsStyle="success">more +</Label>
                             </OverlayTrigger>
                         }
-                        
+
                     </div>
                 </div>
             </div>

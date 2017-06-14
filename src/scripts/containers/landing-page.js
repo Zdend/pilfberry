@@ -108,7 +108,7 @@ class LandingPage extends Component {
                         <Grid>
                             <Row>
                                 <Col smOffset={2} sm={8} mdOffset={3} md={6}>
-                                    <SearchBox handleSearch={this.filterRestaurants} value={searchExpressions} />
+                                    <SearchBox handleSearch={this.filterRestaurants} tags={searchExpressions} />
 
                                     <h2 className="hero-subtitle"><span className="magra-bold">pilfberry</span> helps people with dietary preferences find their next meal</h2>
                                 </Col>

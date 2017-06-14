@@ -5,11 +5,11 @@ export const createPhotoLink = (restaurantId, filename) => `/files/restaurants/$
 
 export function findFirstAvatarPicture(restaurant) {
     if (!restaurant.get('photos').size) {
-        return DEFAULT_AVATAR_URL;
+        return null;
     }
     const avatarPhoto = restaurant.get('photos').find(photo => photo.get('photoType') === PHOTO_TYPE.AVATAR);
     if (!avatarPhoto) {
-        return DEFAULT_AVATAR_URL;
+        return null;
     }
 
     return createPhotoLink(restaurant.get('id'), avatarPhoto.get('filename'));
@@ -67,4 +67,8 @@ export function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
     const d = R * c; // Distance in km
     return d;
 }
+
+export const hashCode = s => {
+    return Math.abs(s.split('').reduce(function (a, b) { a = ((a << 5) - a) + b.charCodeAt(0); return a & a }, 0));
+};
 

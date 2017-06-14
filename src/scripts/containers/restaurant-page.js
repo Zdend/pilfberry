@@ -35,7 +35,7 @@ class RestaurantPage extends Component {
                 <Grid>
                     <Row>
                         <Col sm={12} className="padding-top-2x padding-bottom-2x">
-                            <div className={`restaurant-page__avatar img-thumbnail ${coverPhotoURL && 'hidden-xs'}`}><div className="restaurant-page__avatar-pic" style={{ backgroundImage: `url('${avatarURL}')` }} /></div>
+                            {avatarURL && <div className={`restaurant-page__avatar img-thumbnail ${coverPhotoURL && 'hidden-xs'}`}><div className="restaurant-page__avatar-pic" style={{ backgroundImage: `url('${avatarURL}')` }} /></div>}
                             <h1 className="margin-top-0x">{restaurant.get('name')}</h1>
                             <div>
                                 {restaurant.get('tags').map(item => <RestaurantTag key={item} tag={item} />)}
