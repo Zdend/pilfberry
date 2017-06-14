@@ -96,6 +96,8 @@ class LandingPage extends Component {
         const filteredRestaurants = closestFirst
             ? sortByDistance(filteredRestaurantsByTag, currentLocation)
             : filteredRestaurantsByTag;
+
+        const availableSuggestions = filteredRestaurants.valueSeq().map(r => '' + r.getIn(['address', 'postcode'])).toJS();
         return (
             <div>
                 <div className="hero">
@@ -108,7 +110,7 @@ class LandingPage extends Component {
                         <Grid>
                             <Row>
                                 <Col smOffset={2} sm={8} mdOffset={3} md={6}>
-                                    <SearchBox handleSearch={this.filterRestaurants} tags={searchExpressions} />
+                                    <SearchBox handleSearch={this.filterRestaurants} tags={searchExpressions} definedTags={availableSuggestions} />
 
                                     <h2 className="hero-subtitle"><span className="magra-bold">pilfberry</span> helps people with dietary preferences find their next meal</h2>
                                 </Col>

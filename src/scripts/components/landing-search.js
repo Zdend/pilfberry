@@ -3,6 +3,7 @@ import TagsInput from 'react-tagsinput';
 import { Button, InputGroup } from 'react-bootstrap';
 import Autosuggest from 'react-autosuggest';
 import { TAGS, CUISINES } from '../../../shared/constants';
+import { arrayUnique} from '../services/util';
 
 const TagsComponent = ({ onChange, value, renderTag, renderInput }) => {
     return (
@@ -30,8 +31,8 @@ class RestaurantTagsInput extends Component {
     render() {
         let { tags, handleSearch, definedTags } = this.props;
 
-
-        definedTags = definedTags || TAGS.concat(CUISINES);
+        definedTags = definedTags ? definedTags.concat(TAGS.concat(CUISINES)) : [];
+        definedTags = arrayUnique(definedTags);
         function renderTag(props) {
             let { tag, key, disabled, onRemove, classNameRemove, getTagDisplayValue, ...other } = props;
             return (
@@ -59,13 +60,13 @@ class RestaurantTagsInput extends Component {
             const suggestions = definedTags.filter((tag) => {
                 return tag.toLowerCase().slice(0, inputLength) === inputValue
                     && tags.indexOf(tag) === -1;
-            });
+            }).slice(0, 5);
 
             return (
                 <Autosuggest
                     ref={props.ref}
                     suggestions={suggestions}
-                    shouldRenderSuggestions={() => true}
+                    shouldRenderSuggestions={(value) => value.trim().length >= 2}
                     getSuggestionValue={(suggestion) => suggestion}
                     renderSuggestion={(suggestion) => <span className="text-capitalize">{suggestion.toLowerCase()}</span>}
                     inputProps={{ ...props, onChange: handleOnChange }}
