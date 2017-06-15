@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import TagsInput from 'react-tagsinput';
 import { Button, InputGroup } from 'react-bootstrap';
 import Autosuggest from 'react-autosuggest';
-import { TAGS, CUISINES } from '../../../shared/constants';
 import { arrayUnique, escapeRegexCharacters } from '../services/util';
 
 const TagsComponent = ({ onChange, value, renderTag, renderInput }) => {
@@ -30,14 +29,14 @@ const TagsComponent = ({ onChange, value, renderTag, renderInput }) => {
 
 class RestaurantTagsInput extends Component {
     render() {
-        let { tags, handleSearch, postcodes, suburbs, streets } = this.props;
+        const { values, handleSearch, postcodes, suburbs, streets, cuisines, tags } = this.props;
 
         const definedTags = [
             { title: 'Postcodes', collection: arrayUnique(postcodes) },
             { title: 'Suburbs', collection: arrayUnique(suburbs) },
             { title: 'Streets', collection: arrayUnique(streets) },
-            { title: 'Cuisines', collection: CUISINES },
-            { title: 'Tags', collection: TAGS }
+            { title: 'Cuisines', collection: arrayUnique(cuisines) },
+            { title: 'Tags', collection: arrayUnique(tags) }
         ];
 
         function renderTag(props) {
@@ -77,12 +76,10 @@ class RestaurantTagsInput extends Component {
                 const regex = new RegExp(escapedValue, 'i');
 
                 return definedTags
-                    .map(section => {
-                        return {
-                            title: section.title,
-                            collection: section.collection.filter(tag => regex.test(tag)).slice(0, 5)
-                        };
-                    })
+                    .map(section => ({
+                        title: section.title,
+                        collection: section.collection.filter(tag => regex.test(tag)).slice(0, 5)
+                    }))
                     .filter(section => section.collection.length > 0);
             }
 
@@ -112,7 +109,7 @@ class RestaurantTagsInput extends Component {
         return (<TagsComponent
             onChange={handleSearch}
             renderTag={renderTag}
-            value={tags}
+            value={values}
             renderInput={autocompleteRenderInput} />
         );
     }

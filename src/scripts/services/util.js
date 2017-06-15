@@ -72,7 +72,7 @@ export const hashCode = s => {
     return Math.abs(s.split('').reduce(function (a, b) { a = ((a << 5) - a) + b.charCodeAt(0); return a & a }, 0));
 };
 
-export const arrayUnique = a => a.filter(function (item, i, ar) { return ar.indexOf(item) === i; });
+export const arrayUnique = a => a.filter((item, i, ar) => item && ar.indexOf(item) === i);
 
 export function escapeRegexCharacters(str) {
   return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');

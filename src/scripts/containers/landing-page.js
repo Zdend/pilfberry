@@ -98,8 +98,10 @@ class LandingPage extends Component {
             : filteredRestaurantsByTag;
 
         const postcodes = filteredRestaurants.valueSeq().map(r => '' + r.getIn(['address', 'postcode'])).toJS();
-        const suburbs = filteredRestaurants.valueSeq().map(r => '' + r.getIn(['address', 'suburb'])).toJS();
-        const streets = filteredRestaurants.valueSeq().map(r => '' + r.getIn(['address', 'street'])).toJS();
+        const suburbs = filteredRestaurants.valueSeq().map(r => r.getIn(['address', 'suburb'])).toJS();
+        const streets = filteredRestaurants.valueSeq().map(r => r.getIn(['address', 'streets'])).toJS();
+        const tags = filteredRestaurants.valueSeq().map(r => r.get('tags')).flatten(true).toJS();
+        const cuisines = filteredRestaurants.valueSeq().map(r => r.get('cuisines')).flatten(true).toJS();
         return (
             <div>
                 <div className="hero">
@@ -113,10 +115,13 @@ class LandingPage extends Component {
                             <Row>
                                 <Col smOffset={2} sm={8} mdOffset={3} md={6}>
                                     <SearchBox handleSearch={this.filterRestaurants}
-                                        tags={searchExpressions}
+                                        values={searchExpressions}
                                         postcodes={postcodes}
                                         suburbs={suburbs}
-                                        streets={streets} />
+                                        streets={streets}
+                                        tags={tags}
+                                        cuisines={cuisines}
+                                         />
 
                                     <h2 className="hero-subtitle"><span className="magra-bold">pilfberry</span> helps people with dietary preferences find their next meal</h2>
                                 </Col>
