@@ -27,6 +27,18 @@
   transition: all 0.2s ease-in-out;
   height: 200px;
   width: 100%;
+  border-radius: $border-radius-base;
+}
+.restaurant-page__avatar-empty {
+  height: 200px;
+  width: 100%;
+  border-radius: $border-radius-base;
+  position: relative;
+  @include letter-background();
+  font-size: 10rem;
+}
+.restaurant-page__empty-letter{
+  @include letter-text();
 }
 .restaurant-page__gallery {
   

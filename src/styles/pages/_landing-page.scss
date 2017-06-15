@@ -28,6 +28,9 @@
     &.react-tagsinput--focused { 
         position: absolute !important;
     }
+    .react-autosuggest__section-title {
+        padding-left: 5px;
+    }
 }
 .landing-page__tags-btn {
     vertical-align: top;

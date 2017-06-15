@@ -34,14 +34,11 @@
     position: absolute;
     height: 100%;
     width: 8rem;
-    transition: all 0.2s ease-in-out;
-    color: white;
     font-size: 5rem;
-    font-weight: 100;
-    text-align: center;
-    line-height: 8rem;
-    background: radial-gradient(ellipse at center, rgba(0,0,0,0) 0%,rgba(0,0,0,0.10) 100%);
-    text-shadow: 2px 2px 7px rgba(0, 0, 0, 0.25);
+    @include letter-background();
+}
+.restaurant-block__empty-letter {
+  @include letter-text();
 }
 .restaurant-block__content {
   margin-left: 9rem;

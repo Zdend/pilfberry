@@ -1,8 +1,15 @@
 import React from 'react';
 import { Grid, Row, Col } from 'react-bootstrap';
+import Helmet from 'react-helmet';
 
 export default () => (
     <Grid>
+            <Helmet>
+                <title>Pilfberry - Contact Us</title>
+                <meta name="description" content="Feel free to contact us" />
+                <meta name="keywords" content="diet, contact, vegetarian, gluten free, restaurant, allergy" />
+            </Helmet>
+
         <Row>
             <Col sm={12} className="padding-top-2x padding-bottom-2x">
                 <h1>Contact Us</h1>

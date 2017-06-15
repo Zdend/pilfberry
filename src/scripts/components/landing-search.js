@@ -29,14 +29,15 @@ const TagsComponent = ({ onChange, value, renderTag, renderInput }) => {
 
 class RestaurantTagsInput extends Component {
     render() {
-        const { values, handleSearch, postcodes, suburbs, streets, cuisines, tags } = this.props;
+        const { values, handleSearch, postcodes, suburbs, streets, cuisines, tags, names } = this.props;
 
         const definedTags = [
             { title: 'Postcodes', collection: arrayUnique(postcodes) },
             { title: 'Suburbs', collection: arrayUnique(suburbs) },
             { title: 'Streets', collection: arrayUnique(streets) },
             { title: 'Cuisines', collection: arrayUnique(cuisines) },
-            { title: 'Tags', collection: arrayUnique(tags) }
+            { title: 'Tags', collection: arrayUnique(tags) },
+            { title: 'Restaurants', collection: arrayUnique(names) }
         ];
 
         function renderTag(props) {

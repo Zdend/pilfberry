@@ -100,6 +100,7 @@ class LandingPage extends Component {
         const postcodes = filteredRestaurants.valueSeq().map(r => '' + r.getIn(['address', 'postcode'])).toJS();
         const suburbs = filteredRestaurants.valueSeq().map(r => r.getIn(['address', 'suburb'])).toJS();
         const streets = filteredRestaurants.valueSeq().map(r => r.getIn(['address', 'streets'])).toJS();
+        const names = filteredRestaurants.valueSeq().map(r => r.get('name')).toJS();
         const tags = filteredRestaurants.valueSeq().map(r => r.get('tags')).flatten(true).toJS();
         const cuisines = filteredRestaurants.valueSeq().map(r => r.get('cuisines')).flatten(true).toJS();
         return (
@@ -121,6 +122,7 @@ class LandingPage extends Component {
                                         streets={streets}
                                         tags={tags}
                                         cuisines={cuisines}
+                                        names={names}
                                          />
 
                                     <h2 className="hero-subtitle"><span className="magra-bold">pilfberry</span> helps people with dietary preferences find their next meal</h2>

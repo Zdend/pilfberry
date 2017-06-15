@@ -46,8 +46,11 @@ export default class RestaurantEditLocation extends Component {
 
     render() {
         const { latitude, longitude } = this.props.address;
+        if (!latitude || !longitude) {
+            return null;
+        }
 
-        const position = latitude && longitude && { lat: latitude, lng: longitude };
+        const position = { lat: latitude, lng: longitude };
         return (
             <div className="inline-block">
                 <Button bsStyle="link" className="margin-left-1x-sm margin-left-0x padding-left-1x-sm padding-left-0x" onClick={() => this.open()}>
@@ -84,12 +87,3 @@ export default class RestaurantEditLocation extends Component {
         );
     }
 }
-
-
-// function handleMapLoad(map, position, searchBox, handlePlacesResult) {
-//     if (map && position && position.lat && position.lng) {
-//         map.panTo(position);
-//     }
-
-// }
-

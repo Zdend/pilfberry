@@ -48,7 +48,7 @@ export function getHumanAddress(restaurant) {
     }
     const a = restaurant.get('address');
     return [a.get('street'), a.get('suburb'), a.get('postcode')]
-        .map(value => `${value}`)
+        .map(value => value ? `${value}` : null)
         .filter(value => value && value.trim())
         .join(', ');
 }

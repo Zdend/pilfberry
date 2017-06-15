@@ -35,7 +35,11 @@ const BlockImage = ({ name, url }) => {
         const randomIndex = `${hash}`.split('').find(number => number >= 0 && number < DEFAULT_AVATAR_COLOURS.length);
         const randomCoulour = DEFAULT_AVATAR_COLOURS[parseInt(randomIndex, 10)];
         return (
-            <div className="restaurant-block__empty-image" style={{ backgroundColor: randomCoulour }}>{name.trim().slice(0, 1).toUpperCase()}</div>
+            <div className="restaurant-block__empty-image" style={{ backgroundColor: randomCoulour }}>
+                <span className="restaurant-block__empty-letter">
+                    {name.trim().slice(0, 1).toUpperCase()}
+                </span>
+            </div>
         );
     }
     return (
