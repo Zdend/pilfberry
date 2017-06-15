@@ -14,7 +14,7 @@
         padding-top: 4px;
         padding-bottom: 4px;
         position: relative;
-        bottom: 3px;
+        bottom: 2px;
     }
     .react-autosuggest__suggestion {
         padding: 6px;
@@ -34,5 +34,9 @@
     height: 100%;
     .btn {
         height: 100%;
+        border: 2px solid $brand-primary;
+        &:hover {
+            border-color: darken($brand-primary, 12%);
+        }
     }
 }

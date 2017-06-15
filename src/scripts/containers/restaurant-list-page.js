@@ -6,7 +6,7 @@ import { getSavedRestaurants } from '../reducers/selectors';
 import { fetchRestaurantsAction, createRestaurantAction, deleteRestaurantAction } from '../actions/restaurant-actions';
 import { NEW_ID, STATUS_ACTIVE, STATUS_DELETED } from '../../../shared/constants';
 import RestaurantTag from '../components/restaurant-tag';
-import { matchesSomeFields, getHumanAddress } from '../services/util';
+import { matchesSomeFields, getHumanAddress, splitSearchExpression } from '../services/util';
 
 const CheckValue = ({hasValue}) => <i className={`fa fa-${hasValue ? 'check text-success' : 'close text-danger'}`} />;
 
@@ -66,7 +66,7 @@ class RestaurantListPage extends Component {
     renderRestaurants(restaurants, navigate, deleteRestaurantAction, displayDeleted, searchExpression) {
         if (restaurants) {
             const filteredRestaurants = searchExpression
-                ? restaurants.filter(restaurant => matchesSomeFields(restaurant, searchExpression, [
+                ? restaurants.filter(restaurant => matchesSomeFields(restaurant, splitSearchExpression(searchExpression), [
                     'name', 'address.postcode', 'address.suburb', 'address.city', 'address.street',
                     'url', 'tags', 'cuisines', 'description'
                 ]

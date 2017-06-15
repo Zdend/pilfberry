@@ -74,13 +74,13 @@ class RestaurantTagsInput extends Component {
                     return [];
                 }
 
-                const regex = new RegExp('^' + escapedValue, 'i');
+                const regex = new RegExp(escapedValue, 'i');
 
                 return definedTags
                     .map(section => {
                         return {
                             title: section.title,
-                            collection: section.collection.filter(tag => regex.test(tag))
+                            collection: section.collection.filter(tag => regex.test(tag)).slice(0, 5)
                         };
                     })
                     .filter(section => section.collection.length > 0);

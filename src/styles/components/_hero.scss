@@ -1,5 +1,4 @@
 .hero {
-  overflow: auto;
   min-height: 500px;
   height: 100%;
   //background: transparent url('http://dongkoy.com/wp-content/uploads/2017/04/Art-Food-Drink-Wallpaper-HD-Images-277384.jpg');
@@ -12,7 +11,8 @@
   //background: transparent url('http://kaboompics.com/files/upload/o_1ac2hl425cfl1sr4clv1culbos9_new.jpg');
   background-position: center;
   background-size: cover;
-  margin-top: -51px;
+  position: relative;
+  padding-top: 5rem;
 }
 .hero-title, .hero-subtitle {
   text-align: center;
@@ -21,12 +21,13 @@
 }
 
 .hero-title {
-  margin-top: 10rem;
   font-size: 5rem;
   font-weight: 400;
 }
 .hero-subtitle {
   margin-top: 4rem;
+  // position: absolute;
+  // bottom: 3rem;
   font-size: 2rem;
   font-weight: 200;
   line-height: 1.5;
