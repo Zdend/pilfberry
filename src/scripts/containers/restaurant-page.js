@@ -38,8 +38,10 @@ const AvatarPhoto = ({ coverPhotoURL, avatarURL, name }) => {
 
 class RestaurantPage extends Component {
     componentDidMount() {
-        const { match: { params: { id } }, fetchRestaurant } = this.props;
-        fetchRestaurant(id);
+        const { match: { params: { id } }, fetchRestaurant, restaurant } = this.props;
+        if (!restaurant || !restaurant.get('id')) {
+            fetchRestaurant(id);
+        }
     }
 
     render() {

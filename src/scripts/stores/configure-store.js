@@ -18,7 +18,7 @@ const logger = createLogger({
 export default function configureStore(initialState, history) {
     const sagaMiddleware = createSagaMiddleware();
     const routerMiddlewareWithHistory = routerMiddleware(history);
-    const immutableInitalState = fromJS(initialState);
+    const immutableInitalState = initialState;
 
     const devTools = history && window && window.devToolsExtension ? window.devToolsExtension() : f => f;
 

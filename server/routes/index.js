@@ -1,18 +1,8 @@
 import { findAllRestaurants, findRestaurant, saveRestaurant, deleteRestaurant } from '../db';
 import { uploadPhotosToRestaurant, deletePhoto } from '../db/file-upload';
-import view from './view';
+import view, { renderRestaurant } from './view';
 import passport from 'passport';
 import { STATUS_ACTIVE, STATUS_DELETED } from '../../shared/constants';
-
-export const PUBLIC_ROUTES = [
-    '/',
-    '/favicon.ico',
-    '/static',
-    '/login',
-    '/api/login',
-    '/api/restaurants',
-
-];
 
 const logError = message => e => console.error(`${message ? message + ':' : ''}${e && e.message && e.message.substr(0, 300)}`);
 
@@ -68,6 +58,7 @@ export default function (app) {
     });
 
     app.get('/secure', view);
+    app.get('/restaurant/:id', renderRestaurant);
 
     app.get('*', view);
 }

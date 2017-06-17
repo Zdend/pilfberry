@@ -1,12 +1,14 @@
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import Root from '../../src/scripts/containers/root';
-import { matchPath } from 'react-router';
 import configureStore from '../../src/scripts/stores/configure-store';
 import rootSaga from '../../src/scripts/sagas/index';
 import routes from '../../src/scripts/routes/index';
-import { findAllRestaurants } from '../db';
+import { findRestaurant } from '../db';
 import { isDev } from '../config';
+import { transformNestedRecordObject } from '../../src/scripts/services';
+import { Restaurant, restaurantDef } from '../../src/scripts/models';
+import { fromJS } from 'immutable';
 
 const styleDefinitions = `
     <link rel="stylesheet" type="text/css" href="/static/vendor.css" />
@@ -79,8 +81,8 @@ const initialState = {
     }
 };
 
-export default function (req, res) {
-    const store = configureStore(initialState);
+export const renderView = (data = fromJS(initialState)) => (req, res) => {
+    const store = configureStore(data);
     const rootComp = <Root store={store} Routes={routes} isClient={false} location={req.url} context={{}} />;
 
     store.runSaga(rootSaga).done.then(() => {
@@ -95,4 +97,16 @@ export default function (req, res) {
     });
 
     store.close();
-}
+};
+
+export const renderRestaurant = (req, res) => {
+    findRestaurant(req.params.id)
+        .then(restaurant => transformNestedRecordObject(restaurant.toObject(), Restaurant, restaurantDef))
+        .then(restaurant => renderView(
+                fromJS(initialState).mergeIn(['domain', 'restaurants'], restaurant)
+            )(req, res))
+        .catch(console.error);
+
+};
+
+export default renderView(fromJS(initialState));
