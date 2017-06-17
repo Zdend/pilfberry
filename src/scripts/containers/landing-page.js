@@ -16,7 +16,7 @@ import TagFilter from '../components/landing-tag-filter';
 import SearchBox from '../components/landing-search';
 import { push } from 'react-router-redux';
 import throttle from '../../../shared/throttle';
-import { matchesSomeFields, getDistanceFromLatLonInKm } from '../services/util';
+import { matchesSomeFieldsAnd, getDistanceFromLatLonInKm, arrayUnique } from '../services/util';
 
 function sortByDistance(restaurants, currentLocation) {
     if (!currentLocation.get('lat') || !currentLocation.get('lng')) {
@@ -69,7 +69,7 @@ class LandingPage extends Component {
     }
 
     filterRestaurants(values) {
-        this.setState({ searchExpressions: values });
+        this.setState({ searchExpressions: arrayUnique(values) });
     }
 
     renderList(restaurants, navigate, currentLocation) {
@@ -79,23 +79,17 @@ class LandingPage extends Component {
     }
 
     render() {
-        const { navigate, tagToggle, landingPageTagChange, currentLocation } = this.props;
+        const { navigate, currentLocation } = this.props;
         const { restaurants, searchExpressions, closestFirst } = this.state;
         const stringFilteredRestaurants = searchExpressions && searchExpressions.length
-            ? restaurants.filter(restaurant => matchesSomeFields(restaurant, searchExpressions, [
+            ? restaurants.filter(restaurant => matchesSomeFieldsAnd(restaurant, searchExpressions, [
                 'name', 'address.postcode', 'address.suburb', 'address.city', 'address.street',
                 'url', 'tags', 'cuisines', 'description'
             ]))
             : restaurants;
-        const activeTags = tagToggle.filter(item => item).keySeq().toJS();
-        const filteredRestaurantsByTag = activeTags.length
-            ? stringFilteredRestaurants.filter(restaurant => {
-                return activeTags.some(tag => restaurant.get('tags').filter(item => item === tag).size);
-            })
-            : stringFilteredRestaurants;
         const filteredRestaurants = closestFirst
-            ? sortByDistance(filteredRestaurantsByTag, currentLocation)
-            : filteredRestaurantsByTag;
+            ? sortByDistance(stringFilteredRestaurants, currentLocation)
+            : stringFilteredRestaurants;
 
         const postcodes = filteredRestaurants.valueSeq().map(r => '' + r.getIn(['address', 'postcode'])).toJS();
         const suburbs = filteredRestaurants.valueSeq().map(r => r.getIn(['address', 'suburb'])).toJS();
@@ -110,7 +104,9 @@ class LandingPage extends Component {
 
                     <div className="text-align-center margin-top-5x">
 
-                        <TagFilter tagToggle={tagToggle} onChange={landingPageTagChange} />
+                        <TagFilter
+                        handleSearch={this.filterRestaurants}
+                        searchExpressions={searchExpressions} />
 
                         <Grid>
                             <Row>
@@ -178,14 +174,12 @@ class LandingPage extends Component {
 function mapStateToProps(state) {
     return {
         restaurants: getRestaurants(state),
-        tagToggle: getTagToggle(state),
         currentLocation: getCurrentLocation(state)
     };
 }
 const mapDispatchToProps = {
     fetchRestaurants: fetchRestaurantsAction.request,
     navigate: push,
-    landingPageTagChange,
     checkCurrentLocationAction
 };
 

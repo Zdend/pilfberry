@@ -28,9 +28,7 @@ export function findFirstCoverPicture(restaurant) {
 
 export const splitSearchExpression = searchExpression => searchExpression.split(/(,|\s)/).filter(exp => exp && exp.trim() && exp !== ',');
 
-export function matchesSomeFields(restaurant, searchExpressions, fields) {
-    const orExpression = searchExpressions.join('|');
-    const matcher = new RegExp(`(${orExpression})`, 'i');
+function matchSomeFields(fields, matcher, restaurant) {
     return fields.some(field => {
         const fieldValue = restaurant.getIn(field.split('.'));
 
@@ -40,6 +38,25 @@ export function matchesSomeFields(restaurant, searchExpressions, fields) {
 
         return matcher.test(fieldValue);
     });
+}
+
+function matchSomeFieldsAnd(fields, matcher, restaurant) {
+    const allExpressions = List(fields).map(field => restaurant.getIn(field.split('.')))
+        .flatten(true)
+        .join(' ');
+    return matcher.test(allExpressions);
+}
+
+export function matchesSomeFields(restaurant, searchExpressions, fields) {
+    const orExpression = searchExpressions.join('|');
+    const matcher = new RegExp(`(${orExpression})`, 'i');
+    return matchSomeFields(fields, matcher, restaurant);
+}
+
+export function matchesSomeFieldsAnd(restaurant, searchExpressions, fields) {
+    const andExpression = searchExpressions.map(exp => `(?=.*${exp}.*)`).join('');
+    const matcher = new RegExp(`^${andExpression}.+`, 'i');
+    return matchSomeFieldsAnd(fields, matcher, restaurant);
 }
 
 export function getHumanAddress(restaurant) {
@@ -75,5 +92,5 @@ export const hashCode = s => {
 export const arrayUnique = a => a.filter((item, i, ar) => item && ar.indexOf(item) === i);
 
 export function escapeRegexCharacters(str) {
-  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }

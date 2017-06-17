@@ -34,15 +34,6 @@ function user(state = new Map(), action) {
     }
 }
 
-function tagToggle(state = new Map({}), action) {
-    switch (action.type) {
-        case LANDING_PAGE.TAG_CHANGE:
-            return state.update(action.tag, value => !value);
-        default:
-            return state;
-    }
-}
-
 function globalMessage(state = new Map({ message: '', type: 'info' }), action) {
     switch (action.type) {
         case GLOBAL_MESSAGE.SET:
@@ -68,7 +59,7 @@ export default {
     pages: combineReducers({
         login: combineReducers({ credentials }),
         user,
-        landingPage: combineReducers({ tagToggle })
+        landingPage: combineReducers({})
     }),
     components: combineReducers({
         globalMessage
