@@ -9,6 +9,7 @@ import { isDev } from '../config';
 import { transformNestedRecordObject } from '../../src/scripts/services';
 import { Restaurant, restaurantDef } from '../../src/scripts/models';
 import { fromJS } from 'immutable';
+import Helmet from 'react-helmet';
 
 const styleDefinitions = `
     <link rel="stylesheet" type="text/css" href="/static/vendor.css" />
@@ -39,14 +40,14 @@ const googleTagManagerNoScript = `
     <!-- End Google Tag Manager (noscript) -->
 `;
 
-const layout = (body, initialState) => (`
+const layout = (body, initialState, helmet) => (`
     <!DOCTYPE html>
     <html>
         <head>
             <meta charset="utf-8">
-            <title>Pilfberry</title>
-            <meta name="description" content="Pilfberry helps people with dieatary preferences">
-            <meta name="keywords" content="restaurant, special diet, vegetarian, vegan, gluten free, raw, food allergy">
+            ${helmet.title.toString()}
+            ${helmet.meta.toString()}
+            
             <meta name="author" content="ZDV">
             <meta name="viewport" content="width=device-width, initial-scale=1">
             ${isDev ? '' : styleDefinitions}
@@ -87,10 +88,13 @@ export const renderView = (data = fromJS(initialState)) => (req, res) => {
     const rootComp = <Root store={store} Routes={routes} isClient={false} location={req.url} context={{}} />;
 
     store.runSaga(rootSaga).done.then(() => {
+        const html = renderToString(rootComp);
+        const helmet = Helmet.renderStatic();
         res.status(200).send(
             layout(
-                renderToString(rootComp),
-                JSON.stringify(store.getState())
+                html,
+                JSON.stringify(store.getState()),
+                helmet
             )
         );
     }).catch((e) => {
