@@ -7,7 +7,6 @@ import { Credentials } from '../models';
 import { Map, Set } from 'immutable';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
-
 function credentials(state = new Credentials(), action) {
     switch (action.type) {
         case LOGIN.CHANGE:

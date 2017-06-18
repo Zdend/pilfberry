@@ -7,8 +7,9 @@ import configureStore from './stores/configure-store';
 import createHistory from 'history/createBrowserHistory';
 import { AppContainer } from 'react-hot-loader';
 import { fromJS } from 'immutable';
+import { reviveServerState } from './transformers';
 
-const initialState = fromJS(window.__INITIAL_STATE__);
+const initialState = reviveServerState(window.__INITIAL_STATE__);
 delete window.__INITIAL_STATE__;
 
 const history = createHistory();
