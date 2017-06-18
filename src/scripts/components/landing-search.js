@@ -29,7 +29,14 @@ const TagsComponent = ({ onChange, value, renderTag, renderInput }) => {
 
 class RestaurantTagsInput extends Component {
     render() {
-        const { values, handleSearch, postcodes, suburbs, streets, cuisines, tags, names } = this.props;
+        const { values, handleSearch, restaurants } = this.props;
+
+        const postcodes = restaurants.valueSeq().map(r => '' + r.getIn(['address', 'postcode'])).toJS();
+        const suburbs = restaurants.valueSeq().map(r => r.getIn(['address', 'suburb'])).toJS();
+        const streets = restaurants.valueSeq().map(r => r.getIn(['address', 'streets'])).toJS();
+        const names = restaurants.valueSeq().map(r => r.get('name')).toJS();
+        const tags = restaurants.valueSeq().map(r => r.get('tags')).flatten(true).toJS();
+        const cuisines = restaurants.valueSeq().map(r => r.get('cuisines')).flatten(true).toJS();
 
         const definedTags = [
             { title: 'Postcodes', collection: arrayUnique(postcodes) },

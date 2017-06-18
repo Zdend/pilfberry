@@ -9,7 +9,7 @@ import {
 } from 'react-bootstrap';
 import { fetchRestaurantsAction } from '../actions/restaurant-actions';
 import { landingPageTagChange, checkCurrentLocationAction } from '../actions/ui-actions';
-import { getRestaurants, getLandingPageUI, getTagToggle, getCurrentLocation } from '../reducers/selectors';
+import { getRestaurants, getLandingPageUI, getCurrentLocation } from '../reducers/selectors';
 import RestaurantBlock from '../components/restaurant-block';
 import RestaurantMap from '../components/restaurant-map';
 import TagFilter from '../components/landing-tag-filter';
@@ -17,6 +17,7 @@ import SearchBox from '../components/landing-search';
 import { push } from 'react-router-redux';
 import throttle from '../../../shared/throttle';
 import { matchesSomeFieldsAnd, getDistanceFromLatLonInKm, arrayUnique } from '../services/util';
+import { SpinnerInline } from '../components/spinner';
 
 function sortByDistance(restaurants, currentLocation) {
     if (!currentLocation.get('lat') || !currentLocation.get('lng')) {
@@ -34,7 +35,7 @@ class LandingPage extends Component {
     constructor(props) {
         super(props);
         this.fetchRestaurants = props.fetchRestaurants;
-        this.filterRestaurants = this.filterRestaurants.bind(this);
+        this.handleFilterChange = this.handleFilterChange.bind(this);
         this.state = {
             restaurants: props.restaurants,
             searchExpressions: [],
@@ -68,8 +69,20 @@ class LandingPage extends Component {
         this.setState(state => ({ closestFirst: !state.closestFirst }));
     }
 
-    filterRestaurants(values) {
+    handleFilterChange(values) {
         this.setState({ searchExpressions: arrayUnique(values) });
+    }
+
+    filterRestaurants(restaurants, currentLocation, closestFirst, searchExpressions) {
+        const stringFilteredRestaurants = searchExpressions && searchExpressions.length
+            ? restaurants.filter(restaurant => matchesSomeFieldsAnd(restaurant, searchExpressions, [
+                'name', 'address.postcode', 'address.suburb', 'address.city', 'address.street',
+                'url', 'tags', 'cuisines', 'description'
+            ]))
+            : restaurants;
+        return closestFirst
+            ? sortByDistance(stringFilteredRestaurants, currentLocation)
+            : stringFilteredRestaurants;
     }
 
     renderList(restaurants, navigate, currentLocation) {
@@ -81,22 +94,8 @@ class LandingPage extends Component {
     render() {
         const { navigate, currentLocation } = this.props;
         const { restaurants, searchExpressions, closestFirst } = this.state;
-        const stringFilteredRestaurants = searchExpressions && searchExpressions.length
-            ? restaurants.filter(restaurant => matchesSomeFieldsAnd(restaurant, searchExpressions, [
-                'name', 'address.postcode', 'address.suburb', 'address.city', 'address.street',
-                'url', 'tags', 'cuisines', 'description'
-            ]))
-            : restaurants;
-        const filteredRestaurants = closestFirst
-            ? sortByDistance(stringFilteredRestaurants, currentLocation)
-            : stringFilteredRestaurants;
 
-        const postcodes = filteredRestaurants.valueSeq().map(r => '' + r.getIn(['address', 'postcode'])).toJS();
-        const suburbs = filteredRestaurants.valueSeq().map(r => r.getIn(['address', 'suburb'])).toJS();
-        const streets = filteredRestaurants.valueSeq().map(r => r.getIn(['address', 'streets'])).toJS();
-        const names = filteredRestaurants.valueSeq().map(r => r.get('name')).toJS();
-        const tags = filteredRestaurants.valueSeq().map(r => r.get('tags')).flatten(true).toJS();
-        const cuisines = filteredRestaurants.valueSeq().map(r => r.get('cuisines')).flatten(true).toJS();
+        const filteredRestaurants = this.filterRestaurants(restaurants, currentLocation, closestFirst, searchExpressions);
         return (
             <div>
                 <div className="hero">
@@ -105,21 +104,16 @@ class LandingPage extends Component {
                     <div className="text-align-center margin-top-5x">
 
                         <TagFilter
-                        handleSearch={this.filterRestaurants}
-                        searchExpressions={searchExpressions} />
+                            handleSearch={this.handleFilterChange}
+                            searchExpressions={searchExpressions} />
 
                         <Grid>
                             <Row>
                                 <Col smOffset={2} sm={8} mdOffset={3} md={6}>
-                                    <SearchBox handleSearch={this.filterRestaurants}
+                                    <SearchBox handleSearch={this.handleFilterChange}
                                         values={searchExpressions}
-                                        postcodes={postcodes}
-                                        suburbs={suburbs}
-                                        streets={streets}
-                                        tags={tags}
-                                        cuisines={cuisines}
-                                        names={names}
-                                         />
+                                        restaurants={filteredRestaurants}
+                                    />
 
                                     <h2 className="hero-subtitle"><span className="magra-bold">pilfberry</span> helps people with dietary preferences find their next meal</h2>
                                 </Col>
@@ -149,7 +143,10 @@ class LandingPage extends Component {
                                     </OverlayTrigger>
                                 </ButtonGroup>
                             </ButtonToolbar>
-                            <h4>We found {filteredRestaurants ? filteredRestaurants.size : 0} restaurants for you..</h4>
+                            {!restaurants.size
+                                ? <h4><SpinnerInline text="Loading restaurants.." /></h4>
+                                : <h4>We found {filteredRestaurants ? filteredRestaurants.size : 0} restaurants for you..</h4>
+                            }
                         </Col>
                     </Row>
                 </Grid>
@@ -157,8 +154,8 @@ class LandingPage extends Component {
                 <div className="restaurant-list padding-bottom-3x padding-top-2x">
                     <div className="container">
                         <div className="row">
-                            <Route exact path="/" render={() => this.renderList(filteredRestaurants, navigate, currentLocation)} />
-                            <Route exact path="/list" render={() => this.renderList(filteredRestaurants, navigate, currentLocation)} />
+                            <Route exact path="/" render={() => this.renderList(filteredRestaurants, navigate, currentLocation, closestFirst, searchExpressions)} />
+                            <Route exact path="/list" render={() => this.renderList(filteredRestaurants, navigate, currentLocation, closestFirst, searchExpressions)} />
                             <Route exact path="/map" render={() => <RestaurantMap restaurants={filteredRestaurants} />} />
                         </div>
                     </div>

@@ -15,10 +15,6 @@ export const getLandingPage = s(getPages, pages => pages.get('landingPage'));
 
 export const getUIPageUser = s(getPages, pages => pages.get('user'));
 export const getCredentials = s(getLogin, loginPage => loginPage.get('credentials'));
-export const getTagToggle = s(getLandingPage, landingPage => landingPage.get('tagToggle'));
-
-
-
 
 
 export const getDomain = state => state.get('domain');

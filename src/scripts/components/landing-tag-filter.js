@@ -15,7 +15,12 @@ const ToggleMenuItemHOC = (onClick) => ({ tag, className }) =>
 export default class TagFilter extends Component {
     render() {
         const { searchExpressions, handleSearch } = this.props;
-        const handleChange = value => handleSearch(searchExpressions.concat([value]));
+        const handleChange = value => {
+            const result = searchExpressions.indexOf(value) !== -1
+                ? searchExpressions.filter(item => item !== value)
+                : searchExpressions.concat([value]);
+            handleSearch(result);
+        };
         const ToggleButton = ToggleButtonHOC(handleChange);
         const ToggleMenuItem = ToggleMenuItemHOC(handleChange);
         return (

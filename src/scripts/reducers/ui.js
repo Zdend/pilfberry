@@ -58,8 +58,7 @@ function currentLocation(state = new Map({ lat: null, lng: null }), action) {
 export default {
     pages: combineReducers({
         login: combineReducers({ credentials }),
-        user,
-        landingPage: combineReducers({})
+        user
     }),
     components: combineReducers({
         globalMessage
