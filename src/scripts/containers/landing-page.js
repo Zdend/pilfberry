@@ -93,8 +93,8 @@ class LandingPage extends Component {
             <div>
                 <Helmet>
                     <title>Pilfberry</title>
-                    <meta name="description" content="Pilfberry helps people with dieatary preferences" />
-                    <meta name="keywords" content="restaurant, special diet, vegetarian, vegan, gluten free, raw, food allergy" />
+                    <meta name="description" content="Pilfberry helps people with dietary preferences" />
+                    <meta name="keywords" content="restaurant, special diet, vegetarian, vegan, gluten free, raw, food allergy, vegetarian restaurants sydney" />
                 </Helmet>
 
                 <div className="hero">

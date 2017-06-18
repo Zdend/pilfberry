@@ -57,8 +57,8 @@ class RestaurantPage extends Component {
             <div>
                 <Helmet>
                     <title>Pilfberry - {restaurant.get('name')}</title>
-                    <meta name="description" content={`${restaurant.get('name')} serves meals for people with special dietary requirements`} />
-                    <meta name="keywords" content={`${restaurant.get('name')}, ${restaurant.getIn(['address', 'suburb']) ? restaurant.getIn(['address', 'suburb']) + ', ' : ''}diet, ${restaurant.getIn(['address', 'street']) ? restaurant.getIn(['address', 'street']) + ', ' : ''}vegetarian, gluten free, restaurant`} />
+                    <meta name="description" content={`${restaurant.get('description') ? restaurant.get('description') : restaurant.get('name') + ' serves meals for people with special dietary requirements'}`} />
+                    <meta name="keywords" content={`${restaurant.get('name')},${restaurant.getIn(['address', 'suburb']) ? restaurant.getIn(['address', 'suburb']) + ',' : ''}diet,${restaurant.getIn(['address', 'street']) ? restaurant.getIn(['address', 'street']) + ',' : ''}${restaurant.getIn(['address', 'postcode']) ? restaurant.getIn(['address', 'postcode']) + ',' : ''}vegetarian,gluten free,restaurant,healthy food sydney`} />
                 </Helmet>
                 {coverPhotoURL &&
                     <div className="restaurant-page__cover" style={{ backgroundImage: `url('${coverPhotoURL}')` }}>
