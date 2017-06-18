@@ -30,7 +30,7 @@ const TagsComponent = ({ onChange, value, renderTag, renderInput }) => {
 class RestaurantTagsInput extends Component {
     render() {
         const { values, handleSearch, restaurants } = this.props;
-
+        
         const postcodes = restaurants.valueSeq().map(r => '' + r.getIn(['address', 'postcode'])).toJS();
         const suburbs = restaurants.valueSeq().map(r => r.getIn(['address', 'suburb'])).toJS();
         const streets = restaurants.valueSeq().map(r => r.getIn(['address', 'streets'])).toJS();
@@ -117,7 +117,7 @@ class RestaurantTagsInput extends Component {
         return (<TagsComponent
             onChange={handleSearch}
             renderTag={renderTag}
-            value={values}
+            value={values.toArray()}
             renderInput={autocompleteRenderInput} />
         );
     }

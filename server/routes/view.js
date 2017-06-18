@@ -46,6 +46,7 @@ const layout = (body, initialState) => (`
             <meta charset="utf-8">
             <title>Pilfberry</title>
             <meta name="description" content="Pilfberry helps people with dieatary preferences">
+            <meta name="keywords" content="restaurant, special diet, vegetarian, vegan, gluten free, raw, food allergy">
             <meta name="author" content="ZDV">
             <meta name="viewport" content="width=device-width, initial-scale=1">
             ${isDev ? '' : styleDefinitions}

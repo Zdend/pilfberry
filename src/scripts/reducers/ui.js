@@ -4,7 +4,7 @@ import { USER } from '../actions/user-actions';
 import { LANDING_PAGE, COORDINATES } from '../actions/ui-actions';
 import { GLOBAL_MESSAGE } from '../actions/global-message-actions';
 import { Credentials } from '../models';
-import { Map } from 'immutable';
+import { Map, Set } from 'immutable';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
 
@@ -54,11 +54,23 @@ function currentLocation(state = new Map({ lat: null, lng: null }), action) {
     }
 }
 
+function landingPage(state = new Map({ searchExpressions: new Set(), closestFirst: false }), action) {
+    switch (action.type) {
+        case LANDING_PAGE.CLOSEST_TOGGLE:
+            return state.update('closestFirst', closestFirst => !closestFirst);
+        case LANDING_PAGE.CHANGE_FILTER:
+            return state.set('searchExpressions', new Set(action.searchExpressions));
+        default:
+            return state;
+    }
+}
+
 
 export default {
     pages: combineReducers({
         login: combineReducers({ credentials }),
-        user
+        user,
+        landingPage
     }),
     components: combineReducers({
         globalMessage

@@ -16,9 +16,9 @@ export default class TagFilter extends Component {
     render() {
         const { searchExpressions, handleSearch } = this.props;
         const handleChange = value => {
-            const result = searchExpressions.indexOf(value) !== -1
+            const result = searchExpressions.contains(value)
                 ? searchExpressions.filter(item => item !== value)
-                : searchExpressions.concat([value]);
+                : searchExpressions.add(value);
             handleSearch(result);
         };
         const ToggleButton = ToggleButtonHOC(handleChange);

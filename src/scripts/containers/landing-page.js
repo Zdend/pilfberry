@@ -8,16 +8,17 @@ import {
     Row, Col, Grid
 } from 'react-bootstrap';
 import { fetchRestaurantsAction } from '../actions/restaurant-actions';
-import { landingPageTagChange, checkCurrentLocationAction } from '../actions/ui-actions';
-import { getRestaurants, getLandingPageUI, getCurrentLocation } from '../reducers/selectors';
+import { landingPageChangeFilter, toggleClosestFirst, checkCurrentLocationAction } from '../actions/ui-actions';
+import { getRestaurants, getClosestFirst, getSearchExpressions, getCurrentLocation } from '../reducers/selectors';
 import RestaurantBlock from '../components/restaurant-block';
 import RestaurantMap from '../components/restaurant-map';
 import TagFilter from '../components/landing-tag-filter';
 import SearchBox from '../components/landing-search';
 import { push } from 'react-router-redux';
 import throttle from '../../../shared/throttle';
-import { matchesSomeFieldsAnd, getDistanceFromLatLonInKm, arrayUnique } from '../services/util';
+import { matchesSomeFieldsAnd, getDistanceFromLatLonInKm } from '../services/util';
 import { SpinnerInline } from '../components/spinner';
+import Helmet from 'react-helmet';
 
 function sortByDistance(restaurants, currentLocation) {
     if (!currentLocation.get('lat') || !currentLocation.get('lng')) {
@@ -35,14 +36,10 @@ class LandingPage extends Component {
     constructor(props) {
         super(props);
         this.fetchRestaurants = props.fetchRestaurants;
-        this.handleFilterChange = this.handleFilterChange.bind(this);
         this.state = {
-            restaurants: props.restaurants,
-            searchExpressions: [],
-            closestFirst: false
+            restaurants: props.restaurants
         };
         this.handleScroll = throttle(this.handleScroll.bind(this), 100);
-        this.toggleSortByDistance = this.toggleSortByDistance.bind(this);
     }
 
     handleScroll(e) {
@@ -69,12 +66,8 @@ class LandingPage extends Component {
         this.setState(state => ({ closestFirst: !state.closestFirst }));
     }
 
-    handleFilterChange(values) {
-        this.setState({ searchExpressions: arrayUnique(values) });
-    }
-
     filterRestaurants(restaurants, currentLocation, closestFirst, searchExpressions) {
-        const stringFilteredRestaurants = searchExpressions && searchExpressions.length
+        const stringFilteredRestaurants = searchExpressions.size
             ? restaurants.filter(restaurant => matchesSomeFieldsAnd(restaurant, searchExpressions, [
                 'name', 'address.postcode', 'address.suburb', 'address.city', 'address.street',
                 'url', 'tags', 'cuisines', 'description'
@@ -92,25 +85,31 @@ class LandingPage extends Component {
     }
 
     render() {
-        const { navigate, currentLocation } = this.props;
-        const { restaurants, searchExpressions, closestFirst } = this.state;
+        const { navigate, currentLocation, searchExpressions, closestFirst, landingPageChangeFilter, toggleClosestFirst } = this.props;
+        const { restaurants } = this.state;
 
         const filteredRestaurants = this.filterRestaurants(restaurants, currentLocation, closestFirst, searchExpressions);
         return (
             <div>
+                <Helmet>
+                    <title>Pilfberry</title>
+                    <meta name="description" content="Pilfberry helps people with dieatary preferences" />
+                    <meta name="keywords" content="restaurant, special diet, vegetarian, vegan, gluten free, raw, food allergy" />
+                </Helmet>
+
                 <div className="hero">
                     <h1 className="hero-title animated fadeInDown" ref={ref => this.title = ref}>Eat without worries</h1>
 
                     <div className="text-align-center margin-top-5x">
 
                         <TagFilter
-                            handleSearch={this.handleFilterChange}
+                            handleSearch={landingPageChangeFilter}
                             searchExpressions={searchExpressions} />
 
                         <Grid>
                             <Row>
                                 <Col smOffset={2} sm={8} mdOffset={3} md={6}>
-                                    <SearchBox handleSearch={this.handleFilterChange}
+                                    <SearchBox handleSearch={landingPageChangeFilter}
                                         values={searchExpressions}
                                         restaurants={filteredRestaurants}
                                     />
@@ -129,7 +128,7 @@ class LandingPage extends Component {
                             <ButtonToolbar className="pull-right margin-top-1x-sm">
                                 {currentLocation.get('lat') && currentLocation.get('lng') &&
                                     <OverlayTrigger placement="top" overlay={<Tooltip id={generate()}>Sort by closest</Tooltip>}>
-                                        <Button bsStyle="link" onClick={this.toggleSortByDistance} active={closestFirst}>
+                                        <Button bsStyle="link" onClick={toggleClosestFirst} active={closestFirst}>
                                             <i className="fa fa-sort-amount-asc" />
                                         </Button>
                                     </OverlayTrigger>
@@ -171,13 +170,17 @@ class LandingPage extends Component {
 function mapStateToProps(state) {
     return {
         restaurants: getRestaurants(state),
-        currentLocation: getCurrentLocation(state)
+        currentLocation: getCurrentLocation(state),
+        closestFirst: getClosestFirst(state),
+        searchExpressions: getSearchExpressions(state)
     };
 }
 const mapDispatchToProps = {
     fetchRestaurants: fetchRestaurantsAction.request,
     navigate: push,
-    checkCurrentLocationAction
+    checkCurrentLocationAction,
+    toggleClosestFirst,
+    landingPageChangeFilter
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LandingPage);

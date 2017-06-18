@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import RestaurantViewGallery from '../components/restaurant-view-gallery';
 import RestaurantViewMap from '../components/restaurant-view-map';
 import { DEFAULT_AVATAR_COLOURS } from '../../../shared/constants/colours';
+import Helmet from 'react-helmet';
 
 const AvatarPhoto = ({ coverPhotoURL, avatarURL, name }) => {
     if (avatarURL) {
@@ -54,6 +55,11 @@ class RestaurantPage extends Component {
         const coverPhotoURL = findFirstCoverPicture(restaurant);
         return (
             <div>
+                <Helmet>
+                    <title>Pilfberry - {restaurant.get('name')}</title>
+                    <meta name="description" content={`${restaurant.get('name')} serves meals for people with special dietary requirements`} />
+                    <meta name="keywords" content={`${restaurant.get('name')}, ${restaurant.getIn(['address', 'suburb']) ? restaurant.getIn(['address', 'suburb']) + ', ' : ''}diet, ${restaurant.getIn(['address', 'street']) ? restaurant.getIn(['address', 'street']) + ', ' : ''}vegetarian, gluten free, restaurant`} />
+                </Helmet>
                 {coverPhotoURL &&
                     <div className="restaurant-page__cover" style={{ backgroundImage: `url('${coverPhotoURL}')` }}>
                         <h1 className="restaurant-page__cover-title">{restaurant.get('name')}</h1>
