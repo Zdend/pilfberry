@@ -17,6 +17,7 @@ import routes from './routes';
 import { Strategy } from 'passport-local';
 import { User } from './db/schema';
 import { ROOT_PATH, CONNECTION_URL, SERVER_PORT, isDev } from './config';
+import compression from 'compression';
 
 const MongoStore = require('connect-mongo')(session);
 
@@ -42,6 +43,10 @@ if (isDev) {
 
     app.use(webpackDevMiddlewareInitialized);
     app.use(webpackHotMiddleware(compiler));
+}
+
+if (!isDev) {
+    app.use(compression());
 }
 app.use('/static', express.static('public'));
 app.use('/static', express.static('build'));
