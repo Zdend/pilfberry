@@ -89,7 +89,7 @@ export const minifierOptions = {
     removeAttributeQuotes: true,
     removeComments: true,
     removeEmptyAttributes: true,
-    removeEmptyElements: true,
+    removeEmptyElements: false,
     removeOptionalTags: true,
     removeRedundantAttributes: true,
     removeScriptTypeAttributes: true,
