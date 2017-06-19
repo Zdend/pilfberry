@@ -10,35 +10,16 @@ import { transformNestedRecordObject } from '../../src/scripts/services';
 import { Restaurant, restaurantDef } from '../../src/scripts/models';
 import { fromJS } from 'immutable';
 import Helmet from 'react-helmet';
-
-const styleDefinitions = `
-    <link rel="stylesheet" type="text/css" href="/static/vendor.css" />
-    <link rel="stylesheet" type="text/css" href="/static/app.css" />
-`;
-
-const scriptDefinitionsDev = `
-    <script src="/static/app.js"></script>
-`;
-
-const scriptDefinitionsProd = `
-    <script src="/static/vendor.js"></script>
-    <script src="/static/app.js"></script>
-`;
-const googleTagManagerScript = `
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-NNLJW2P');</script>
-    <!-- End Google Tag Manager -->
-`;
-const googleTagManagerNoScript = `
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NNLJW2P"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
-`;
+import { minify } from 'html-minifier';
+import {
+    minifierOptions,
+    spinnerStyle,
+    googleTagManagerScript,
+    googleTagManagerNoScript,
+    styleDefinitions,
+    scriptDefinitionsDev,
+    scriptDefinitionsProd
+} from './templates';
 
 const layout = (body, initialState, helmet) => (`
     <!DOCTYPE html>
@@ -50,15 +31,17 @@ const layout = (body, initialState, helmet) => (`
             
             <meta name="author" content="ZDV">
             <meta name="viewport" content="width=device-width, initial-scale=1">
-            ${isDev ? '' : styleDefinitions}
+            ${spinnerStyle}
             ${googleTagManagerScript}
         </head>
         <body>
             ${googleTagManagerNoScript}
+            <div class="spinner-overlay"><div class="spinner"></div></div>
             <div id="root"><div>${body}</div></div>
             <script type="text/javascript" charset="utf-8">
               window.__INITIAL_STATE__ = ${initialState};
             </script>
+            ${isDev ? '' : styleDefinitions}
             ${isDev ? scriptDefinitionsDev : scriptDefinitionsProd}
         </body>
     </html>
@@ -88,15 +71,18 @@ export const renderView = (data = fromJS(initialState)) => (req, res) => {
     const rootComp = <Root store={store} Routes={routes} isClient={false} location={req.url} context={{}} />;
 
     store.runSaga(rootSaga).done.then(() => {
-        const html = renderToString(rootComp);
+        const bodyHtml = renderToString(rootComp);
         const helmet = Helmet.renderStatic();
-        res.status(200).send(
-            layout(
-                html,
-                JSON.stringify(store.getState()),
-                helmet
-            )
+
+        const rawHtml = layout(
+            bodyHtml,
+            JSON.stringify(store.getState()),
+            helmet
         );
+
+        const finalHtml = isDev ? rawHtml : minify(rawHtml, minifierOptions);
+
+        res.status(200).send(finalHtml);
     }).catch((e) => {
         res.status(500).send(e.message);
     });
@@ -108,8 +94,8 @@ export const renderRestaurant = (req, res) => {
     findRestaurant(req.params.id)
         .then(restaurant => transformNestedRecordObject(restaurant.toObject(), Restaurant, restaurantDef))
         .then(restaurant => renderView(
-                fromJS(initialState).mergeIn(['domain', 'restaurants'], restaurant)
-            )(req, res))
+            fromJS(initialState).mergeIn(['domain', 'restaurants'], restaurant)
+        )(req, res))
         .catch(console.error);
 
 };
