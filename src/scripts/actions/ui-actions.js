@@ -2,7 +2,7 @@ import { createRequestTypes, action } from './';
 
 export const LANDING_PAGE = {
     CHANGE_FILTER: 'LANDING_PAGE_CHANGE_FILTER',
-    CLOSEST_FIRST: 'CLOSEST_FIRST'
+    CLOSEST_FIRST: 'LANDING_PAGE_CLOSEST_FIRST'
 };
 export const COORDINATES = {
     REQUEST: 'COORDINATES_REQUEST',

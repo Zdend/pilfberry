@@ -28,7 +28,7 @@ function sortByDistance(restaurants, currentLocation) {
         const d1 = getDistanceFromLatLonInKm(r1.getIn(['address', 'latitude']), r1.getIn(['address', 'longitude']), currentLocation.get('lat'), currentLocation.get('lng'));
         const d2 = getDistanceFromLatLonInKm(r2.getIn(['address', 'latitude']), r2.getIn(['address', 'longitude']), currentLocation.get('lat'), currentLocation.get('lng'));
         if (d1 === d2) return 0;
-        return d1 < d2 ? -1 : 1;
+        return !d2 || d1 < d2 ? -1 : 1;
     });
 }
 

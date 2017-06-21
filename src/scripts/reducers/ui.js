@@ -55,7 +55,7 @@ function currentLocation(state = new Map({ lat: null, lng: null }), action) {
 
 function landingPage(state = new Map({ searchExpressions: new Set(), closestFirst: false }), action) {
     switch (action.type) {
-        case LANDING_PAGE.CLOSEST_TOGGLE:
+        case LANDING_PAGE.CLOSEST_FIRST:
             return state.update('closestFirst', closestFirst => !closestFirst);
         case LANDING_PAGE.CHANGE_FILTER:
             return state.set('searchExpressions', new Set(action.searchExpressions));
