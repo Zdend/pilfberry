@@ -18,7 +18,8 @@ import {
     googleTagManagerNoScript,
     styleDefinitions,
     scriptDefinitionsDev,
-    scriptDefinitionsProd
+    scriptDefinitionsProd,
+    faviconDefinitions
 } from './templates';
 
 const layout = (body, initialState, helmet) => (`
@@ -33,6 +34,7 @@ const layout = (body, initialState, helmet) => (`
             <meta name="viewport" content="width=device-width, initial-scale=1">
             ${spinnerStyle}
             ${googleTagManagerScript}
+            ${faviconDefinitions}
         </head>
         <body>
             ${googleTagManagerNoScript}

@@ -18,6 +18,8 @@ import { Strategy } from 'passport-local';
 import { User } from './db/schema';
 import { ROOT_PATH, CONNECTION_URL, SERVER_PORT, isDev } from './config';
 import compression from 'compression';
+import favicon from 'serve-favicon';
+import path from 'path';
 
 const MongoStore = require('connect-mongo')(session);
 
@@ -50,6 +52,7 @@ if (!isDev) {
 }
 app.use('/static', express.static('public'));
 app.use('/static', express.static('build'));
+app.use(favicon(path.join('public', 'favicon', 'favicon.ico')));
 app.use('/files', express.static(ROOT_PATH));
 app.use(cookieParser());
 app.use(bodyParser.json());

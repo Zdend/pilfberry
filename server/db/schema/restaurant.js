@@ -12,6 +12,7 @@ const photoSchema = new Schema({
 });
 
 const restaurantSchema = new Schema({
+    path: String,
     name: String,
     address: {
         postcode: Number,
@@ -40,6 +41,8 @@ const restaurantSchema = new Schema({
     description: String,
     url: String,
     created: Date,
+    phoneNumber: String,
+    email: String,
     photos: [photoSchema]
 });
 

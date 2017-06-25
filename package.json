@@ -100,6 +100,7 @@
     "redux-logger": "2.10.2",
     "redux-saga": "0.14.3",
     "reselect": "3.0.0",
+    "serve-favicon": "2.4.3",
     "shortid": "2.2.8"
   },
   "private": true,
