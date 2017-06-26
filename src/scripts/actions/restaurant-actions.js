@@ -35,7 +35,7 @@ export const saveRestaurantAction = {
 };
 
 export const fetchRestaurantAction = {
-    request: id => action(RESTAURANT.REQUEST, { id }),
+    request: ({ id, path }) => action(RESTAURANT.REQUEST, { id, path }),
     success: restaurant => action(RESTAURANT.SUCCESS, { restaurant }),
     failure: error => action(RESTAURANT.FAILURE, { error }),
 };

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { fetchRestaurantAction } from '../actions/restaurant-actions';
-import { getRestaurant } from '../reducers/selectors';
+import { getRestaurantByPath } from '../reducers/selectors';
 import { connect } from 'react-redux';
 import { Grid, Row, Col, Button } from 'react-bootstrap';
 import { findFirstAvatarPicture, findFirstCoverPicture, getHumanAddress, hashCode } from '../services/util';
@@ -39,9 +39,9 @@ const AvatarPhoto = ({ coverPhotoURL, avatarURL, name }) => {
 
 class RestaurantPage extends Component {
     componentDidMount() {
-        const { match: { params: { id } }, fetchRestaurant, restaurant } = this.props;
+        const { match: { params: { path } }, fetchRestaurant, restaurant } = this.props;
         if (!restaurant || !restaurant.get('id')) {
-            fetchRestaurant(id);
+            fetchRestaurant({ path });
         }
     }
 
@@ -96,9 +96,9 @@ class RestaurantPage extends Component {
 }
 
 function mapStateToProps(state, props) {
-    const { match: { params: { id } } } = props;
+    const { match: { params: { path } } } = props;
     return {
-        restaurant: getRestaurant(id)(state)
+        restaurant: getRestaurantByPath(path)(state)
     };
 }
 const mapDispatchToProps = {

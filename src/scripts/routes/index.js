@@ -13,7 +13,7 @@ import SecureLayoutRoute from '../components/layouts/secure-wrapper';
 import PublicLayoutRoute from '../components/layouts/public-wrapper';
 
 
-export default () => (
+export default ({ dynamicRoutes }) => (
     <App>
         <PublicLayoutRoute exact path="/" component={LandingPage} />
         <PublicLayoutRoute exact path="/list" component={LandingPage} />
@@ -23,6 +23,7 @@ export default () => (
         <PublicLayoutRoute path="/terms" component={TermsPage} />
         <PublicLayoutRoute path="/contact" component={ContactPage} />
         <PublicLayoutRoute path="/restaurant/:id" component={RestaurantPage} />
+        <PublicLayoutRoute path={`/:path(${dynamicRoutes.toArray().join('|')})`} component={RestaurantPage} />
 
         <SecureLayoutRoute path="/secure" component={SecurePage} />
         <SecureLayoutRoute path="/secure/restaurants" component={RestaurantListPage} />

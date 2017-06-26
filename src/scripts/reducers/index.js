@@ -6,5 +6,6 @@ import session from './session';
 export default {
     ui: combineReducers(ui),
     domain: combineReducers(domain),
-    session: combineReducers(session)
+    session: combineReducers(session),
+    routes: combineReducers({ dynamicRoutes: state => state })
 };

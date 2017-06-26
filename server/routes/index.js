@@ -1,6 +1,6 @@
-import { findAllRestaurants, findRestaurant, saveRestaurant, deleteRestaurant } from '../db';
+import { findAllRestaurants, findRestaurant, saveRestaurant, deleteRestaurant, fillInPaths, getRestaurantPaths, findRestaurantByPath } from '../db';
 import { uploadPhotosToRestaurant, deletePhoto } from '../db/file-upload';
-import view, { renderRestaurant } from './view';
+import view, { renderRestaurant, renderRestaurantByShortUrl } from './view';
 import passport from 'passport';
 import { STATUS_ACTIVE, STATUS_DELETED } from '../../shared/constants';
 
@@ -19,11 +19,18 @@ export default function (app) {
             .catch(logError('findAllRestaurants failed'));
     });
 
+    app.get('/api/restaurant/findByPath=:shortUrl', secured, function (req, res) {
+        findRestaurantByPath(req.params.shortUrl)
+            .then(restaurant => res.json(restaurant))
+            .catch(logError(`findRestaurant with id ${req.params.shortUrl} failed`));
+    });
+    
     app.get('/api/restaurant/:id', secured, function (req, res) {
         findRestaurant(req.params.id)
             .then(restaurant => res.json(restaurant))
             .catch(logError(`findRestaurant with id ${req.params.id} failed`));
     });
+
 
     app.put('/api/restaurant/:id', secured, function (req, res) {
         saveRestaurant(req.params.id, req.body)
@@ -31,7 +38,11 @@ export default function (app) {
             .catch(console.error);
     });
 
-    app.put('/api/restaurant/:id/photos', secured, uploadPhotosToRestaurant);
+    app.put('/api/restaurant/:id/photos', secured, function (req, res) {
+        fillInPaths()
+            .then(() => res.send())
+            .catch(console.error);
+    });
 
     app.delete('/api/restaurant/:id/photo/:photoId', secured, deletePhoto);
 
@@ -40,6 +51,8 @@ export default function (app) {
             .then(restaurant => res.json(restaurant))
             .catch(logError(`delete restaurant with id ${req.params.id} failed`));
     });
+
+    app.get('/api/887799', secured, fillInPaths);
 
     app.post('/api/login',
         passport.authenticate('local'),
@@ -52,13 +65,17 @@ export default function (app) {
             });
         });
 
-    app.get('/api/logout', passport.authenticationMiddleware(), function (req, res) {
+    app.get('/api/logout', secured, function (req, res) {
         req.logout();
         res.redirect('/');
     });
 
     app.get('/secure', view);
     app.get('/restaurant/:id', renderRestaurant);
+
+    getRestaurantPaths()
+        .then(paths => app.get(`/:shortUrl(${paths})`, renderRestaurantByShortUrl))
+        .catch(console.error);
 
     app.get('*', view);
 }

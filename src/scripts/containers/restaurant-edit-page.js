@@ -46,6 +46,11 @@ class RestaurantPage extends Component {
                         <h1 className="margin-top-1x">{restaurant.get('name') || '<Restaurant Name>'}</h1>
 
                         <RestaurantInput label="Restaurant name" field="name" />
+                        
+                        <FormGroup>
+                            <ControlLabel>Pilfberry URL</ControlLabel>
+                            <FormControl.Static>/{restaurant.get('path')}</FormControl.Static>
+                        </FormGroup>
 
                         <fieldset>
                             <legend>Address</legend>

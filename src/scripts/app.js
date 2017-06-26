@@ -18,7 +18,7 @@ store.runSaga(rootSaga);
 
 const render = (Routes) => ReactDOM.render(
     <AppContainer>
-        <Root store={store} Routes={Routes} history={history} />
+        <Root store={store} Routes={Routes} history={history} dynamicRoutes={initialState.getIn(['routes', 'dynamicRoutes'])} />
     </AppContainer>
     , document.getElementById('root'));
 

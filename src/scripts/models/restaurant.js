@@ -30,11 +30,14 @@ export const restaurantDef = {
 export default Record({
     id: null,
     name: '',
+    path: null,
     status: STATUS_ACTIVE,
     address: new Address(),
     tags: new List(),
     description: '',
     url: '',
+    email: undefined,
+    phoneNumber: undefined,
     created: null,
     cuisines: new List(),
     photos: new List()

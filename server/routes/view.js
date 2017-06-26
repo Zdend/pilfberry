@@ -1,10 +1,11 @@
 import React from 'react';
+import { List } from 'immutable';
 import { renderToString } from 'react-dom/server';
 import Root from '../../src/scripts/containers/root';
 import configureStore from '../../src/scripts/stores/configure-store';
 import rootSaga from '../../src/scripts/sagas/index';
 import routes from '../../src/scripts/routes/index';
-import { findRestaurant } from '../db';
+import { findRestaurant, findRestaurantByPath, getRestaurantPaths } from '../db';
 import { isDev } from '../config';
 import { transformNestedRecordObject } from '../../src/scripts/services';
 import { Restaurant, restaurantDef } from '../../src/scripts/models';
@@ -69,27 +70,34 @@ const initialState = {
 };
 
 export const renderView = (data = fromJS(initialState)) => (req, res) => {
-    const store = configureStore(data);
-    const rootComp = <Root store={store} Routes={routes} isClient={false} location={req.url} context={{}} />;
+    getRestaurantPaths()
+        .then(paths => {
+            const dataWithPaths = data.setIn(['routes', 'dynamicRoutes'], List.of(paths));
+            const store = configureStore(dataWithPaths);
+            const rootComp = <Root store={store} Routes={routes} isClient={false} location={req.url} context={{}} dynamicRoutes={List.of(paths)} />;
 
-    store.runSaga(rootSaga).done.then(() => {
-        const bodyHtml = renderToString(rootComp);
-        const helmet = Helmet.renderStatic();
+            store.runSaga(rootSaga).done.then(() => {
+                const bodyHtml = renderToString(rootComp);
+                const helmet = Helmet.renderStatic();
 
-        const rawHtml = layout(
-            bodyHtml,
-            JSON.stringify(store.getState()),
-            helmet
-        );
+                const rawHtml = layout(
+                    bodyHtml,
+                    JSON.stringify(store.getState()),
+                    helmet
+                );
 
-        const finalHtml = isDev ? rawHtml : minify(rawHtml, minifierOptions);
+                const finalHtml = isDev ? rawHtml : minify(rawHtml, minifierOptions);
 
-        res.status(200).send(finalHtml);
-    }).catch((e) => {
-        res.status(500).send(e.message);
-    });
+                res.status(200).send(finalHtml);
+            }).catch((e) => {
+                res.status(500).send(e.message);
+            });
 
-    store.close();
+            store.close();
+        })
+        .catch(console.error);
+
+
 };
 
 export const renderRestaurant = (req, res) => {
@@ -99,7 +107,15 @@ export const renderRestaurant = (req, res) => {
             fromJS(initialState).mergeIn(['domain', 'restaurants'], restaurant)
         )(req, res))
         .catch(console.error);
+};
 
+export const renderRestaurantByShortUrl = (req, res) => {
+    findRestaurantByPath(req.params.shortUrl)
+        .then(restaurant => transformNestedRecordObject(restaurant.toObject(), Restaurant, restaurantDef))
+        .then(restaurant => renderView(
+            fromJS(initialState).mergeIn(['domain', 'restaurants'], restaurant)
+        )(req, res))
+        .catch(console.error);
 };
 
 export default renderView(fromJS(initialState));

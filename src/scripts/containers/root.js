@@ -3,16 +3,16 @@ import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'react-router-redux';
 import { StaticRouter } from 'react-router-dom';
 
-const Root = ({ store, Routes, history, isClient = true, location, context }) => (
+const Root = ({ store, Routes, history, isClient = true, location, context, dynamicRoutes }) => (
     <Provider store={store}>
         {isClient
             ?
             <ConnectedRouter history={history} store={store}>
-                <Routes />
+                <Routes dynamicRoutes={dynamicRoutes} />
             </ConnectedRouter>
             :
             <StaticRouter location={location} context={context}>
-                <Routes />
+                <Routes dynamicRoutes={dynamicRoutes} />
             </StaticRouter>
         }
 

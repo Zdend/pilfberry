@@ -11,8 +11,12 @@ import { API_KEY, GEO_PREFILL } from '../../../shared/constants';
 export function* fetchRestaurants({ criteria }) {
     yield fetchEntity(fetchRestaurantsAction, '/api/restaurants', d => d, criteria);
 }
-export function* fetchRestaurant({ id }) {
-    yield fetchEntity(fetchRestaurantAction, `/api/restaurant/${id}`);
+export function* fetchRestaurant({ id, path }) {
+    if (id) {
+        yield fetchEntity(fetchRestaurantAction, `/api/restaurant/${id}`);
+    } else {
+        yield fetchEntity(fetchRestaurantAction, `/api/restaurant/findByPath=${path}`);
+    }
 }
 export function* saveRestaurant({ id }) {
     const restaurant = yield select(getRestaurant(id));

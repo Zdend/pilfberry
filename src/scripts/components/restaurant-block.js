@@ -55,7 +55,7 @@ export default ({ restaurant, navigate, currentLocation }) => {
 
     return (
         <div className="col-sm-6">
-            <div className="restaurant-block" onClick={() => navigate(`/restaurant/${restaurant.get('id')}`)}>
+            <div className="restaurant-block" onClick={() => navigate(`/${restaurant.get('path')}`)}>
                 <BlockImage url={photoURL} name={restaurant.get('name')} />
                 <div className="restaurant-block__content">
                     {renderDistance(restaurant, currentLocation)}
