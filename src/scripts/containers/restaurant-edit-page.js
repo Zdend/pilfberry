@@ -26,7 +26,7 @@ class RestaurantPage extends Component {
     componentDidMount() {
         const { match: { params: { id } }, restaurant, createRestaurantAction } = this.props;
         if (id !== NEW_ID) {
-            this.props.fetchRestaurant(id);
+            this.props.fetchRestaurant({ id });
         } else if (!restaurant) {
             createRestaurantAction();
         }
@@ -46,7 +46,7 @@ class RestaurantPage extends Component {
                         <h1 className="margin-top-1x">{restaurant.get('name') || '<Restaurant Name>'}</h1>
 
                         <RestaurantInput label="Restaurant name" field="name" />
-                        
+
                         <FormGroup>
                             <ControlLabel>Pilfberry URL</ControlLabel>
                             <FormControl.Static>/{restaurant.get('path')}</FormControl.Static>

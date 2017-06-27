@@ -26,7 +26,8 @@ export function saveRestaurant(id, restaurant) {
     const photos = restaurant.photos;
     delete restaurant.photos;
     if (id === NEW_ID) {
-        return Restaurant.create({ ...restaurant, created: new Date() });
+        return getUniquePath(restaurant)
+            .then(path => Restaurant.create({ ...restaurant, path, created: new Date() }));
     }
     return Restaurant.findById(id)
         .then(doc => {
@@ -41,7 +42,9 @@ export function saveRestaurant(id, restaurant) {
                 }
             });
             return doc.save();
-        }).then(() => Restaurant.findByIdAndUpdate(id, restaurant, { new: true }).exec());
+        })
+        .then(() => getUniquePath(restaurant))
+        .then(path => Restaurant.findByIdAndUpdate(id, { ...restaurant, path }, { new: true }).exec());
 }
 
 export function getRestaurantPaths() {
@@ -68,12 +71,44 @@ export function uploadMockData() {
         .catch(console.error);
 }
 
+function dashify(expression) {
+    return expression.toLowerCase().trim().replace(/[^a-z\- \d]/g, '').replace(/[\s|-]+/g, '-');
+}
+function findRestaurantByPathNotId(path, id) {
+    return Restaurant.findOne({ path, _id: { $ne: id } }).exec();
+}
+function incrementNumberInPath(path, finder) {
+    const suffix = path.substring(path.lastIndexOf('-') + 1, path.length);
+    const convertedNumber = isNaN(Number(suffix)) ? 1 : Number(suffix) + 1;
+    const editedPath = convertedNumber > 1 ? `${path.substring(0, path.lastIndexOf('-'))}-${convertedNumber}` : `${path}-1`;
+    return finder(editedPath)
+        .then(r => r ? incrementNumberInPath(editedPath, finder) : editedPath);
+}
+function getUniquePath(restaurant) {
+    const { name, address: { suburb }, id } = restaurant;
+    const path = dashify(name);
+    const pathSuburb = dashify(`${name} ${suburb ? suburb : ''}`);
+    const finder = expression => id !== NEW_ID ? findRestaurantByPathNotId(expression, id) : findRestaurantByPath(expression);
+    return finder(path)
+        .then(r => r ? finder(pathSuburb) : path)
+        .then(r => {
+            if (typeof r === 'string') {
+                return r;
+            }
+            if (!r && suburb) {
+                return pathSuburb;
+            }
+            return incrementNumberInPath(path, finder);
+        });
+}
+
+
 export function fillInPaths() {
     return Restaurant.find().exec()
         .then(restaurants => {
             restaurants.forEach(restaurant => {
                 const name = restaurant.name;
-                const path = name.toLowerCase().trim().replace(/[^a-z\- \d]/g, '').replace(/[\s|-]+/g, '-');
+                const path = dashify(name);
                 restaurant.path = path;
                 console.log(path);
                 return restaurant.save();
