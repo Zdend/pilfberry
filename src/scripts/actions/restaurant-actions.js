@@ -16,7 +16,10 @@ export const RESTAURANT = {
 };
 
 export const RESTAURANTS = {
-    ...createRequestTypes('RESTAURANTS')
+    ...createRequestTypes('RESTAURANTS'),
+    BY_SUBURB_REQUEST: 'RESTAURANTS_BY_SUBURB_REQUEST',
+    BY_SUBURB_SUCCESS: 'RESTAURANTS_BY_SUBURB_SUCCESS',
+    BY_SUBURB_FAILURE: 'RESTAURANTS_BY_SUBURB_FAILURE',
 };
 
 export const restaurantValueChangeAction = (id, field, value) => action(RESTAURANT.CHANGE, { id, field, value });
@@ -50,5 +53,11 @@ export const fetchRestaurantsAction = {
     request: (criteria) => action(RESTAURANTS.REQUEST, { criteria }),
     success: restaurants => action(RESTAURANTS.SUCCESS, { restaurants }),
     failure: error => action(RESTAURANTS.FAILURE, { error }),
+};
+
+export const fetchRestaurantsBySuburbAction = {
+    request: suburb => action(RESTAURANTS.BY_SUBURB_REQUEST, { suburb }),
+    success: restaurants => action(RESTAURANTS.BY_SUBURB_SUCCESS, { restaurants }),
+    failure: error => action(RESTAURANTS.BY_SUBURB_FAILURE, { error }),
 };
 

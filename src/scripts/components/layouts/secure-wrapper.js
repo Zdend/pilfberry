@@ -8,9 +8,6 @@ import GlobalMessage from '../structure/global-message';
 
 export default ({
     component: Component,
-    activeLanguage,
-    languages,
-    languageChangeAction,
     navigate,
     globalMessage,
     resetMessageAction,
@@ -31,7 +28,7 @@ export default ({
                     </Row>
                 </Grid>
 
-                <Footer {...{ activeLanguage, languages, languageChangeAction }} />
+                <Footer />
             </div>
         )}
         />

@@ -1,6 +1,8 @@
 import { Restaurant, User } from './schema';
 import { restaurants, users } from './data';
 import { NEW_ID, STATUS_DELETED, STATUS_ACTIVE } from '../../shared/constants';
+import { dashify } from '../../shared/utils/string';
+
 
 export function findAllRestaurants(criteria = {}) {
     return Restaurant.find(criteria).exec();
@@ -48,9 +50,14 @@ export function saveRestaurant(id, restaurant) {
 }
 
 export function getRestaurantPaths() {
-    return Restaurant.find({ status: STATUS_ACTIVE }, 'path')
-        .exec()
-        .then(restaurantObjects => restaurantObjects.map(r => r.path).join('|'));
+    return Restaurant.find({ status: STATUS_ACTIVE }, 'path address.suburb')
+        .exec();
+}
+export function findRestaurantsBySuburb(suburb) {
+    return Restaurant.find({
+        'address.suburb': { $regex: `.*${suburb}.*`.replace('-', '.*').trim(), $options: 'i' },
+        status: STATUS_ACTIVE
+    }).exec();
 }
 
 export function uploadMockData() {
@@ -71,9 +78,6 @@ export function uploadMockData() {
         .catch(console.error);
 }
 
-function dashify(expression) {
-    return expression.toLowerCase().trim().replace(/[^a-z\- \d]/g, '').replace(/[\s|-]+/g, '-');
-}
 function findRestaurantByPathNotId(path, id) {
     return Restaurant.findOne({ path, _id: { $ne: id } }).exec();
 }
@@ -103,16 +107,16 @@ function getUniquePath(restaurant) {
 }
 
 
-export function fillInPaths() {
-    return Restaurant.find().exec()
-        .then(restaurants => {
-            restaurants.forEach(restaurant => {
-                const name = restaurant.name;
-                const path = dashify(name);
-                restaurant.path = path;
-                console.log(path);
-                return restaurant.save();
-            });
-        })
-        .catch(console.error);
-}
+// export function fillInPaths() {
+//     return Restaurant.find().exec()
+//         .then(restaurants => {
+//             restaurants.forEach(restaurant => {
+//                 const name = restaurant.name;
+//                 const path = dashify(name);
+//                 restaurant.path = path;
+//                 console.log(path);
+//                 return restaurant.save();
+//             });
+//         })
+//         .catch(console.error);
+// }

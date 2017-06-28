@@ -1,5 +1,5 @@
 import React from 'react';
-import { List } from 'immutable';
+import { List, Map } from 'immutable';
 import { renderToString } from 'react-dom/server';
 import Root from '../../src/scripts/containers/root';
 import configureStore from '../../src/scripts/stores/configure-store';
@@ -22,6 +22,7 @@ import {
     scriptDefinitionsProd,
     faviconDefinitions
 } from './templates';
+import { dashify } from '../../shared/utils/string';
 
 const layout = (body, initialState, helmet) => (`
     <!DOCTYPE html>
@@ -68,13 +69,28 @@ const initialState = {
         restaurants: {}
     }
 };
-
+function getSuburbsRoutes(restaurants) {
+    const urlObject = restaurants.reduce((result, restaurant) => {
+        const url = dashify(restaurant.address.suburb);
+        result[url] = result[url] ? result[url] + 1 : 1;
+        return result;
+    }, {});
+    return Object.keys(urlObject)
+        .filter(key => key)
+        .map(key => ({ url: key, count: urlObject[key] }))
+        .sort((a, b) => a.count > b.count)
+        .map(object => object.url);
+}
 export const renderView = (data = fromJS(initialState)) => (req, res) => {
     getRestaurantPaths()
-        .then(paths => {
-            const dataWithPaths = data.setIn(['routes', 'dynamicRoutes'], List.of(paths));
+        .then(restaurantObjects => {
+            const dynamicRoutes = restaurantObjects.map(r => r.path);
+            const dataWithPaths = data.set('routes', new Map({
+                suburbs: new List(getSuburbsRoutes(restaurantObjects)),
+                dynamicRoutes: new List(dynamicRoutes)
+            }));
             const store = configureStore(dataWithPaths);
-            const rootComp = <Root store={store} Routes={routes} isClient={false} location={req.url} context={{}} dynamicRoutes={List.of(paths)} />;
+            const rootComp = <Root store={store} Routes={routes} isClient={false} location={req.url} context={{}} dynamicRoutes={new List(dynamicRoutes)} />;
 
             store.runSaga(rootSaga).done.then(() => {
                 const bodyHtml = renderToString(rootComp);

@@ -2,7 +2,7 @@ import { fork, call, put, takeLatest, takeEvery } from 'redux-saga/effects';
 import { get, post, put as putAxios, delete as deleteAxios } from 'axios';
 import { requestLoginWatcher } from './login-sagas';
 import { fetchUserWatcher } from './user-sagas';
-import { fetchRestaurants, fetchRestaurant, saveRestaurant, deleteRestaurant, prefillAddress, deletePhoto } from './restaurant-sagas';
+import { fetchRestaurants, fetchRestaurant, saveRestaurant, deleteRestaurant, prefillAddress, deletePhoto, fetchRestaurantsBySuburb } from './restaurant-sagas';
 import { RESTAURANT, RESTAURANTS } from '../actions/restaurant-actions';
 import { COORDINATES, updateLocationAction } from '../actions/ui-actions';
 
@@ -77,6 +77,7 @@ export default function* root() {
         fork(requestLoginWatcher),
         fork(fetchUserWatcher),
         takeEvery(RESTAURANTS.REQUEST, fetchRestaurants),
+        takeEvery(RESTAURANTS.BY_SUBURB_REQUEST, fetchRestaurantsBySuburb),
         takeEvery(RESTAURANT.REQUEST, fetchRestaurant),
         takeEvery(RESTAURANT.PREFILL_REQUEST, prefillAddress),
         takeLatest(RESTAURANT.SAVE_REQUEST, saveRestaurant),

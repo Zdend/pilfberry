@@ -1,9 +1,10 @@
 import React from 'react';
-import { Navbar, Nav, NavItem } from 'react-bootstrap';
+import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { words } from 'capitalize';
 // import { t } from 'i18next';
 
-export default ({ navigate }) => (
+export default ({ navigate, suburbs }) => (
     <header>
         <Navbar>
             <Navbar.Header>
@@ -14,8 +15,12 @@ export default ({ navigate }) => (
             </Navbar.Header>
             <Navbar.Collapse>
                 <Nav pullRight>
+                    {suburbs &&
+                        <NavDropdown eventKey={3} title="Suburbs" id="basic-nav-dropdown">
+                            {suburbs.valueSeq().map(suburb => <MenuItem key={suburb} eventKey={suburb} onClick={() => navigate(`/area/${suburb}`)}>{words(suburb.replace('-', ' '))}</MenuItem>)}
+                        </NavDropdown>
+                    }
                     <NavItem eventKey={1} className="header-action" onClick={() => navigate('/login')}>Login</NavItem>
-                    {/*<NavItem eventKey={2} onClick={() => navigate('/user')}>{t('common.link.userDetails')}</NavItem>*/}
                 </Nav>
             </Navbar.Collapse>
         </Navbar>

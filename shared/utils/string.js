@@ -1,0 +1,1 @@
+export const dashify = expression => `${expression ? expression : ''}`.toLowerCase().trim().replace(/[^a-z\- \d]/g, '').replace(/[\s|-]+/g, '-');

@@ -7,5 +7,5 @@ export default {
     ui: combineReducers(ui),
     domain: combineReducers(domain),
     session: combineReducers(session),
-    routes: combineReducers({ dynamicRoutes: state => state })
+    routes: combineReducers({ dynamicRoutes: state => state, suburbs: state => state })
 };

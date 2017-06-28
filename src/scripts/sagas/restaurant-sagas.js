@@ -1,15 +1,19 @@
 import { select, put, call, fork } from 'redux-saga/effects';
-import { fetchRestaurantsAction, fetchRestaurantAction, saveRestaurantAction, prefillAddressAction } from '../actions/restaurant-actions';
+import { fetchRestaurantsAction, fetchRestaurantAction, fetchRestaurantsBySuburbAction, saveRestaurantAction, prefillAddressAction } from '../actions/restaurant-actions';
 import { fetchEntity, updateEntity, deleteEntity } from './';
 import { getRestaurant, getRestaurantPhotos } from '../reducers/selectors';
 import { push } from 'react-router-redux';
 import { setMessageAction } from '../actions/global-message-actions';
 import { get, put as putAxios } from 'axios';
 import { transformClientRestaurantToServer } from '../transformers/restaurant-transformer';
-import { API_KEY, GEO_PREFILL } from '../../../shared/constants';
+import { API_KEY } from '../../../shared/constants';
 
 export function* fetchRestaurants({ criteria }) {
     yield fetchEntity(fetchRestaurantsAction, '/api/restaurants', d => d, criteria);
+}
+
+export function* fetchRestaurantsBySuburb({ suburb }) {
+    yield fetchEntity(fetchRestaurantsBySuburbAction, `/api/restaurants/findBySuburb=${suburb}`, d => d);
 }
 export function* fetchRestaurant({ id, path }) {
     if (id) {
@@ -57,18 +61,8 @@ export function* deletePhoto({ restaurantId, photoId }) {
     yield deleteEntity(saveRestaurantAction, `/api/restaurant/${restaurantId}/photo/${photoId}`);
 }
 
-//prefillByName get both coordinates and address
-//prefillByAddress get coordinates
-//prefillByCoordinates get address
-
-//I need Coordinates or address
 export function* prefillAddress({ id, type }) {
     yield prefillAddressByCoordinates(id);
-    // switch (type) {
-    //     case GEO_PREFILL.BY_COORDINATES: return yield prefillAddressByCoordinates(id);
-    //     case GEO_PREFILL.BY_ADDRESS: return;
-    //     case GEO_PREFILL.BY_NAME: return;
-    // }
 }
 
 

@@ -4,16 +4,16 @@ import Footer from '../structure/footer';
 import Header from '../structure/public-header';
 import GlobalMessage from '../structure/global-message';
 
-export default ({ component: Component, activeLanguage, navigate, languages, globalMessage, resetMessageAction, languageChangeAction, ...rest }) => (
+export default ({ component: Component, navigate, globalMessage, resetMessageAction, suburbs, ...rest }) => (
     <Route {...rest} render={matchProps => (
         <div>
-            <Header {...{ navigate }} />
+            <Header {...{ navigate, suburbs }} />
 
             <GlobalMessage {...{ globalMessage, resetMessageAction }} />
 
             <Component {...matchProps} />
 
-            <Footer {...{ activeLanguage, languages, languageChangeAction }} />
+            <Footer />
         </div>
     )} />
 );
