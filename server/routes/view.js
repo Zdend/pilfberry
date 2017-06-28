@@ -78,7 +78,8 @@ function getSuburbsRoutes(restaurants) {
     return Object.keys(urlObject)
         .filter(key => key)
         .map(key => ({ url: key, count: urlObject[key] }))
-        .sort((a, b) => a.count > b.count)
+        .filter(obj => obj.count >= 3)
+        .sort((a, b) => a.count < b.count)
         .map(object => object.url);
 }
 export const renderView = (data = fromJS(initialState)) => (req, res) => {
