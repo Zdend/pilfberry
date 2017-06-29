@@ -13,7 +13,7 @@ import {
     deletePhotoAction
 } from '../actions/restaurant-actions';
 import InputHOC from '../components/connected-input-hoc';
-import { NEW_ID, STATUSES, DATE_FORMAT, TAGS, CUISINES } from '../../../shared/constants';
+import { NEW_ID, STATUSES, DATE_FORMAT, TAGS, CUISINES, PRICE } from '../../../shared/constants';
 import RestaurantEditTag from '../components/restaurant-edit-tag';
 import RestaurantEditLocation from '../components/restaurant-edit-location';
 import RestaurantPhoto from '../components/restaurant-photo';
@@ -38,7 +38,10 @@ class RestaurantPage extends Component {
         const handleChangeForEvent = (field, e) => handleChange(field, e.target.value);
         const ConnectedInput = InputHOC(handleChangeForEvent);
         const RestaurantInput = ({ value, field, ...rest }) => <ConnectedInput value={restaurant.getIn([...field.split('.')])} {...{ ...rest, field }} />;
-
+        const prices = [
+            { key: 'Not Specified', value: undefined },
+            ...Object.keys(PRICE).map(key => ({ key: new Array(PRICE[key] + 1).join('$'), value: PRICE[key] }))
+        ];
         return (
             <div className="padding-bottom-2x">
                 {restaurant &&
@@ -121,6 +124,18 @@ class RestaurantPage extends Component {
                                 <FormControl.Static>
                                     {restaurant.get('created') ? moment(restaurant.get('created')).format(DATE_FORMAT) : 'Not Specified'}
                                 </FormControl.Static>
+                            </Col>
+                        </Row>
+
+                        <Row className="margin-top-2x">
+                            <Col sm={4}>
+                                <RestaurantInput label="Email" field="email" />
+                            </Col>
+                            <Col sm={4}>
+                                <RestaurantInput label="Phone Number" field="phoneNumber" />
+                            </Col>
+                            <Col sm={2}>
+                                <RestaurantInput label="Price" field="price" type="select" selectValues={prices} />
                             </Col>
                         </Row>
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { List, Map } from 'immutable';
+import { List, Map, OrderedSet } from 'immutable';
 import { renderToString } from 'react-dom/server';
 import Root from '../../src/scripts/containers/root';
 import configureStore from '../../src/scripts/stores/configure-store';
@@ -87,7 +87,7 @@ export const renderView = (data = fromJS(initialState)) => (req, res) => {
         .then(restaurantObjects => {
             const dynamicRoutes = restaurantObjects.map(r => r.path);
             const dataWithPaths = data.set('routes', new Map({
-                suburbs: new List(getSuburbsRoutes(restaurantObjects)),
+                suburbs: new OrderedSet(getSuburbsRoutes(restaurantObjects)),
                 dynamicRoutes: new List(dynamicRoutes)
             }));
             const store = configureStore(dataWithPaths);

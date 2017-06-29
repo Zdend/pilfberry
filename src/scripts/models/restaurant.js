@@ -38,6 +38,7 @@ export default Record({
     url: '',
     email: undefined,
     phoneNumber: undefined,
+    price: undefined,
     created: null,
     cuisines: new List(),
     photos: new List()

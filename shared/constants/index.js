@@ -59,6 +59,13 @@ export const PHOTO_TYPE = {
 export const PHOTO_TYPES = Object.keys(PHOTO_TYPE).map(prop => PHOTO_TYPE[prop]);
 
 
+export const PRICE = {
+    LOW: 1,
+    MEDIUM: 2,
+    HIGH: 3,
+    EXTRA: 4
+};
+
 export const API_KEY = 'AIzaSyAfvD6DhQe5P5ZprFHCXutWx-kB3DruSlU';
 export const DEFAULT_LOCATION = { lat: -33.8578957, lng: 151.1209737 };
 

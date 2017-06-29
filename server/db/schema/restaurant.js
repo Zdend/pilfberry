@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
-import { STATUSES, STATUS_ACTIVE, TAGS, PHOTO_TYPES, PHOTO_TYPE } from '../../../shared/constants';
+import { STATUSES, STATUS_ACTIVE, TAGS, PHOTO_TYPES, PHOTO_TYPE, PRICE } from '../../../shared/constants';
 
 const photoSchema = new Schema({
     photoType: {
@@ -43,6 +43,10 @@ const restaurantSchema = new Schema({
     created: Date,
     phoneNumber: String,
     email: String,
+    price: {
+        type: Number,
+        enum: PRICE
+    },
     photos: [photoSchema]
 });
 
