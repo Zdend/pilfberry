@@ -67,6 +67,7 @@ export const PRICE = {
 };
 
 export const API_KEY = 'AIzaSyAfvD6DhQe5P5ZprFHCXutWx-kB3DruSlU';
+export const WEB_API_KEY = 'AIzaSyCXdRkuZju9jPbwnVrM-FyIh0rjkIIMGI8';
 export const DEFAULT_LOCATION = { lat: -33.8578957, lng: 151.1209737 };
 
 

@@ -7,12 +7,17 @@ export const spinnerStyle = `
     .spinner {
         width: 40px;
         height: 40px;
-        margin: 40vh auto;
+        margin: 0 auto;
         background-color: #fff;
 
         border-radius: 100%;  
         -webkit-animation: sk-scaleout 1.0s infinite ease-in-out;
         animation: sk-scaleout 1.0s infinite ease-in-out;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 30%;
+        bottom: 0;
     }
 
     @-webkit-keyframes sk-scaleout {
@@ -38,6 +43,18 @@ export const spinnerStyle = `
         height: 100%;
         width: 100%;
         background-color: #510949;
+        z-index: 1;
+    }
+    .spinner-text {
+        color: white;
+        font-family: Helvetica Neue;
+        font-weight: 300;
+        position: absolute;
+        left: 0;
+        right: 0;
+        text-align: center;
+        top: 45%;
+        font-size: 16px;
     }
     </style>
 `;

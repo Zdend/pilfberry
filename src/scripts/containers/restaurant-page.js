@@ -36,6 +36,7 @@ const AvatarPhoto = ({ coverPhotoURL, avatarURL, name }) => {
     );
 };
 
+const ZeroPanel = () => <span>We are working on the missing content. Help us by <a href="mailto:contact@pilfberry.com">sending us</a> details for your restaurant!</span>
 
 class RestaurantPage extends Component {
     componentDidMount() {
@@ -80,7 +81,7 @@ class RestaurantPage extends Component {
                                 <RestaurantViewMap address={restaurant.get('address')} />
                             </div>
                             <div><a href={restaurant.get('url')} target="_blank">{restaurant.get('url')}</a></div>
-                            <p className="margin-top-2x">{restaurant.get('description') ? restaurant.get('description') : 'We are working on the missing content. Help us by sending us details for your restaurant!'}</p>
+                            <p className="margin-top-2x">{restaurant.get('description') ? restaurant.get('description') : <ZeroPanel />}</p>
 
                             <div className="clearfix" />
 

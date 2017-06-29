@@ -40,7 +40,10 @@ const layout = (body, initialState, helmet) => (`
         </head>
         <body>
             ${googleTagManagerNoScript}
-            <div class="spinner-overlay"><div class="spinner"></div></div>
+            <div class="spinner-overlay">
+                <div class="spinner"></div>
+                <div class="spinner-text">Pilfberry is loading..</div>
+            </div>
             <div id="root"><div>${body}</div></div>
             <script type="text/javascript" charset="utf-8">
               window.__INITIAL_STATE__ = ${initialState};
