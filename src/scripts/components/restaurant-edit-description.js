@@ -1,7 +1,7 @@
 import React from 'react';
 import { ControlLabel } from 'react-bootstrap';
 import { Editor, RichUtils, convertToRaw } from 'draft-js';
-import { convertText } from '../services/util';
+import { convertText, getBlockStyle } from '../services/rich-utils';
 
 
 export default class RichEditorExample extends React.Component {
@@ -10,6 +10,7 @@ export default class RichEditorExample extends React.Component {
         this.state = { editorState: convertText(props.value) };
         this.focus = () => this.refs.editor.focus();
         this.onChange = this.onChange.bind(this);
+        this.onBlur = this.onBlur.bind(this);
         this.handleKeyCommand = (command) => this._handleKeyCommand(command);
         this.onTab = (e) => this._onTab(e);
         this.toggleBlockType = (type) => this._toggleBlockType(type);
@@ -17,7 +18,10 @@ export default class RichEditorExample extends React.Component {
     }
     onChange(editorState) {
         this.setState({ editorState });
-        this.props.changeAction('description', JSON.stringify(convertToRaw(editorState.getCurrentContent())));
+    }
+
+    onBlur(editorState) {
+        this.props.changeAction('description', JSON.stringify(convertToRaw(this.state.editorState.getCurrentContent())));
     }
 
     _handleKeyCommand(command) {
@@ -76,6 +80,7 @@ export default class RichEditorExample extends React.Component {
                         editorState={editorState}
                         handleKeyCommand={this.handleKeyCommand}
                         onChange={this.onChange}
+                        onBlur={this.onBlur}
                         onTab={this.onTab}
                         placeholder="Write a restaurant description..."
                         ref="editor"
@@ -87,12 +92,6 @@ export default class RichEditorExample extends React.Component {
     }
 }
 
-function getBlockStyle(block) {
-    switch (block.getType()) {
-        case 'blockquote': return 'RichEditor-blockquote';
-        default: return null;
-    }
-}
 class StyleButton extends React.Component {
     constructor() {
         super();

@@ -11,7 +11,6 @@ const AsyncGoogleMap = withScriptjs(
     withGoogleMap(
         props => (
             <GoogleMap
-
                 defaultZoom={17}
                 defaultCenter={props.location}
                 defaultOptions={{
@@ -52,10 +51,10 @@ export default class RestaurantEditLocation extends Component {
 
         const position = { lat: latitude, lng: longitude };
         return (
-            <div className="inline-block">
-                <Button bsStyle="link" className="margin-left-1x-sm margin-left-0x padding-left-1x-sm padding-left-0x" onClick={() => this.open()}>
-                    <i className="fa fa-map margin-right-05x" />Show on map
-                </Button>
+            <div className="margin-left-1x inline-block">
+                <a className="margin-left-1x-sm" onClick={() => this.open()} href="javascript:void(0)">
+                    Show on map
+                </a>
                 <Modal show={this.state.showModal} onHide={() => this.close()}>
                     <Modal.Header closeButton>
                         <Modal.Title>Select location of the restaurant</Modal.Title>

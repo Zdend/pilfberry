@@ -11,8 +11,9 @@ import RestaurantViewGallery from '../components/restaurant-view-gallery';
 import RestaurantViewMap from '../components/restaurant-view-map';
 import { DEFAULT_AVATAR_COLOURS } from '../../../shared/constants/colours';
 import Helmet from 'react-helmet';
-import { convertText } from '../services/util';
+import { convertText, getBlockStyle } from '../services/rich-utils';
 import { Editor } from 'draft-js';
+import { generate } from 'shortid';
 
 const AvatarPhoto = ({ coverPhotoURL, avatarURL, name }) => {
     if (avatarURL) {
@@ -38,8 +39,8 @@ const AvatarPhoto = ({ coverPhotoURL, avatarURL, name }) => {
     );
 };
 
-const ZeroPanel = () => <span>We are working on the missing content. Help us by <a href="mailto:contact@pilfberry.com">sending us</a> details for your restaurant!</span>
-
+const ZeroPanel = () => <span>We are working on the missing content. Help us by <a href="mailto:contact@pilfberry.com">sending us</a> details for your restaurant!</span>;
+const OptionalIconValue = ({ value, icon, children, className }) => (value ? <div className={className}><i className={`fa fa-${icon} width-1r margin-right-1x text-muted`} /> {children ? children : value}</div> : null);
 class RestaurantPage extends Component {
     componentDidMount() {
         const { match: { params: { path } }, fetchRestaurant, restaurant } = this.props;
@@ -59,7 +60,7 @@ class RestaurantPage extends Component {
         return (
             <div>
                 <Helmet>
-                    <title>Pilfberry - {restaurant.get('name')}</title>
+                    <title>Pilfberry - {restaurant.get('name')}{restaurant.getIn(['address', 'suburb']) ? ', ' + restaurant.getIn(['address', 'suburb']) : ''}</title>
                     <meta name="description" content={`${restaurant.get('description') ? restaurant.get('description') : restaurant.get('name') + ' serves meals for people with special dietary requirements'}`} />
                     <meta name="keywords" content={`${restaurant.get('name')},${restaurant.getIn(['address', 'suburb']) ? restaurant.getIn(['address', 'suburb']) + ',' : ''}diet,${restaurant.getIn(['address', 'street']) ? restaurant.getIn(['address', 'street']) + ',' : ''}${restaurant.getIn(['address', 'postcode']) ? restaurant.getIn(['address', 'postcode']) + ',' : ''}vegetarian,gluten free,restaurant,healthy food sydney`} />
                 </Helmet>
@@ -72,20 +73,28 @@ class RestaurantPage extends Component {
                     <Row>
                         <Col sm={12} className="padding-top-2x padding-bottom-2x">
                             <AvatarPhoto avatarURL={avatarURL} coverPhotoURL={coverPhotoURL} name={restaurant.get('name')} />
-                            <h1 className="margin-top-0x">{restaurant.get('name')}</h1>
+                            <h1 className="margin-top-0x">
+                                {restaurant.get('name')} {restaurant.get('price') && <small>{[...Array(restaurant.get('price'))].map(() => <i key={generate()} className="fa fa-dollar" />)}</small>}
+                            </h1>
                             <div>
                                 {restaurant.get('tags').map(item => <RestaurantTag key={item} tag={item} />)}
                                 {restaurant.get('cuisines').map(item => <RestaurantTag key={item} tag={item} type="info" />)}
                             </div>
 
-                            <div className="margin-top-2x">
-                                <div className="visible-xs-block visible-sm-inline-block visible-md-inline-block visible-lg-inline-block">{getHumanAddress(restaurant)}</div>
+                            <OptionalIconValue value={getHumanAddress(restaurant)} icon="map-marker" className="margin-top-2x">
+                                <span>{getHumanAddress(restaurant)}</span>
                                 <RestaurantViewMap address={restaurant.get('address')} />
-                            </div>
-                            <div><a href={restaurant.get('url')} target="_blank">{restaurant.get('url')}</a></div>
+                            </OptionalIconValue>
+                            <OptionalIconValue value={restaurant.get('url')} icon="globe"><a href={restaurant.get('url')} target="_blank">{restaurant.get('url')}</a></OptionalIconValue>
+                            <OptionalIconValue value={restaurant.get('phoneNumber')} icon="phone"><a href={`tel:${restaurant.get('phoneNumber')}`}>{restaurant.get('phoneNumber')}</a></OptionalIconValue>
+                            <OptionalIconValue value={restaurant.get('email')} icon="envelope"><a href={`mailto:${restaurant.get('email')}`}>{restaurant.get('email')}</a></OptionalIconValue>
+
+
                             <div className="margin-top-2x">
                                 {restaurant.get('description')
-                                    ? <Editor editorState={convertText(restaurant.get('description'))} />
+                                    ? <Editor blockStyleFn={getBlockStyle}
+                                        readOnly
+                                        editorState={convertText(restaurant.get('description'))} />
                                     : <ZeroPanel />
                                 }
                             </div>

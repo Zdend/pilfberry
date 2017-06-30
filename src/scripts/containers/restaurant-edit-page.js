@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Button, Row, Col, FormControl, FormGroup, ControlLabel, InputGroup } from 'react-bootstrap';
 import { push } from 'react-router-redux';
-import { getRestaurant, getRestaurantPhotos } from '../reducers/selectors';
+import { getRestaurant, getRestaurantPhotos, getRestaurantEditPage } from '../reducers/selectors';
 import {
     fetchRestaurantAction,
     restaurantValueChangeAction,
@@ -21,10 +21,11 @@ import RestaurantGallery from '../components/restaurant-gallery';
 import RestaurantEditDescription from '../components/restaurant-edit-description';
 import moment from 'moment';
 import { bindActionCreators } from 'redux';
+import { SpinnerIcon } from '../components/spinner';
 
 
 
-class RestaurantPage extends Component {
+class RestaurantEditPage extends Component {
     componentDidMount() {
         const { match: { params: { id } }, restaurant, createRestaurantAction } = this.props;
         if (id !== NEW_ID) {
@@ -35,7 +36,7 @@ class RestaurantPage extends Component {
     }
 
     render() {
-        const { match: { params: { id } }, restaurant, restaurantValueChangeAction, saveRestaurant, prefillAddress, navigate, fileChange, files, deletePhotoAction } = this.props;
+        const { match: { params: { id } }, restaurant, restaurantValueChangeAction, saveRestaurant, prefillAddress, navigate, fileChange, files, deletePhotoAction, saving } = this.props;
         const handleChange = (field, value) => restaurantValueChangeAction(id, field, value);
         const handleChangeForEvent = (field, e) => handleChange(field, e.target.value);
         const ConnectedInput = InputHOC(handleChangeForEvent);
@@ -143,6 +144,7 @@ class RestaurantPage extends Component {
 
                         <Row>
                             <Col sm={12}>
+                                <ControlLabel>Description</ControlLabel>
                                 <RestaurantEditDescription value={restaurant.get('description')} changeAction={handleChange} />
                             </Col>
                         </Row>
@@ -158,8 +160,8 @@ class RestaurantPage extends Component {
                         </fieldset>
 
 
-                        <Button bsStyle="primary" className="margin-top-3x margin-right-1x" onClick={() => saveRestaurant(id)}>
-                            <i className="fa fa-save margin-right-05x" />Save
+                        <Button bsStyle="primary" className="margin-top-3x margin-right-1x" disabled={saving} onClick={() => saveRestaurant(id)}>
+                            <i className="fa fa-save margin-right-05x" />Save {saving && <SpinnerIcon />}
                         </Button>
 
                         <Button bsStyle="default" className="margin-top-3x" onClick={() => navigate('/secure/restaurants')}>
@@ -178,7 +180,8 @@ function mapStateToProps(state, props) {
     const { match: { params: { id } } } = props;
     return {
         restaurant: getRestaurant(id)(state),
-        files: getRestaurantPhotos(id)(state)
+        files: getRestaurantPhotos(id)(state),
+        saving: getRestaurantEditPage(state).get('saving')
     };
 }
 const mapDispatchToProps = (dispatch, props) => {
@@ -194,4 +197,4 @@ const mapDispatchToProps = (dispatch, props) => {
         deletePhotoAction: bindActionCreators(deletePhotoAction(id), dispatch),
     };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(RestaurantPage);
+export default connect(mapStateToProps, mapDispatchToProps)(RestaurantEditPage);

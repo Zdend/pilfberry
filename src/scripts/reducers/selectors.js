@@ -18,6 +18,8 @@ export const getUIPageUser = s(getPages, pages => pages.get('user'));
 export const getCredentials = s(getLogin, loginPage => loginPage.get('credentials'));
 export const getClosestFirst = s(getLandingPage, landingPage => landingPage.get('closestFirst'));
 export const getSearchExpressions = s(getLandingPage, landingPage => landingPage.get('searchExpressions'));
+export const getRestaurantEditPage = s(getPages, pages => pages.get('restaurantEditPage'));
+
 
 
 export const getDomain = state => state.get('domain');

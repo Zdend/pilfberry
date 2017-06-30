@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux-immutable';
 import { LOGIN } from '../actions/login-actions';
 import { USER } from '../actions/user-actions';
+import { RESTAURANT } from '../actions/restaurant-actions';
 import { LANDING_PAGE, COORDINATES } from '../actions/ui-actions';
 import { GLOBAL_MESSAGE } from '../actions/global-message-actions';
 import { Credentials } from '../models';
@@ -64,12 +65,25 @@ function landingPage(state = new Map({ searchExpressions: new Set(), closestFirs
     }
 }
 
+function restaurantEditPage(state = new Map(), action) {
+    switch (action.type) {
+        case RESTAURANT.SAVE_REQUEST:
+            return state.set('saving', true);
+        case RESTAURANT.SAVE_SUCCESS:
+        case RESTAURANT.SAVE_FAILURE:
+            return state.set('saving', false);
+        default:
+            return state;
+    }
+}
+
 
 export default {
     pages: combineReducers({
         login: combineReducers({ credentials }),
         user,
-        landingPage
+        landingPage,
+        restaurantEditPage
     }),
     components: combineReducers({
         globalMessage
