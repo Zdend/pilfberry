@@ -35,7 +35,7 @@ class MarkersContainer extends Component {
                                 <div>
                                     <div><b>{marker.title}</b></div>
                                     <div>{marker.humanAddress}</div>
-                                    <div className="margin-top-1x margin-left-2x text-center"><Link to={`/restaurant/${marker.id}`}>View more</Link></div>
+                                    <div className="margin-top-1x margin-left-2x text-center"><Link to={`/${marker.path}`}>View more</Link></div>
                                 </div>
                             </InfoWindow>
                         }
@@ -75,6 +75,7 @@ const getMarkers = (restaurants) => restaurants.valueSeq()
             title: r.get('name'),
             label: r.get('name').slice(0, 1).toUpperCase(),
             humanAddress: getHumanAddress(r),
+            path: r.get('path'),
             id: r.get('id')
         };
     }).toJS();
