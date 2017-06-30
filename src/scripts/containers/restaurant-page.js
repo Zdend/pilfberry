@@ -11,6 +11,8 @@ import RestaurantViewGallery from '../components/restaurant-view-gallery';
 import RestaurantViewMap from '../components/restaurant-view-map';
 import { DEFAULT_AVATAR_COLOURS } from '../../../shared/constants/colours';
 import Helmet from 'react-helmet';
+import { convertText } from '../services/util';
+import { Editor } from 'draft-js';
 
 const AvatarPhoto = ({ coverPhotoURL, avatarURL, name }) => {
     if (avatarURL) {
@@ -81,7 +83,12 @@ class RestaurantPage extends Component {
                                 <RestaurantViewMap address={restaurant.get('address')} />
                             </div>
                             <div><a href={restaurant.get('url')} target="_blank">{restaurant.get('url')}</a></div>
-                            <p className="margin-top-2x">{restaurant.get('description') ? restaurant.get('description') : <ZeroPanel />}</p>
+                            <div className="margin-top-2x">
+                                {restaurant.get('description')
+                                    ? <Editor editorState={convertText(restaurant.get('description'))} />
+                                    : <ZeroPanel />
+                                }
+                            </div>
 
                             <div className="clearfix" />
 

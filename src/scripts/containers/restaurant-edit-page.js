@@ -18,8 +18,10 @@ import RestaurantEditTag from '../components/restaurant-edit-tag';
 import RestaurantEditLocation from '../components/restaurant-edit-location';
 import RestaurantPhoto from '../components/restaurant-photo';
 import RestaurantGallery from '../components/restaurant-gallery';
+import RestaurantEditDescription from '../components/restaurant-edit-description';
 import moment from 'moment';
 import { bindActionCreators } from 'redux';
+
 
 
 class RestaurantPage extends Component {
@@ -141,11 +143,11 @@ class RestaurantPage extends Component {
 
                         <Row>
                             <Col sm={12}>
-                                <RestaurantInput label="Description" field="description" type="textarea" rows={5} />
+                                <RestaurantEditDescription value={restaurant.get('description')} changeAction={handleChange} />
                             </Col>
                         </Row>
 
-                        <fieldset>
+                        <fieldset className="margin-top-2x">
                             <Row>
                                 <Col sm={12}>
                                     <legend>Photo</legend>
