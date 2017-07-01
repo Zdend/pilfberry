@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { fetchRestaurantAction } from '../actions/restaurant-actions';
 import { getRestaurantByPath } from '../reducers/selectors';
 import { connect } from 'react-redux';
-import { Grid, Row, Col, Button } from 'react-bootstrap';
+import { Grid, Row, Col, Button, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import { findFirstAvatarPicture, findFirstCoverPicture, getHumanAddress, hashCode } from '../services/util';
 import { SpinnerInline } from '../components/spinner';
 import RestaurantTag from '../components/restaurant-tag';
@@ -38,6 +38,22 @@ const AvatarPhoto = ({ coverPhotoURL, avatarURL, name }) => {
         </div>
     );
 };
+const priceRange = (priceLevel) => {
+    switch (priceLevel) {
+        case 1: return 'Less than $15';
+        case 2: return '$10 - $20';
+        case 3: return '$15 - $30';
+        case 4: return '$30+';
+        default: return 'Not Available';
+    }
+}
+const PriceIndicator = ({ priceLevel }) => {
+    return (
+        <OverlayTrigger placement="top" overlay={<Tooltip id={generate()}>{priceRange(priceLevel)}</Tooltip>}>
+            <small>{[...Array(priceLevel)].map(() => <i key={generate()} className="fa fa-dollar" />)}</small>
+        </OverlayTrigger>
+    );
+};
 
 const ZeroPanel = () => <span>We are working on the missing content. Help us by <a href="mailto:contact@pilfberry.com">sending us</a> details for your restaurant!</span>;
 const OptionalIconValue = ({ value, icon, children, className }) => (value ? <div className={className}><i className={`fa fa-${icon} width-1r margin-right-1x text-muted`} /> {children ? children : value}</div> : null);
@@ -60,8 +76,8 @@ class RestaurantPage extends Component {
         return (
             <div>
                 <Helmet>
-                    <title>Pilfberry - {restaurant.get('name')}{restaurant.getIn(['address', 'suburb']) ? ', ' + restaurant.getIn(['address', 'suburb']) : ''}</title>
-                    <meta name="description" content={`${restaurant.get('description') ? restaurant.get('description') : restaurant.get('name') + ' serves meals for people with special dietary requirements'}`} />
+                    <title>{restaurant.get('name')}{restaurant.getIn(['address', 'suburb']) ? ', ' + restaurant.getIn(['address', 'suburb']) : ''} - Pilfberry</title>
+                    <meta name="description" content={`${restaurant.get('name')} serves meals for people with special dietary requirements'}`} />
                     <meta name="keywords" content={`${restaurant.get('name')},${restaurant.getIn(['address', 'suburb']) ? restaurant.getIn(['address', 'suburb']) + ',' : ''}diet,${restaurant.getIn(['address', 'street']) ? restaurant.getIn(['address', 'street']) + ',' : ''}${restaurant.getIn(['address', 'postcode']) ? restaurant.getIn(['address', 'postcode']) + ',' : ''}vegetarian,gluten free,restaurant,healthy food sydney`} />
                 </Helmet>
                 {coverPhotoURL &&
@@ -74,7 +90,7 @@ class RestaurantPage extends Component {
                         <Col sm={12} className="padding-top-2x padding-bottom-2x">
                             <AvatarPhoto avatarURL={avatarURL} coverPhotoURL={coverPhotoURL} name={restaurant.get('name')} />
                             <h1 className="margin-top-0x">
-                                {restaurant.get('name')} {restaurant.get('price') && <small>{[...Array(restaurant.get('price'))].map(() => <i key={generate()} className="fa fa-dollar" />)}</small>}
+                                {restaurant.get('name')} {restaurant.get('price') && <PriceIndicator priceLevel={restaurant.get('price')} />}
                             </h1>
                             <div>
                                 {restaurant.get('tags').map(item => <RestaurantTag key={item} tag={item} />)}
