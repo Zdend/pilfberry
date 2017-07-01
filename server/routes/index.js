@@ -3,13 +3,12 @@ import {
     findRestaurant,
     saveRestaurant,
     deleteRestaurant,
-    // fillInPaths,
     getRestaurantPaths,
     findRestaurantByPath,
     findRestaurantsBySuburb
 } from '../db';
 import { deletePhoto } from '../db/file-upload';
-import view, { renderRestaurant, renderRestaurantByShortUrl } from './view';
+import view, { renderRestaurant, renderRestaurantByShortUrl, renderAllRestaurants } from './view';
 import passport from 'passport';
 import { STATUS_ACTIVE } from '../../shared/constants';
 
@@ -67,8 +66,6 @@ export default function (app) {
             .catch(logError(`delete restaurant with id ${req.params.id} failed`));
     });
 
-    // app.get('/api/887799', secured, fillInPaths);
-
     app.post('/api/login',
         passport.authenticate('local'),
         function (req, res) {
@@ -88,6 +85,9 @@ export default function (app) {
     app.get('/secure', view);
     app.get('/restaurant/:id', renderRestaurant);
     app.get('/area/:area', view);
+    app.get('/', renderAllRestaurants);
+    app.get('/list', renderAllRestaurants);
+    app.get('/map', renderAllRestaurants);
 
     getRestaurantPaths()
         .then(paths => app.get(`/:shortUrl(${paths})`, renderRestaurantByShortUrl))

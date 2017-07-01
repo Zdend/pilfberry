@@ -12,6 +12,7 @@ const Footer = (props) => (
                 <Col xs={12} md={6}>
                     <ul className="margin-top-2x list-unstyled list-inline text-align-center text-align-left-sm">
                         <li><Link to="/">Home</Link></li>
+                        <li><Link to="/areas">Suburbs</Link></li>
                         <li><Link to="/login">Login</Link></li>
                         <li><Link to="/terms">Terms and Conditions</Link></li>
                         <li><Link to="/privacy">Privacy</Link></li>

@@ -19,6 +19,7 @@ import throttle from '../../../shared/throttle';
 import { matchesSomeFieldsAnd, getDistanceFromLatLonInKm } from '../services/util';
 import { SpinnerInline } from '../components/spinner';
 import Helmet from 'react-helmet';
+import { LinkContainer } from 'react-router-bootstrap';
 
 function sortByDistance(restaurants, currentLocation) {
     if (!currentLocation.get('lat') || !currentLocation.get('lng')) {
@@ -114,7 +115,7 @@ class LandingPage extends Component {
                                         restaurants={filteredRestaurants}
                                     />
 
-                                    <h2 className="hero-subtitle"><span className="magra-bold">pilfberry</span> helps people with dietary preferences find their next meal</h2>
+                                    <h2 className="hero-subtitle"><span className="spartan-bold">pilfberry</span> helps people with dietary preferences find their next meal</h2>
                                 </Col>
                             </Row>
                         </Grid>
@@ -135,10 +136,10 @@ class LandingPage extends Component {
                                 }
                                 <ButtonGroup className="pull-none">
                                     <OverlayTrigger placement="top" overlay={<Tooltip id={generate()}>Display map</Tooltip>}>
-                                        <Button bsStyle="default" onClick={() => navigate('/map')}><i className="fa fa-map"></i></Button>
+                                        <LinkContainer to="/map"><Button bsStyle="default"><i className="fa fa-map"></i></Button></LinkContainer>
                                     </OverlayTrigger>
                                     <OverlayTrigger placement="top" overlay={<Tooltip id={generate()}>Display list</Tooltip>}>
-                                        <Button bsStyle="default" onClick={() => navigate('/list')}><i className="fa fa-list"></i></Button>
+                                        <LinkContainer to="/list"><Button bsStyle="default"><i className="fa fa-list"></i></Button></LinkContainer>
                                     </OverlayTrigger>
                                 </ButtonGroup>
                             </ButtonToolbar>

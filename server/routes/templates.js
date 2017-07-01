@@ -1,3 +1,4 @@
+import { isDev } from '../config';
 
 export const spinnerStyle = `
     <style>
@@ -155,3 +156,34 @@ export const faviconDefinitions = `
     <meta name="msapplication-wide310x150logo" content="/static/favicon/mstile-310x150.png" />
     <meta name="msapplication-square310x310logo" content="/static/favicon/mstile-310x310.png" />
 `;
+
+
+export const layout = (body, initialState, helmet) => (`
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="utf-8">
+            ${helmet.title.toString()}
+            ${helmet.meta.toString()}
+            
+            <meta name="author" content="ZDV">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            ${spinnerStyle}
+            ${googleTagManagerScript}
+            ${faviconDefinitions}
+        </head>
+        <body>
+            ${googleTagManagerNoScript}
+            <div class="spinner-overlay">
+                <div class="spinner"></div>
+                <div class="spinner-text">Pilfberry is loading..</div>
+            </div>
+            <div id="root"><div>${body}</div></div>
+            <script type="text/javascript" charset="utf-8">
+              window.__INITIAL_STATE__ = ${initialState};
+            </script>
+            ${isDev ? '' : styleDefinitions}
+            ${isDev ? scriptDefinitionsDev : scriptDefinitionsProd}
+        </body>
+    </html>
+`);

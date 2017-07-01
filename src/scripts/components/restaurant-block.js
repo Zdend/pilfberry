@@ -4,6 +4,7 @@ import { findFirstAvatarPicture, getDistanceFromLatLonInKm, hashCode } from '../
 import { Tooltip, OverlayTrigger, Label } from 'react-bootstrap';
 import { generate } from 'shortid';
 import { DEFAULT_AVATAR_COLOURS } from '../../../shared/constants/colours';
+import { Link } from 'react-router-dom';
 
 function renderDistance(restaurant, currentLocation) {
     const restaurantCoordinates = {
@@ -59,7 +60,7 @@ export default ({ restaurant, navigate, currentLocation }) => {
                 <BlockImage url={photoURL} name={restaurant.get('name')} />
                 <div className="restaurant-block__content">
                     {renderDistance(restaurant, currentLocation)}
-                    <div className="restaurant-block__name">{restaurant.get('name')}</div>
+                    <Link className="restaurant-block__name" to={`/${restaurant.get('path')}`}>{restaurant.get('name')}</Link>
                     <div className="restaurant-block__labels">
                         {restaurant.get('tags').slice(0, 3).map(item => <RestaurantTag key={item} tag={item} />)}
                         {restaurant.get('tags').size > 3 &&

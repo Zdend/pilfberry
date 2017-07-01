@@ -4,7 +4,7 @@ import { NEW_ID, STATUS_DELETED, STATUS_ACTIVE } from '../../shared/constants';
 import { dashify } from '../../shared/utils/string';
 
 
-export function findAllRestaurants(criteria = {}) {
+export function findAllRestaurants(criteria = { status: STATUS_ACTIVE }) {
     return Restaurant.find(criteria).exec();
 }
 

@@ -8,6 +8,7 @@ import { fetchRestaurantsBySuburbAction } from '../actions/restaurant-actions';
 import { getRestaurantsBySuburb, getCurrentLocation } from '../reducers/selectors';
 import RestaurantBlock from '../components/restaurant-block';
 import { SpinnerInline } from '../components/spinner';
+import { Link } from 'react-router-dom';
 
 class SuburbPage extends Component {
     componentDidMount() {
@@ -39,6 +40,8 @@ class SuburbPage extends Component {
                             ? <Row>{restaurants.valueSeq().map(r => <RestaurantBlock restaurant={r} navigate={navigate} key={r.get('id')} currentLocation={currentLocation} />)}</Row>
                             : <SpinnerInline />
                         }
+
+                        <div className="margin-top-2x margin-bottom-2x"><Link to="/areas"><i className="fa fa-chevron-left margin-right-05x" /> Back</Link></div>
                     </Col>
                 </Row>
             </Grid>

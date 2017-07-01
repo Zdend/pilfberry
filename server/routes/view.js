@@ -1,58 +1,23 @@
 import React from 'react';
-import { List, Map, OrderedSet } from 'immutable';
+import { List, Map, OrderedSet, OrderedMap } from 'immutable';
 import { renderToString } from 'react-dom/server';
 import Root from '../../src/scripts/containers/root';
 import configureStore from '../../src/scripts/stores/configure-store';
 import rootSaga from '../../src/scripts/sagas/index';
 import routes from '../../src/scripts/routes/index';
-import { findRestaurant, findRestaurantByPath, getRestaurantPaths } from '../db';
+import { findRestaurant, findRestaurantByPath, getRestaurantPaths, findAllRestaurants } from '../db';
 import { isDev } from '../config';
-import { transformNestedRecordObject } from '../../src/scripts/services';
+import { transformNestedRecordObject, arrayToMapById } from '../../src/scripts/services';
 import { Restaurant, restaurantDef } from '../../src/scripts/models';
 import { fromJS } from 'immutable';
 import Helmet from 'react-helmet';
 import { minify } from 'html-minifier';
 import {
     minifierOptions,
-    spinnerStyle,
-    googleTagManagerScript,
-    googleTagManagerNoScript,
-    styleDefinitions,
-    scriptDefinitionsDev,
-    scriptDefinitionsProd,
-    faviconDefinitions
+    layout
 } from './templates';
 import { dashify } from '../../shared/utils/string';
 
-const layout = (body, initialState, helmet) => (`
-    <!DOCTYPE html>
-    <html>
-        <head>
-            <meta charset="utf-8">
-            ${helmet.title.toString()}
-            ${helmet.meta.toString()}
-            
-            <meta name="author" content="ZDV">
-            <meta name="viewport" content="width=device-width, initial-scale=1">
-            ${spinnerStyle}
-            ${googleTagManagerScript}
-            ${faviconDefinitions}
-        </head>
-        <body>
-            ${googleTagManagerNoScript}
-            <div class="spinner-overlay">
-                <div class="spinner"></div>
-                <div class="spinner-text">Pilfberry is loading..</div>
-            </div>
-            <div id="root"><div>${body}</div></div>
-            <script type="text/javascript" charset="utf-8">
-              window.__INITIAL_STATE__ = ${initialState};
-            </script>
-            ${isDev ? '' : styleDefinitions}
-            ${isDev ? scriptDefinitionsDev : scriptDefinitionsProd}
-        </body>
-    </html>
-`);
 
 
 const initialState = {
@@ -75,15 +40,12 @@ const initialState = {
 function getSuburbsRoutes(restaurants) {
     const urlObject = restaurants.reduce((result, restaurant) => {
         const url = dashify(restaurant.address.suburb);
-        result[url] = result[url] ? result[url] + 1 : 1;
-        return result;
+        const count = result[url];
+        return { ...result, [url]: count ? count + 1 : 1 };
     }, {});
     return Object.keys(urlObject)
         .filter(key => key)
-        .map(key => ({ url: key, count: urlObject[key] }))
-        .filter(obj => obj.count >= 3)
-        .sort((a, b) => a.count < b.count)
-        .map(object => object.url);
+        .map(key => new Map({ url: key, count: urlObject[key] }));
 }
 export const renderView = (data = fromJS(initialState)) => (req, res) => {
     getRestaurantPaths()
@@ -125,6 +87,15 @@ export const renderRestaurant = (req, res) => {
         .then(restaurant => transformNestedRecordObject(restaurant.toObject(), Restaurant, restaurantDef))
         .then(restaurant => renderView(
             fromJS(initialState).mergeIn(['domain', 'restaurants'], restaurant)
+        )(req, res))
+        .catch(console.error);
+};
+
+export const renderAllRestaurants = (req, res) => {
+    findAllRestaurants()
+        .then(restaurants => arrayToMapById(restaurants, Restaurant, OrderedMap, restaurantDef))
+        .then(restaurants => renderView(
+            fromJS(initialState).mergeIn(['domain', 'restaurants'], restaurants)
         )(req, res))
         .catch(console.error);
 };

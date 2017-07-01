@@ -12,7 +12,9 @@
   height: 8rem;
   &:hover, &:focus {
     background-color: $brand-primary;
-    color: white;
+    .restaurant-block__name {
+      color: white;
+    }
 
     .restaurant-block__image, .restaurant-block__labels {
       opacity: 0.7;
@@ -45,6 +47,8 @@
 }
 .restaurant-block__name {
   padding: 0.5rem;
+  display: inline-block;
+  color: $gray-darker;
 }
 .restaurant-block__labels {
 
