@@ -4,8 +4,15 @@ import { NEW_ID, STATUS_DELETED, STATUS_ACTIVE } from '../../shared/constants';
 import { dashify } from '../../shared/utils/string';
 
 
+function findAll(criteria) {
+    return Restaurant.find(criteria);
+}
 export function findAllRestaurants(criteria = { status: STATUS_ACTIVE }) {
-    return Restaurant.find(criteria).exec();
+    return findAll(criteria).exec();
+}
+
+export function findAllRestaurantsLean(criteria = { status: STATUS_ACTIVE }) {
+    return findAll(criteria).lean().exec();
 }
 
 export function findRestaurant(id) {
