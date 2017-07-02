@@ -1,8 +1,9 @@
 import React from 'react';
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { LinkContainer } from 'react-router-bootstrap';
 
-export default ({ navigate }) => (
+export default () => (
     <header>
         <Navbar>
             <Navbar.Header>
@@ -13,7 +14,7 @@ export default ({ navigate }) => (
             </Navbar.Header>
             <Navbar.Collapse>
                 <Nav>
-                    <NavItem className="header-action" eventKey={1} onClick={() => navigate('/secure/restaurants')}>Restaurants</NavItem>
+                    <LinkContainer to="/secure/restaurants"><NavItem className="header-action" eventKey={1}>Restaurants</NavItem></LinkContainer>
                 </Nav>
                 <Nav pullRight>
                     <NavItem eventKey={2} href="/api/logout" className="pull-right header-action">Logout</NavItem>

@@ -1,24 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Grid, Row, Col } from 'react-bootstrap';
-import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import { getAreaRoutes } from '../reducers/selectors';
 import { dashRevert } from '../../../shared/utils/string';
+import MetaTag from '../components/structure/meta';
 
-
-class AreaPage extends Component {
+class AreasPage extends Component {
 
     render() {
         const { suburbs } = this.props;
         const sortedSuburbs = suburbs.sortBy(s => s.get('count')).reverse();
         return (
             <Grid>
-                <Helmet>
-                    <title>Pilfberry - Restaurants</title>
-                    <meta name="description" content={`Pilfberry - Restaurants by suburbs`} />
-                    <meta name="keywords" content={`vegetarian restaurants, gluten free restaurants, vegan restaurants`} />
-                </Helmet>
+                <MetaTag title="Restaurants in Sydney" description="Find restaurants by suburbs" />
                 <Row>
                     <Col sm={12}>
                         <h1>Restaurants in Sydney</h1>
@@ -46,4 +41,4 @@ const mapStateToProps = (state) => {
 };
 
 
-export default connect(mapStateToProps, {})(AreaPage);
+export default connect(mapStateToProps, {})(AreasPage);

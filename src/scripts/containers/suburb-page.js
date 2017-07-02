@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Grid, Row, Col } from 'react-bootstrap';
 import { push } from 'react-router-redux';
-import Helmet from 'react-helmet';
+import MetaTag from '../components/structure/meta';
 import { words } from 'capitalize';
 import { fetchRestaurantsBySuburbAction } from '../actions/restaurant-actions';
 import { getRestaurantsBySuburb, getCurrentLocation } from '../reducers/selectors';
@@ -28,11 +28,10 @@ class SuburbPage extends Component {
         const suburb = words(area.replace('-', ' '));
         return (
             <Grid>
-                <Helmet>
-                    <title>Pilfberry - {suburb}</title>
-                    <meta name="description" content={`Pilfberry - Restaurants in ${suburb}`} />
-                    <meta name="keywords" content={`vegetarian restaurants ${suburb}, gluten free restaurants ${suburb}, vegan restaurants ${suburb}`} />
-                </Helmet>
+                <MetaTag title={`Restaurants in ${suburb}`}
+                    description={`Healthy restaurants in ${suburb}`}
+                    keywords={`vegetarian restaurants ${suburb}, gluten free restaurants ${suburb}, vegan restaurants ${suburb}`}
+                />
                 <Row>
                     <Col sm={12}>
                         <h1>Restaurants in {suburb}</h1>

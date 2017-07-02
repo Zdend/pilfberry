@@ -8,7 +8,6 @@ import GlobalMessage from '../structure/global-message';
 
 export default ({
     component: Component,
-    navigate,
     globalMessage,
     resetMessageAction,
     ...rest }) => {
@@ -16,7 +15,7 @@ export default ({
         <Route exact {...rest} render={matchProps => (
             <div>
 
-                <Header {...{ navigate }} />
+                <Header />
 
                 <GlobalMessage {...{ globalMessage, resetMessageAction }} />
 

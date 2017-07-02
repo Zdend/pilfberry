@@ -1,15 +1,10 @@
 import React from 'react';
 import { Grid, Row, Col } from 'react-bootstrap';
-import Helmet from 'react-helmet';
+import MetaTag from '../components/structure/meta';
 
 export default () => (
     <Grid>
-        <Helmet>
-            <title>Pilfberry - Contact Us</title>
-            <meta name="description" content="Feel free to contact us" />
-            <meta name="keywords" content="diet, contact, vegetarian, gluten free, restaurant, allergy" />
-        </Helmet>
-
+        <MetaTag title="Contact Us" description="Send us an enquiry regarding to features you would like to see here, if you found a bug or if you wish your restaurant to appear here." />
         <Row>
             <Col sm={12} className="padding-top-2x padding-bottom-2x">
                 <h1>Contact Us</h1>

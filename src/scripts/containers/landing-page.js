@@ -3,8 +3,7 @@ import { connect } from 'react-redux';
 import { Route } from 'react-router-dom';
 import { generate } from 'shortid';
 import {
-    ButtonToolbar, ButtonGroup, Button, DropdownButton,
-    MenuItem, InputGroup, FormControl, OverlayTrigger, Tooltip,
+    ButtonToolbar, ButtonGroup, Button, OverlayTrigger, Tooltip,
     Row, Col, Grid
 } from 'react-bootstrap';
 import { fetchRestaurantsAction } from '../actions/restaurant-actions';
@@ -18,7 +17,7 @@ import { push } from 'react-router-redux';
 import throttle from '../../../shared/throttle';
 import { matchesSomeFieldsAnd, getDistanceFromLatLonInKm } from '../services/util';
 import { SpinnerInline } from '../components/spinner';
-import Helmet from 'react-helmet';
+import MetaTag from '../components/structure/meta';
 import { LinkContainer } from 'react-router-bootstrap';
 
 function sortByDistance(restaurants, currentLocation) {
@@ -92,11 +91,7 @@ class LandingPage extends Component {
         const filteredRestaurants = this.filterRestaurants(restaurants, currentLocation, closestFirst, searchExpressions);
         return (
             <div>
-                <Helmet>
-                    <title>Pilfberry</title>
-                    <meta name="description" content="Pilfberry helps people with dietary preferences" />
-                    <meta name="keywords" content="restaurant, special diet, vegetarian, vegan, gluten free, raw, food allergy, vegetarian restaurants sydney" />
-                </Helmet>
+                <MetaTag />
 
                 <div className="hero">
                     <h1 className="hero-title animated fadeInDown" ref={ref => this.title = ref}>Eat without worries</h1>

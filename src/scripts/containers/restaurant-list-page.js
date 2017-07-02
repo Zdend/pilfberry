@@ -7,6 +7,7 @@ import { fetchRestaurantsAction, createRestaurantAction, deleteRestaurantAction 
 import { NEW_ID, STATUS_ACTIVE, STATUS_DELETED } from '../../../shared/constants';
 import RestaurantTag from '../components/restaurant-tag';
 import { matchesSomeFields, getHumanAddress, splitSearchExpression } from '../services/util';
+import MetaTag from '../components/structure/meta';
 
 const CheckValue = ({hasValue}) => <i className={`fa fa-${hasValue ? 'check text-success' : 'close text-danger'}`} />;
 
@@ -83,6 +84,7 @@ class RestaurantListPage extends Component {
         const { restaurants, navigate, deleteRestaurantAction } = this.props;
         return (
             <div className="padding-bottom-2x">
+                <MetaTag title="Manage restaurants" />
                 <FormControl
                     className="margin-bottom-1x margin-top-1x"
                     placeholder="Type in to filter.."

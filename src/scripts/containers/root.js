@@ -19,6 +19,7 @@ const Root = ({ store, Routes, history, isClient = true, location, context, dyna
     </Provider>
 );
 
+
 Root.propTypes = {
     store: PropTypes.object.isRequired,
     Routes: PropTypes.func.isRequired

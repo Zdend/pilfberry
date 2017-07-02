@@ -66,7 +66,7 @@ export default class RestaurantViewGallery extends Component {
         }
 
         return (
-            <fieldset>
+            <fieldset className="margin-top-2x">
                 <legend>Gallery</legend>
                 <Lightbox
                     images={this.getGalleryPhotos(restaurant)}

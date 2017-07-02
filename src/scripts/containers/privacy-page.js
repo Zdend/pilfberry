@@ -1,8 +1,10 @@
 import React from 'react';
 import { Grid, Row, Col } from 'react-bootstrap';
+import MetaTag from '../components/structure/meta';
 
 export default () => (
     <Grid>
+        <MetaTag title="Privacy Policy" />
         <Row>
             <Col sm={12} className="padding-top-2x padding-bottom-2x">
                 <h1>Privacy Policy</h1>

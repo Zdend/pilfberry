@@ -28,7 +28,6 @@ module.exports = {
         chunkFilename: '[name]-[chunkhash].js',
         publicPath: PUBLIC_PATH
     },
-
     resolve: {
         extensions: ['.json', '.js', '.jsx', '.scss'],
         modules: [

@@ -10,7 +10,7 @@ import PrivacyPage from '../containers/privacy-page';
 import TermsPage from '../containers/terms-page';
 import ContactPage from '../containers/contact-page';
 import SuburbPage from '../containers/suburb-page';
-import AreaPage from '../containers/area-page';
+import AreasPage from '../containers/areas-page';
 import SecureLayoutRoute from '../components/layouts/secure-wrapper';
 import PublicLayoutRoute from '../components/layouts/public-wrapper';
 
@@ -24,7 +24,7 @@ export default ({ dynamicRoutes }) => (
         <PublicLayoutRoute path="/privacy" component={PrivacyPage} />
         <PublicLayoutRoute path="/terms" component={TermsPage} />
         <PublicLayoutRoute path="/contact" component={ContactPage} />
-        <PublicLayoutRoute exact path="/areas" component={AreaPage} />
+        <PublicLayoutRoute exact path="/areas" component={AreasPage} />
         <PublicLayoutRoute path="/area/:area" component={SuburbPage} />
         <PublicLayoutRoute path="/restaurant/:id" component={RestaurantPage} />
         <PublicLayoutRoute path={`/:path(${dynamicRoutes.join('|')})`} component={RestaurantPage} />

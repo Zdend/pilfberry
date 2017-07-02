@@ -10,15 +10,13 @@ import { isDev } from '../config';
 import { transformNestedRecordObject, arrayToMapById } from '../../src/scripts/services';
 import { Restaurant, restaurantDef } from '../../src/scripts/models';
 import { fromJS } from 'immutable';
-import Helmet from 'react-helmet';
 import { minify } from 'html-minifier';
 import {
     minifierOptions,
     layout
 } from './templates';
 import { dashify } from '../../shared/utils/string';
-
-
+// import Helmet from 'react-helmet';
 
 const initialState = {
     ui: {
@@ -56,16 +54,18 @@ export const renderView = (data = fromJS(initialState)) => (req, res) => {
                 dynamicRoutes: new List(dynamicRoutes)
             }));
             const store = configureStore(dataWithPaths);
-            const rootComp = <Root store={store} Routes={routes} isClient={false} location={req.url} context={{}} dynamicRoutes={new List(dynamicRoutes)} />;
+            const Helmet = require('react-helmet').default;
+            const rootComp = <Root store={store} Routes={routes} isClient={false} location={req.url} context={{}} dynamicRoutes={new List(dynamicRoutes)} helmet={Helmet} />;
 
             store.runSaga(rootSaga).done.then(() => {
                 const bodyHtml = renderToString(rootComp);
-                const helmet = Helmet.renderStatic();
+                const head = Helmet.renderStatic();
+                console.log('Helmet', JSON.stringify(head));
 
                 const rawHtml = layout(
                     bodyHtml,
                     JSON.stringify(store.getState()),
-                    helmet
+                    head
                 );
 
                 const finalHtml = isDev ? rawHtml : minify(rawHtml, minifierOptions);
@@ -101,6 +101,7 @@ export const renderAllRestaurants = (req, res) => {
 };
 
 export const renderRestaurantByShortUrl = (req, res) => {
+    console.log('WOOOT')
     findRestaurantByPath(req.params.shortUrl)
         .then(restaurant => transformNestedRecordObject(restaurant.toObject(), Restaurant, restaurantDef))
         .then(restaurant => renderView(

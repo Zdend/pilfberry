@@ -2,7 +2,7 @@ import React from 'react';
 import { Grid, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-const Footer = (props) => (
+const Footer = () => (
     <footer className="footer">
         <Grid>
             <Row>

@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 import RestaurantViewGallery from '../components/restaurant-view-gallery';
 import RestaurantViewMap from '../components/restaurant-view-map';
 import { DEFAULT_AVATAR_COLOURS } from '../../../shared/constants/colours';
-import Helmet from 'react-helmet';
+import MetaTag from '../components/structure/meta';
 import { convertText, getBlockStyle } from '../services/rich-utils';
 import { Editor } from 'draft-js';
 import { generate } from 'shortid';
@@ -75,11 +75,15 @@ class RestaurantPage extends Component {
         const coverPhotoURL = findFirstCoverPicture(restaurant);
         return (
             <div>
-                <Helmet>
-                    <title>{restaurant.get('name')}{restaurant.getIn(['address', 'suburb']) ? ', ' + restaurant.getIn(['address', 'suburb']) : ''} - Pilfberry</title>
-                    <meta name="description" content={`${restaurant.get('name')} serves meals for people with special dietary requirements'}`} />
-                    <meta name="keywords" content={`${restaurant.get('name')},${restaurant.getIn(['address', 'suburb']) ? restaurant.getIn(['address', 'suburb']) + ',' : ''}diet,${restaurant.getIn(['address', 'street']) ? restaurant.getIn(['address', 'street']) + ',' : ''}${restaurant.getIn(['address', 'postcode']) ? restaurant.getIn(['address', 'postcode']) + ',' : ''}vegetarian,gluten free,restaurant,healthy food sydney`} />
-                </Helmet>
+                <MetaTag title={`${restaurant.get('name')}${restaurant.getIn(['address', 'suburb']) ? ', ' + restaurant.getIn(['address', 'suburb']) : ''}`}
+                    description={`${restaurant.get('name')} serves meals for people with special dietary requirements'}`}
+                    keywords={[
+                        restaurant.get('name'),
+                        `${restaurant.getIn(['address', 'suburb']) ? 'restaurants in ' + restaurant.getIn(['address', 'suburb']) : ''}`,
+                        `${restaurant.getIn(['address', 'street']) ? 'restaurants in ' + restaurant.getIn(['address', 'street']) : ''}`,
+                        `${restaurant.getIn(['address', 'postcode']) ? 'restaurants in ' + restaurant.getIn(['address', 'postcode']) : ''}`,
+                    ].filter(keyword => keyword && keyword.trim()).join(',')}
+                />
                 {coverPhotoURL &&
                     <div className="restaurant-page__cover" style={{ backgroundImage: `url('${coverPhotoURL}')` }}>
                         <h1 className="restaurant-page__cover-title">{restaurant.get('name')}</h1>

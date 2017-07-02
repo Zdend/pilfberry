@@ -166,7 +166,7 @@ export const layout = (body, initialState, helmet) => (`
             ${helmet.title.toString()}
             ${helmet.meta.toString()}
             
-            <meta name="author" content="ZDV">
+            <meta name="author" content="ZdendV">
             <meta name="viewport" content="width=device-width, initial-scale=1">
             ${spinnerStyle}
             ${googleTagManagerScript}

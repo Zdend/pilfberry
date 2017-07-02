@@ -22,7 +22,7 @@ import RestaurantEditDescription from '../components/restaurant-edit-description
 import moment from 'moment';
 import { bindActionCreators } from 'redux';
 import { SpinnerIcon } from '../components/spinner';
-
+import MetaTag from '../components/structure/meta';
 
 
 class RestaurantEditPage extends Component {
@@ -47,6 +47,7 @@ class RestaurantEditPage extends Component {
         ];
         return (
             <div className="padding-bottom-2x">
+                <MetaTag title="Edit restaurant" />
                 {restaurant &&
                     <div>
                         <h1 className="margin-top-1x">{restaurant.get('name') || '<Restaurant Name>'}</h1>

@@ -5,7 +5,7 @@ import { loginAction, credentialsChange } from '../actions/login-actions';
 import { Grid, Row, Col } from 'react-bootstrap';
 import { getCredentials } from '../reducers/selectors';
 import { push } from 'react-router-redux';
-import Helmet from 'react-helmet';
+import MetaTag from '../components/structure/meta';
 
 class LoginPage extends Component {
     componentDidMount() {
@@ -17,11 +17,7 @@ class LoginPage extends Component {
         const { credentials, loginRequestAction, credentialsChange } = this.props;
         return (
             <Grid>
-                <Helmet>
-                    <title>Pilfberry - Login</title>
-                    <meta name="description" content="Login to Pilfberry" />
-                    <meta name="keywords" content="diet, contact, vegetarian, gluten free, restaurant, login, sign in" />
-                </Helmet>
+                <MetaTag title="Login to Pilfberry" />
                 <Row className="margin-top-5x margin-bottom-5x">
                     <Col sm={6} smOffset={3} lg={4} lgOffset={4}>
                         <h1>Login</h1>
