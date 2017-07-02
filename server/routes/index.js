@@ -33,7 +33,7 @@ export default function (app) {
             .catch(logError('findRestaurantsBySuburb failed'));
     });
 
-    app.get('/api/restaurant/findByPath=:shortUrl', secured, function (req, res) {
+    app.get('/api/restaurant/findByPath=:shortUrl', function (req, res) {
         findRestaurantByPath(req.params.shortUrl)
             .then(restaurant => res.json(restaurant))
             .catch(logError(`findRestaurant with id ${req.params.shortUrl} failed`));

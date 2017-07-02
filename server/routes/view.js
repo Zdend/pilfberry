@@ -16,7 +16,7 @@ import {
     layout
 } from './templates';
 import { dashify } from '../../shared/utils/string';
-// import Helmet from 'react-helmet';
+import Helmet from 'react-helmet';
 
 const initialState = {
     ui: {
@@ -54,8 +54,8 @@ export const renderView = (data = fromJS(initialState)) => (req, res) => {
                 dynamicRoutes: new List(dynamicRoutes)
             }));
             const store = configureStore(dataWithPaths);
-            const Helmet = require('react-helmet').default;
-            const rootComp = <Root store={store} Routes={routes} isClient={false} location={req.url} context={{}} dynamicRoutes={new List(dynamicRoutes)} helmet={Helmet} />;
+
+            const rootComp = <Root store={store} Routes={routes} isClient={false} location={req.url} context={{}} dynamicRoutes={new List(dynamicRoutes)} />;
 
             store.runSaga(rootSaga).done.then(() => {
                 const bodyHtml = renderToString(rootComp);
