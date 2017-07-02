@@ -5,7 +5,7 @@ import Root from '../../src/scripts/containers/root';
 import configureStore from '../../src/scripts/stores/configure-store';
 import rootSaga from '../../src/scripts/sagas/index';
 import routes from '../../src/scripts/routes/index';
-import { findRestaurant, findRestaurantByPath, getRestaurantPaths, findAllRestaurantsLean } from '../db';
+import { findRestaurant, getRestaurantPaths, findAllRestaurantsLean } from '../db';
 import { isDev } from '../config';
 import { transformNestedRecordObject, arrayToMapById } from '../../src/scripts/services';
 import { Restaurant, restaurantDef } from '../../src/scripts/models';
@@ -60,7 +60,6 @@ export const renderView = (data = fromJS(initialState)) => (req, res) => {
             store.runSaga(rootSaga).done.then(() => {
                 const bodyHtml = renderToString(rootComp);
                 const head = Helmet.renderStatic();
-                console.log('Helmet', JSON.stringify(head));
 
                 const rawHtml = layout(
                     bodyHtml,
@@ -78,8 +77,6 @@ export const renderView = (data = fromJS(initialState)) => (req, res) => {
             store.close();
         })
         .catch(console.error);
-
-
 };
 
 export const renderRestaurant = (req, res) => {
@@ -100,14 +97,11 @@ export const renderAllRestaurants = (req, res) => {
         .catch(console.error);
 };
 
-export const renderRestaurantByShortUrl = (req, res) => {
-    console.log('WOOOT')
-    findRestaurantByPath(req.params.shortUrl)
-        .then(restaurant => transformNestedRecordObject(restaurant.toObject(), Restaurant, restaurantDef))
-        .then(restaurant => renderView(
-            fromJS(initialState).mergeIn(['domain', 'restaurants'], restaurant)
-        )(req, res))
-        .catch(console.error);
+export const renderRestaurantByShortUrl = restaurant => (req, res) => {
+    const transformedRestaurant = transformNestedRecordObject(restaurant.toObject(), Restaurant, restaurantDef);
+    renderView(fromJS(initialState)
+        .mergeIn(['domain', 'restaurants'], transformedRestaurant))(req, res);
+
 };
 
 export default renderView(fromJS(initialState));

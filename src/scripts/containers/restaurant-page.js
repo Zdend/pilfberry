@@ -76,7 +76,7 @@ class RestaurantPage extends Component {
         return (
             <div>
                 <MetaTag title={`${restaurant.get('name')}${restaurant.getIn(['address', 'suburb']) ? ', ' + restaurant.getIn(['address', 'suburb']) : ''}`}
-                    description={`${restaurant.get('name')} serves meals for people with special dietary requirements'}`}
+                    description={`${restaurant.get('name')} serves meals for people with special dietary requirements`}
                     keywords={[
                         restaurant.get('name'),
                         `${restaurant.getIn(['address', 'suburb']) ? 'restaurants in ' + restaurant.getIn(['address', 'suburb']) : ''}`,

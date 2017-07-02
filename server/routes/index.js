@@ -89,9 +89,16 @@ export default function (app) {
     app.get('/list', renderAllRestaurants);
     app.get('/map', renderAllRestaurants);
 
-    getRestaurantPaths()
-        .then(paths => app.get(`/:shortUrl(${paths})`, renderRestaurantByShortUrl))
-        .catch(console.error);
+    app.get('/:shortUrl', function (req, res) {
+        findRestaurantByPath(req.params.shortUrl)
+            .then(restaurant => {
+                if (restaurant) {
+                    renderRestaurantByShortUrl(restaurant)(req, res);
+                } else {
+                    view(req, res);
+                }
+            });
+    });
 
     app.get('*', view);
 }
