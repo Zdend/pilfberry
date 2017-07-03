@@ -1,15 +1,11 @@
-import { EditorState, ContentState, convertFromRaw, convertFromHTML } from 'draft-js';
+import { EditorState, ContentState, convertFromRaw } from 'draft-js';
 
 export function convertText(text) {
     let rawContentObject;
     try {
         rawContentObject = convertFromRaw(JSON.parse(text));
     } catch (e) {
-        const blocksFromHTML = convertFromHTML(text);
-        rawContentObject = ContentState.createFromBlockArray(
-            blocksFromHTML.contentBlocks,
-            blocksFromHTML.entityMap
-        );
+        rawContentObject = ContentState.createFromText(text || '');
     }
 
     return EditorState.createWithContent(rawContentObject);

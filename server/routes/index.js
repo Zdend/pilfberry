@@ -97,7 +97,7 @@ export default function (app) {
                 } else {
                     view(req, res);
                 }
-            });
+            }).catch(console.error);
     });
 
     app.get('*', view);

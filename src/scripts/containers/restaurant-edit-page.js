@@ -61,13 +61,15 @@ class RestaurantEditPage extends Component {
 
                         <fieldset>
                             <legend>Address</legend>
-                            <RestaurantInput label="Street" field="address.street" />
 
                             <Row>
-                                <Col sm={6}>
+                                <Col sm={4}>
+                                    <RestaurantInput label="Street" field="address.street" />
+                                </Col>
+                                <Col sm={4}>
                                     <RestaurantInput label="Suburb" field="address.suburb" />
                                 </Col>
-                                <Col sm={6}>
+                                <Col sm={4}>
                                     <RestaurantInput label="Postcode" field="address.postcode" />
                                 </Col>
                             </Row>

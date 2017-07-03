@@ -158,7 +158,7 @@ export const faviconDefinitions = `
 `;
 
 
-export const layout = (body, initialState, helmet) => (`
+export const layout = (body, initialState, helmet = { title: '', meta: '' }) => (`
     <!DOCTYPE html>
     <html>
         <head>

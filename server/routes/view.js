@@ -54,7 +54,7 @@ export const renderView = (data = fromJS(initialState)) => (req, res) => {
                 dynamicRoutes: new List(dynamicRoutes)
             }));
             const store = configureStore(dataWithPaths);
-
+            
             const rootComp = <Root store={store} Routes={routes} isClient={false} location={req.url} context={{}} dynamicRoutes={new List(dynamicRoutes)} />;
 
             store.runSaga(rootSaga).done.then(() => {
@@ -71,6 +71,7 @@ export const renderView = (data = fromJS(initialState)) => (req, res) => {
 
                 res.status(200).send(finalHtml);
             }).catch((e) => {
+                console.error(e);
                 res.status(500).send(e.message);
             });
 
