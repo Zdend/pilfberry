@@ -11,7 +11,7 @@ import RestaurantViewGallery from '../components/restaurant-view-gallery';
 import RestaurantViewMap from '../components/restaurant-view-map';
 import { DEFAULT_AVATAR_COLOURS } from '../../../shared/constants/colours';
 import MetaTag from '../components/structure/meta';
-import { convertText, getBlockStyle } from '../services/rich-utils';
+import { convertText, getBlockStyle, convertToPlainText } from '../services/rich-utils';
 import { Editor } from 'draft-js';
 import { generate } from 'shortid';
 
@@ -71,12 +71,13 @@ class RestaurantPage extends Component {
             return (<Grid><Row><Col sm={12} className="padding-top-2x padding-bottom-2x"><SpinnerInline /></Col></Row></Grid>);
         }
 
+        const plainTextDescription = convertToPlainText(restaurant.get('description')).replace(/[\n\r]/g, '');
         const avatarURL = findFirstAvatarPicture(restaurant);
         const coverPhotoURL = findFirstCoverPicture(restaurant);
         return (
             <div>
                 <MetaTag title={`${restaurant.get('name')}${restaurant.getIn(['address', 'suburb']) ? ', ' + restaurant.getIn(['address', 'suburb']) : ''}`}
-                    description={`${restaurant.get('name')} serves meals for people with special dietary requirements`}
+                    description={plainTextDescription && plainTextDescription.length > 20 ? plainTextDescription.substr(0, 250) : `${restaurant.get('name')} serves meals for people with special dietary requirements`}
                     keywords={[
                         restaurant.get('name'),
                         `${restaurant.getIn(['address', 'suburb']) ? 'restaurants in ' + restaurant.getIn(['address', 'suburb']) : ''}`,

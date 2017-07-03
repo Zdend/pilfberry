@@ -1,14 +1,22 @@
 import { EditorState, ContentState, convertFromRaw } from 'draft-js';
 
-export function convertText(text) {
-    let rawContentObject;
+function convertTextToContent(text) {
     try {
-        rawContentObject = convertFromRaw(JSON.parse(text));
+        return convertFromRaw(JSON.parse(text));
     } catch (e) {
-        rawContentObject = ContentState.createFromText(text || '');
+        return ContentState.createFromText(text || '');
     }
+}
+
+export function convertText(text) {
+    const rawContentObject = convertTextToContent(text);
 
     return EditorState.createWithContent(rawContentObject);
+}
+
+export function convertToPlainText(content) {
+    const rawContentObject = convertTextToContent(content);
+    return rawContentObject.getPlainText();
 }
 
 export function getBlockStyle(block) {
