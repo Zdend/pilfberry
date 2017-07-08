@@ -31,29 +31,28 @@ export function deleteRestaurant(id) {
     return Restaurant.findByIdAndUpdate(id, { status: STATUS_DELETED }, { new: true }).exec();
 }
 
-export function saveRestaurant(id, restaurant) {
+export async function saveRestaurant(id, restaurant) {
     const photos = restaurant.photos;
     delete restaurant.photos;
     if (id === NEW_ID) {
-        return getUniquePath(restaurant)
-            .then(path => Restaurant.create({ ...restaurant, path, created: new Date() }));
+        const path = await getUniquePath(restaurant);
+        return Restaurant.create({ ...restaurant, path, created: new Date() });
     }
-    return Restaurant.findById(id)
-        .then(doc => {
-            const persistedPhotos = doc.photos;
-            if (!photos || !persistedPhotos) {
-                return;
+    const doc = await Restaurant.findById(id);
+    const persistedPhotos = doc.photos;
+    if (photos && persistedPhotos) {
+        photos.forEach(photo => {
+            const persistedPhoto = persistedPhotos.id(photo.id);
+            if (persistedPhoto) {
+                persistedPhoto.photoType = photo.photoType;
             }
-            photos.forEach(photo => {
-                const persistedPhoto = persistedPhotos.id(photo.id);
-                if (persistedPhoto) {
-                    persistedPhoto.photoType = photo.photoType;
-                }
-            });
-            return doc.save();
-        })
-        .then(() => restaurant.address && restaurant.title ? getUniquePath(restaurant) : null)
-        .then(path => Restaurant.findByIdAndUpdate(id, path ? { ...restaurant, path } : restaurant, { new: true }).exec());
+        });
+    }
+
+    await doc.save();
+    const path = restaurant.address && restaurant.title ? await getUniquePath(restaurant) : null;
+
+    return Restaurant.findByIdAndUpdate(id, path ? { ...restaurant, path } : restaurant, { new: true }).exec();
 }
 
 export function getRestaurantPaths() {
@@ -88,29 +87,30 @@ export function uploadMockData() {
 function findRestaurantByPathNotId(path, id) {
     return Restaurant.findOne({ path, _id: { $ne: id } }).exec();
 }
-function incrementNumberInPath(path, finder) {
+async function incrementNumberInPath(path, finder) {
     const suffix = path.substring(path.lastIndexOf('-') + 1, path.length);
     const convertedNumber = isNaN(Number(suffix)) ? 1 : Number(suffix) + 1;
     const editedPath = convertedNumber > 1 ? `${path.substring(0, path.lastIndexOf('-'))}-${convertedNumber}` : `${path}-1`;
-    return finder(editedPath)
-        .then(r => r ? incrementNumberInPath(editedPath, finder) : editedPath);
+    const restaurant = await finder(editedPath);
+    if (!restaurant) {
+        return editedPath;
+    }
+    return incrementNumberInPath(editedPath, finder);
 }
-function getUniquePath(restaurant) {
+async function getUniquePath(restaurant) {
     const { name, address: { suburb }, id } = restaurant;
     const path = dashify(name);
-    const pathSuburb = dashify(`${name} ${suburb ? suburb : ''}`);
+    const pathSuburb = dashify(`${name} ${suburb || ''}`);
     const finder = expression => id !== NEW_ID ? findRestaurantByPathNotId(expression, id) : findRestaurantByPath(expression);
-    return finder(path)
-        .then(r => r ? finder(pathSuburb) : path)
-        .then(r => {
-            if (typeof r === 'string') {
-                return r;
-            }
-            if (!r && suburb) {
-                return pathSuburb;
-            }
-            return incrementNumberInPath(path, finder);
-        });
+    const persistedRestaurantByPath = await finder(path);
+    if (!persistedRestaurantByPath) {
+        return path;
+    }
+    const persistedRestaurantBySuburb = await finder(pathSuburb);
+    if (!persistedRestaurantBySuburb && suburb) {
+        return pathSuburb;
+    }
+    return incrementNumberInPath(path, finder);
 }
 
 

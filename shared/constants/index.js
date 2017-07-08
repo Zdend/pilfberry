@@ -5,7 +5,9 @@ export const DEFAULT_AVATAR_URL = '/static/images/restaurant-type/japanese.jpg';
 
 export const STATUS_ACTIVE = 'ACTIVE';
 export const STATUS_DELETED = 'DELETED';
+export const STATUS_DRAFT = 'DRAFT';
 export const STATUSES = [STATUS_ACTIVE, STATUS_DELETED];
+export const POST_STATUSES = [STATUS_ACTIVE, STATUS_DRAFT, STATUS_DELETED];
 
 export const TAG = {
     VEGETARIAN: 'VEGETARIAN',

@@ -3,6 +3,7 @@ import App from '../containers/app';
 import SecurePage from '../containers/secure/secure-page';
 import RestaurantListPage from '../containers/secure/restaurant-list-page';
 import RestaurantEditPage from '../containers/secure/restaurant-edit-page';
+import PostListPage from '../containers/secure/post-list-page';
 import LoginPage from '../containers/public/login-page';
 import LandingPage from '../containers/public/landing-page';
 import RestaurantPage from '../containers/public/restaurant-page';
@@ -32,5 +33,6 @@ export default ({ dynamicRoutes }) => (
         <SecureLayoutRoute path="/secure" component={SecurePage} />
         <SecureLayoutRoute path="/secure/restaurants" component={RestaurantListPage} />
         <SecureLayoutRoute path="/secure/restaurants/:id" component={RestaurantEditPage} />
+        <SecureLayoutRoute path="/secure/posts" component={PostListPage} />
     </App>
 );

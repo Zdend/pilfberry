@@ -54,10 +54,7 @@ class RestaurantListPage extends Component {
                             bsSize="xs"
                             bsStyle="danger"
                             className="margin-right-05x margin-bottom-05x"
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                deleteRestaurantAction(id);
-                            }}>
+                            onClick={() => deleteRestaurantAction(id)}>
                             Delete
                         </Button>
                     }

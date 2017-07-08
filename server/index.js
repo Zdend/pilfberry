@@ -4,22 +4,21 @@ import mongoose from 'mongoose';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 import webpack from 'webpack';
-import webpackConfig from '../webpack.config';
-import { uploadMockData } from './db';
-import { PUBLIC_ROUTES } from './routes';
+import path from 'path';
 import helmet from 'helmet';
 import bodyParser from 'body-parser';
 import session from 'express-session';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
 import passport from 'passport';
-import routes from './routes';
 import { Strategy } from 'passport-local';
-import { User } from './db/schema';
-import { ROOT_PATH, CONNECTION_URL, SERVER_PORT, isDev } from './config';
 import compression from 'compression';
 import favicon from 'serve-favicon';
-import path from 'path';
+import webpackConfig from '../webpack.config';
+import { uploadMockData } from './db';
+import routes from './routes';
+import { User } from './db/schema';
+import { ROOT_PATH, CONNECTION_URL, SERVER_PORT, isDev } from './config';
 
 const MongoStore = require('connect-mongo')(session);
 

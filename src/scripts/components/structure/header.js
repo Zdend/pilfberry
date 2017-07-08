@@ -14,7 +14,12 @@ export default () => (
             </Navbar.Header>
             <Navbar.Collapse>
                 <Nav>
-                    <LinkContainer to="/secure/restaurants"><NavItem className="header-action" eventKey={1}>Restaurants</NavItem></LinkContainer>
+                    <LinkContainer to="/secure/restaurants">
+                        <NavItem className="header-action" eventKey={1}>Restaurants</NavItem>
+                    </LinkContainer>
+                    <LinkContainer to="/secure/posts">
+                        <NavItem className="header-action" eventKey={2}>Posts</NavItem>
+                    </LinkContainer>
                 </Nav>
                 <Nav pullRight>
                     <NavItem eventKey={2} href="/api/logout" className="pull-right header-action">Logout</NavItem>

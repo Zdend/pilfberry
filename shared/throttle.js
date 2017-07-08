@@ -7,13 +7,13 @@
  */
 
 export default function throttle(func, wait) {
-    var ctx, args, rtn, timeoutID; // caching
-    var last = 0;
+    let ctx, args, rtn, timeoutID; // caching
+    let last = 0;
 
     return function throttled() {
         ctx = this;
         args = arguments;
-        var delta = new Date() - last;
+        const delta = new Date() - last;
         if (!timeoutID)
             if (delta >= wait) call();
             else timeoutID = setTimeout(call, wait - delta);
