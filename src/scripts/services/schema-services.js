@@ -1,4 +1,4 @@
-import {idsArrayToMapOfRecords} from './';
+import { idsArrayToMapOfRecords } from './';
 
 export const one = (key, alias) => `one~${key}~${alias}`;
 export const many = (key, alias) => `many~${key}~${alias}`;
@@ -13,7 +13,7 @@ export const SchemaRegister = (schemas) => {
             const keys = mappings.keys();
             for (const fk of keys) {
                 const [relationship, collectionName, alias] = mappings.get(fk).split('~');
-                const descriptor = {fk, relationship, collectionName};
+                const descriptor = { fk, relationship, collectionName };
                 result[`${entityName}~${fk}`] = descriptor;
                 if (alias) {
                     result[`${entityName}~${alias}`] = descriptor;

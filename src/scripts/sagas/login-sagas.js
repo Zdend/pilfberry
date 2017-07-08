@@ -1,14 +1,14 @@
 import { takeEvery, put, call, select } from 'redux-saga/effects';
+import { post } from 'axios';
+import { push } from 'react-router-redux';
 import * as LoginActions from '../actions/login-actions';
 import { setMessageAction } from '../actions/global-message-actions';
 import { getCredentials } from '../reducers/selectors';
-import { post } from 'axios';
-import { push } from 'react-router-redux';
 
 
 function* postLogin() {
     const credentials = yield select(getCredentials);
-    
+
     try {
         const response = yield call(post, '/api/login', {
             username: credentials.get('login'),

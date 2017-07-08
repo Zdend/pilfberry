@@ -1,6 +1,5 @@
 import { createSelector as s } from 'reselect';
 import { NEW_ID } from '../../../shared/constants';
-import { dashify } from '../../../shared/utils/string';
 
 const isNew = entity => entity.get('id') === NEW_ID;
 
@@ -19,8 +18,6 @@ export const getCredentials = s(getLogin, loginPage => loginPage.get('credential
 export const getClosestFirst = s(getLandingPage, landingPage => landingPage.get('closestFirst'));
 export const getSearchExpressions = s(getLandingPage, landingPage => landingPage.get('searchExpressions'));
 export const getRestaurantEditPage = s(getPages, pages => pages.get('restaurantEditPage'));
-
-
 
 export const getDomain = state => state.get('domain');
 export const getUser = s(getDomain, domain => domain.get('user'));

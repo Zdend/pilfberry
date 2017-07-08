@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { withGoogleMap, GoogleMap, Marker, InfoWindow } from 'react-google-maps';
 import withScriptjs from 'react-google-maps/lib/async/withScriptjs';
+import { generate } from 'shortid';
+import { Col } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import { SpinnerInline } from './spinner';
 import { API_KEY, DEFAULT_LOCATION } from '../../../shared/constants';
-import { generate } from 'shortid';
-import { Row, Col } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
 import { getHumanAddress } from '../services/util';
 
 class MarkersContainer extends Component {

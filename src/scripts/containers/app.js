@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getGlobalMessage, getAreaRoutes } from '../reducers/selectors';
 import { setMessageAction } from '../actions/global-message-actions';
@@ -12,10 +12,6 @@ class App extends Component {
         return <div>{childrenWithProps}</div>;
     }
 }
-
-App.propTypes = {
-
-};
 
 export default connect(state => ({
     globalMessage: getGlobalMessage(state),

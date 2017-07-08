@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { TAGS, TAG } from '../../../shared/constants';
 import {
     ButtonToolbar, ButtonGroup, Button, DropdownButton,
     MenuItem
 } from 'react-bootstrap';
+import { TAG } from '../../../shared/constants';
 
 const ToggleButtonHOC = (onClick) => ({ tag, className }) =>
     <Button bsStyle="primary" onClick={() => onClick(tag)} className={`text-capitalize ${className}`}>{tag.toLowerCase()}</Button>;

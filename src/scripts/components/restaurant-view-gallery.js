@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
+import Lightbox from 'react-images';
 import { PHOTO_TYPE } from '../../../shared/constants';
 import { createPhotoLink } from '../services/util';
-import Lightbox from 'react-images';
 
 export default class RestaurantViewGallery extends Component {
     constructor() {

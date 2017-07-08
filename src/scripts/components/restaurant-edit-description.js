@@ -1,5 +1,4 @@
 import React from 'react';
-import { ControlLabel } from 'react-bootstrap';
 import { Editor, RichUtils, convertToRaw } from 'draft-js';
 import { convertText, getBlockStyle } from '../services/rich-utils';
 

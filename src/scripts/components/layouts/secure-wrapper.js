@@ -1,8 +1,8 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
+import { Grid, Row, Col } from 'react-bootstrap';
 import Header from '../structure/header';
 import Footer from '../structure/footer';
-import { Grid, Row, Col } from 'react-bootstrap';
 import GlobalMessage from '../structure/global-message';
 
 

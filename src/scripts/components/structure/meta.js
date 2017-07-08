@@ -1,8 +1,8 @@
 /* global window */
 import React from 'react';
+import Helmet from 'react-helmet';
 import { getTitle, getDescription, getKeywords } from '../../../../shared/constants/keywords';
 import { HOSTNAME } from '../../../../shared/constants';
-import Helmet from 'react-helmet';
 
 export default ({ title, description, keywords, image, url, social }) => {
     const imageUrl = image ? `${HOSTNAME}${image}` : `${HOSTNAME}/static/images/Burger.jpg`;

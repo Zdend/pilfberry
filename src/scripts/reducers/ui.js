@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux-immutable';
+import { Map, Set } from 'immutable';
+import { LOCATION_CHANGE } from 'react-router-redux';
 import { LOGIN } from '../actions/login-actions';
 import { USER } from '../actions/user-actions';
 import { RESTAURANT } from '../actions/restaurant-actions';
 import { LANDING_PAGE, COORDINATES } from '../actions/ui-actions';
 import { GLOBAL_MESSAGE } from '../actions/global-message-actions';
 import { Credentials } from '../models';
-import { Map, Set } from 'immutable';
-import { LOCATION_CHANGE } from 'react-router-redux';
 
 function credentials(state = new Credentials(), action) {
     switch (action.type) {

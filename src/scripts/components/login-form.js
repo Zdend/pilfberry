@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react';
-// import { t } from 'i18next';
 import { SpinnerInline } from './spinner';
 
 const LoginForm = ({ login, password, isPending, loginRequestAction, credentialsChange }) => (

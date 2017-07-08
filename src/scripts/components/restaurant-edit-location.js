@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import { Modal, Button, FormControl, InputGroup, InputGroupButton } from 'react-bootstrap';
+import { Modal, Button } from 'react-bootstrap';
 import { withGoogleMap, GoogleMap, Marker } from 'react-google-maps';
-import SearchBox from 'react-google-maps/lib/places/SearchBox';
+import { generate } from 'shortid';
 import withScriptjs from 'react-google-maps/lib/async/withScriptjs';
 import { SpinnerInline } from './spinner';
 import { API_KEY, DEFAULT_LOCATION } from '../../../shared/constants';
-import { generate } from 'shortid';
 
 const AsyncGoogleMap = withScriptjs(
     withGoogleMap(

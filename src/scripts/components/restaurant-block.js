@@ -1,10 +1,10 @@
 import React from 'react';
+import { Tooltip, OverlayTrigger, Label } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import { generate } from 'shortid';
 import RestaurantTag from './restaurant-tag';
 import { findFirstAvatarPicture, getDistanceFromLatLonInKm, hashCode } from '../services/util';
-import { Tooltip, OverlayTrigger, Label } from 'react-bootstrap';
-import { generate } from 'shortid';
 import { DEFAULT_AVATAR_COLOURS } from '../../../shared/constants/colours';
-import { Link } from 'react-router-dom';
 
 function renderDistance(restaurant, currentLocation) {
     const restaurantCoordinates = {

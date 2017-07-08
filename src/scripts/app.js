@@ -1,12 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { AppContainer } from 'react-hot-loader';
+import createHistory from 'history/createBrowserHistory';
 import Root from './containers/root';
 import rootSaga from './sagas';
 import Routes from './routes';
 import configureStore from './stores/configure-store';
-import createHistory from 'history/createBrowserHistory';
-import { AppContainer } from 'react-hot-loader';
-import { fromJS } from 'immutable';
 import { reviveServerState } from './transformers';
 
 const initialState = reviveServerState(window.__INITIAL_STATE__);
@@ -31,5 +30,3 @@ if (module.hot) {
         render(newRoutes);
     });
 }
-
-

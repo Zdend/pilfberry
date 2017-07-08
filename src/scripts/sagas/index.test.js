@@ -1,13 +1,13 @@
 import 'babel-polyfill';
-import {call, put} from 'redux-saga/effects';
-import {fetchEntity} from './';
-import {get} from 'axios';
+import { call, put } from 'redux-saga/effects';
+import { get } from 'axios';
+import { fetchEntity } from './';
 
 describe('ESS-PROTO', () => {
 
     const actionCreatorObject = {
-        success: data => ({type: 'ACTION_SUCCESS', data}),
-        failure: error => ({type: 'ACTION_FAILURE', error})
+        success: data => ({ type: 'ACTION_SUCCESS', data }),
+        failure: error => ({ type: 'ACTION_FAILURE', error })
     };
     const path = '/api/dummy';
 
@@ -19,14 +19,14 @@ describe('ESS-PROTO', () => {
         });
 
         it('dispatches a failure action', () => {
-            expect(generator.next().value).to.deep.equal(put({type: 'ACTION_FAILURE', error: undefined}));
+            expect(generator.next().value).to.deep.equal(put({ type: 'ACTION_FAILURE', error: undefined }));
         });
     });
 
 
     describe('Saga - fetchEntity - success', () => {
         const generator = fetchEntity(actionCreatorObject, path, data => data.users[0]);
-        const user = {id: '123', name: 'Frankie Au'};
+        const user = { id: '123', name: 'Frankie Au' };
 
         it('calls get request', () => {
             expect(generator.next().value).to.deep.equal(call(get, path));
@@ -37,7 +37,7 @@ describe('ESS-PROTO', () => {
                 data: {
                     users: [user]
                 }
-            }).value).to.deep.equal(put({type: 'ACTION_SUCCESS', data: user}));
+            }).value).to.deep.equal(put({ type: 'ACTION_SUCCESS', data: user }));
         });
     });
 });
