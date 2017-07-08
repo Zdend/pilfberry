@@ -52,8 +52,8 @@ export function saveRestaurant(id, restaurant) {
             });
             return doc.save();
         })
-        .then(() => getUniquePath(restaurant))
-        .then(path => Restaurant.findByIdAndUpdate(id, { ...restaurant, path }, { new: true }).exec());
+        .then(() => restaurant.address && restaurant.title ? getUniquePath(restaurant) : null)
+        .then(path => Restaurant.findByIdAndUpdate(id, path ? { ...restaurant, path } : restaurant, { new: true }).exec());
 }
 
 export function getRestaurantPaths() {

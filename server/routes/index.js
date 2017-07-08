@@ -7,7 +7,7 @@ import {
     findRestaurantByPath,
     findRestaurantsBySuburb
 } from '../db';
-import { deletePhoto } from '../db/file-upload';
+import { deletePhoto, uploadPhotosToRestaurant } from '../db/file-upload';
 import view, { renderRestaurant, renderRestaurantByShortUrl, renderAllRestaurants } from './view';
 import passport from 'passport';
 import { STATUS_ACTIVE } from '../../shared/constants';
@@ -52,11 +52,7 @@ export default function (app) {
             .catch(console.error);
     });
 
-    app.put('/api/restaurant/:id/photos', secured, function (req, res) {
-        fillInPaths()
-            .then(() => res.send())
-            .catch(console.error);
-    });
+    app.put('/api/restaurant/:id/photos', secured, uploadPhotosToRestaurant);
 
     app.delete('/api/restaurant/:id/photo/:photoId', secured, deletePhoto);
 
