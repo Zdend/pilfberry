@@ -3,7 +3,9 @@ import { get, post, put as putAxios, delete as deleteAxios } from 'axios';
 import { requestLoginWatcher } from './login-sagas';
 import { fetchUserWatcher } from './user-sagas';
 import { fetchRestaurants, fetchRestaurant, saveRestaurant, deleteRestaurant, prefillAddress, deletePhoto, fetchRestaurantsBySuburb } from './restaurant-sagas';
+import { fetchPosts, fetchPost, savePost, deletePost } from './post-sagas';
 import { RESTAURANT, RESTAURANTS } from '../actions/restaurant-actions';
+import { POST, POSTS } from '../actions/post-actions';
 import { COORDINATES, updateLocationAction } from '../actions/ui-actions';
 
 export function* fetchEntity({ success, failure }, path, resultTransformer = data => data, payload) {
@@ -83,6 +85,10 @@ export default function* root() {
         takeLatest(RESTAURANT.SAVE_REQUEST, saveRestaurant),
         takeLatest(RESTAURANT.DELETE_REQUEST, deleteRestaurant),
         takeLatest(RESTAURANT.DELETE_PHOTO, deletePhoto),
+        takeLatest(POST.SAVE_REQUEST, savePost),
+        takeEvery(POST.REQUEST, fetchPost),
+        takeEvery(POSTS.REQUEST, fetchPosts),
+        takeLatest(POST.DELETE_REQUEST, deletePost),
         takeLatest(COORDINATES.REQUEST, checkCurrentLocation)
     ];
 }

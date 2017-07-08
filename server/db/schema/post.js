@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
-import { STATUSES, STATUS_DRAFT } from '../../../shared/constants';
+import { POST_STATUSES, STATUS_DRAFT } from '../../../shared/constants';
 
 const postSchema = new Schema({
     title: String,
@@ -12,7 +12,7 @@ const postSchema = new Schema({
     dateUpdated: Date,
     status: {
         type: String,
-        enum: STATUSES,
+        enum: POST_STATUSES,
         default: STATUS_DRAFT
     },
     author: {

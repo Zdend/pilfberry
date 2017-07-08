@@ -17,6 +17,7 @@
             "type": "node",
             "request": "attach",
             "name": "Attach to Process",
+            "sourceMaps": true,
             "port": 5858
         }
     ]

@@ -20,4 +20,5 @@ export const fetchEntitiesAction = (request, success, failure) => ({
     failure: error => action(failure, { error }),
 });
 
+
 export const failureAction = failureType => error => action(failureType, { error });

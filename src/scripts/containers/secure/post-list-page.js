@@ -17,16 +17,16 @@ class PostListPage extends Component {
         };
         this.displayDeleted = this.displayDeleted.bind(this);
         this.onSeachQueryChange = this.onSeachQueryChange.bind(this);
+        this.navigateToNewPost = () => props.navigate(`/secure/post/${NEW_ID}`);
     }
     componentDidMount() {
-        // this.props.fetchPosts();
-        this.navigateToNewPost = () => this.props.navigate(`/secure/posts/${NEW_ID}`);
+        this.props.fetchPosts();
     }
 
-    // displayDeleted(e) {
-    //     const displayDeleted = e.target.checked;
-    //     this.setState({ displayDeleted }, () => this.props.fetchPosts({ status: displayDeleted ? STATUS_DELETED : STATUS_ACTIVE }));
-    // }
+    displayDeleted(e) {
+        const displayDeleted = e.target.checked;
+        this.setState({ displayDeleted }, () => this.props.fetchPosts(displayDeleted ? { status: STATUS_DELETED } : {}));
+    }
 
     onSeachQueryChange(e) {
         this.setState({ searchQuery: e.target.value });
@@ -36,12 +36,12 @@ class PostListPage extends Component {
         const id = post.get('id');
 
         return (
-            <tr key={id} className="clickable" onClick={() => navigate(`/secure/posts/${id}`)}>
+            <tr key={id} className="clickable" onClick={() => navigate(`/secure/post/${id}`)}>
                 <td>{post.get('title')}</td>
 
                 <td>{post.get('status')}</td>
                 <td>
-                    {post.get('status') === STATUS_ACTIVE &&
+                    {post.get('status') !== STATUS_DELETED &&
                         <Button
                             bsSize="xs"
                             bsStyle="danger"
@@ -55,7 +55,7 @@ class PostListPage extends Component {
         );
     }
 
-    renderRestaurants(posts, navigate, deletePostAction, displayDeleted, searchExpression) {
+    renderPosts(posts, navigate, deletePostAction, displayDeleted, searchExpression) {
         if (posts) {
             const filteredPosts = searchExpression
                 ? posts.filter(post => matchesSomeFields(post, splitSearchExpression(searchExpression), [
@@ -64,7 +64,7 @@ class PostListPage extends Component {
                 ))
                 : posts;
             return filteredPosts
-                .filter(post => displayDeleted || post.get('status') === STATUS_ACTIVE)
+                .filter(post => displayDeleted || post.get('status') !== STATUS_DELETED)
                 .valueSeq()
                 .map(post => this.renderRow(post, navigate, deletePostAction));
         }
@@ -95,7 +95,7 @@ class PostListPage extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {this.renderRestaurants(posts, navigate, deletePostAction, this.state.displayDeleted, this.state.searchQuery)}
+                        {this.renderPosts(posts, navigate, deletePostAction, this.state.displayDeleted, this.state.searchQuery)}
                     </tbody>
                 </Table>
 
@@ -112,9 +112,9 @@ function mapStateToProps(state) {
     };
 }
 const mapDispatchToProps = {
-    fetchRestaurants: fetchPostsAction.request,
+    fetchPosts: fetchPostsAction.request,
     createPostAction,
     navigate: push,
-    // deletePostAction
+    deletePostAction
 };
 export default connect(mapStateToProps, mapDispatchToProps)(PostListPage);

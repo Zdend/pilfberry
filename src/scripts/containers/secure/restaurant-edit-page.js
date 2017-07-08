@@ -52,12 +52,17 @@ class RestaurantEditPage extends Component {
                     <div>
                         <h1 className="margin-top-1x">{restaurant.get('name') || '<Restaurant Name>'}</h1>
 
-                        <RestaurantInput label="Restaurant name" field="name" />
-
-                        <FormGroup>
-                            <ControlLabel>Pilfberry URL</ControlLabel>
-                            <FormControl.Static>/{restaurant.get('path')}</FormControl.Static>
-                        </FormGroup>
+                        <Row>
+                            <Col sm={6}>
+                                <RestaurantInput label="Restaurant name" field="name" />
+                            </Col>
+                            <Col sm={6}>
+                                <FormGroup>
+                                    <ControlLabel>Pilfberry URL</ControlLabel>
+                                    <FormControl.Static>/{restaurant.get('path')}</FormControl.Static>
+                                </FormGroup>
+                            </Col>
+                        </Row>
 
                         <fieldset>
                             <legend>Address</legend>

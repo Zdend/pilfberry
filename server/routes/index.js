@@ -5,13 +5,15 @@ import {
     saveRestaurant,
     deleteRestaurant,
     findRestaurantByPath,
-    findRestaurantsBySuburb
+    findRestaurantsBySuburb,
+    savePost,
+    findAllPosts
 } from '../db';
 import { deletePhoto, uploadPhotosToRestaurant } from '../db/file-upload';
 import view, { renderRestaurant, renderRestaurantByShortUrl, renderAllRestaurants } from './view';
-import { STATUS_ACTIVE } from '../../shared/constants';
+import { STATUS_ACTIVE, STATUS_DELETED } from '../../shared/constants';
 
-const logErrorFactory = message => e => console.error(`${message ? message + ':' : ''}${e && e.message && e.message.substr(0, 300)}`);
+const logErrorFactory = message => e => console.error(`${message ? message + ':' : ''}${e && e.stack}`);
 const logError = (message, e) => logErrorFactory(message)(e);
 
 export default function (app) {
@@ -27,6 +29,16 @@ export default function (app) {
         } catch (e) {
             logError('findAllRestaurants failed', e);
             res.status(500).send('Fetching of restaurants failed.');
+        }
+    });
+
+    app.get('/api/posts', async function (req, res) {
+        try {
+            const posts = await findAllPosts({ status: req.query.status || { $ne: STATUS_DELETED } });
+            res.json(posts);
+        } catch (e) {
+            logError('findAllPosts failed', e);
+            res.status(500).send('Fetching of posts failed.');
         }
     });
 
@@ -82,6 +94,16 @@ export default function (app) {
         } catch (e) {
             logError(`delete of a restaurant with id ${req.params.id} failed`, e);
             res.status(500).send(`Delete of a restaurant with id ${req.params.id} failed.`);
+        }
+    });
+
+    app.put('/api/post/:id', secured, async function (req, res) {
+        try {
+            const post = await savePost(req.params.id, req.body);
+            res.json(post);
+        } catch (e) {
+            logError(`savePost with id ${req.params.id} failed`, e);
+            res.status(500).send('Saving of a post failed.');
         }
     });
 

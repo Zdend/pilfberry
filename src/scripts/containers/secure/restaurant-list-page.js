@@ -18,7 +18,7 @@ class RestaurantListPage extends Component {
         };
         this.displayDeleted = this.displayDeleted.bind(this);
         this.onSeachQueryChange = this.onSeachQueryChange.bind(this);
-        this.navigateToNewRestaurant = () => this.props.navigate(`/secure/restaurants/${NEW_ID}`);
+        this.navigateToNewRestaurant = () => props.navigate(`/secure/restaurant/${NEW_ID}`);
     }
     componentDidMount() {
         this.props.fetchRestaurants();
@@ -37,7 +37,7 @@ class RestaurantListPage extends Component {
         const id = restaurant.get('id');
 
         return (
-            <tr key={id} className="clickable" onClick={() => navigate(`/secure/restaurants/${id}`)}>
+            <tr key={id} className="clickable" onClick={() => navigate(`/secure/restaurant/${id}`)}>
                 <td>{restaurant.get('name')}</td>
                 <td><CheckValue hasValue={restaurant.get('description')} /></td>
                 <td><CheckValue hasValue={restaurant.getIn(['address', 'postcode']) && restaurant.getIn(['address', 'street'])} /></td>

@@ -1,4 +1,4 @@
-import { Restaurant, User } from './schema';
+import { Restaurant, User, Post } from './schema';
 import { restaurants, users } from './data';
 import { NEW_ID, STATUS_DELETED, STATUS_ACTIVE } from '../../shared/constants';
 import { dashify } from '../../shared/utils/string';
@@ -10,6 +10,7 @@ function findAll(criteria) {
 export function findAllRestaurants(criteria = { status: STATUS_ACTIVE }) {
     return findAll(criteria).exec();
 }
+
 
 export function findAllRestaurantsLean(criteria = { status: STATUS_ACTIVE }) {
     return findAll(criteria).lean().exec();
@@ -23,9 +24,14 @@ export function findUserByEmail(email) {
     return User.findOne({ email }).exec();
 }
 
-export function findRestaurantByPath(path) {
-    return Restaurant.findOne({ path }).exec();
+export function findEntityByPath(entity, path) {
+    return entity.findOne({ path }).exec();
 }
+
+export function findRestaurantByPath(path) {
+    return findEntityByPath(Restaurant, path);
+}
+
 
 export function deleteRestaurant(id) {
     return Restaurant.findByIdAndUpdate(id, { status: STATUS_DELETED }, { new: true }).exec();
@@ -35,7 +41,7 @@ export async function saveRestaurant(id, restaurant) {
     const photos = restaurant.photos;
     delete restaurant.photos;
     if (id === NEW_ID) {
-        const path = await getUniquePath(restaurant);
+        const path = await getUniquePath(restaurant, restaurant.name, restaurant.address && restaurant.address.suburb);
         return Restaurant.create({ ...restaurant, path, created: new Date() });
     }
     const doc = await Restaurant.findById(id);
@@ -84,31 +90,38 @@ export function uploadMockData() {
         .catch(console.error);
 }
 
-function findRestaurantByPathNotId(path, id) {
-    return Restaurant.findOne({ path, _id: { $ne: id } }).exec();
+function findEntityByPathNotId(entity, path, id) {
+    return entity.findOne({ path, _id: { $ne: id } }).exec();
 }
 async function incrementNumberInPath(path, finder) {
     const suffix = path.substring(path.lastIndexOf('-') + 1, path.length);
     const convertedNumber = isNaN(Number(suffix)) ? 1 : Number(suffix) + 1;
     const editedPath = convertedNumber > 1 ? `${path.substring(0, path.lastIndexOf('-'))}-${convertedNumber}` : `${path}-1`;
-    const restaurant = await finder(editedPath);
-    if (!restaurant) {
+    const anyEntity = await finder(editedPath);
+    if (!anyEntity) {
         return editedPath;
     }
     return incrementNumberInPath(editedPath, finder);
 }
-async function getUniquePath(restaurant) {
-    const { name, address: { suburb }, id } = restaurant;
-    const path = dashify(name);
-    const pathSuburb = dashify(`${name} ${suburb || ''}`);
-    const finder = expression => id !== NEW_ID ? findRestaurantByPathNotId(expression, id) : findRestaurantByPath(expression);
-    const persistedRestaurantByPath = await finder(path);
-    if (!persistedRestaurantByPath) {
+async function getUniquePath(entity, primaryToken, secondaryToken) {
+    const { id } = entity;
+    const entities = [Restaurant, Post];
+    const path = dashify(primaryToken);
+    const pathSecondary = dashify(`${primaryToken} ${secondaryToken || ''}`);
+    const finder = async expression => {
+        const promises = entities.map(currentEntity => id !== NEW_ID
+            ? findEntityByPathNotId(currentEntity, expression, id)
+            : findEntityByPath(currentEntity, expression));
+        const results = await Promise.all(promises);
+        return results.some(doc => doc);
+    };
+    const anyEntityByPath = await finder(path);
+    if (!anyEntityByPath) {
         return path;
     }
-    const persistedRestaurantBySuburb = await finder(pathSuburb);
-    if (!persistedRestaurantBySuburb && suburb) {
-        return pathSuburb;
+    const anyEntityBySecondaryToken = await finder(pathSecondary);
+    if (!anyEntityBySecondaryToken && secondaryToken) {
+        return pathSecondary;
     }
     return incrementNumberInPath(path, finder);
 }
@@ -127,3 +140,18 @@ async function getUniquePath(restaurant) {
 //         })
 //         .catch(console.error);
 // }
+
+export function findAllPosts(criteria = { status: { $ne: STATUS_DELETED } }) {
+    return Post.find(criteria).exec();
+}
+
+export async function savePost(id, post) {
+    delete post.author;
+    delete post.dateCreated;
+    delete post.dateUpdated;
+    const path = await getUniquePath(post, post.title, 'post');
+    if (id === NEW_ID) {
+        return Post.create({ ...post, path, dateCreated: new Date() });
+    }
+    return Post.findByIdAndUpdate(id, { ...post, path }, { new: true }).exec();
+}

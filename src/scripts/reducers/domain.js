@@ -2,7 +2,8 @@ import { OrderedMap } from 'immutable';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import { USER } from '../actions/user-actions';
 import { RESTAURANT, RESTAURANTS } from '../actions/restaurant-actions';
-import { User, Restaurant, restaurantDef } from '../models';
+import { POST, POSTS } from '../actions/post-actions';
+import { User, Restaurant, restaurantDef, Post } from '../models';
 import { arrayToMapById, transformNestedRecordObject } from '../services';
 import { NEW_ID } from '../../../shared/constants';
 
@@ -47,8 +48,28 @@ function restaurantPhotos(state = { id: null, files: [] }, action) {
     }
 }
 
+
+function posts(state = new OrderedMap(), action) {
+    switch (action.type) {
+        case POSTS.SUCCESS:
+            return arrayToMapById(action.entities, Post, OrderedMap);
+        case POSTS.FAILURE:
+            return state;
+        case POST.SUCCESS:
+        case POST.SAVE_SUCCESS:
+            return state.merge(transformNestedRecordObject(action.entity, Post));
+        case POST.CHANGE:
+            return state.setIn([action.id, ...action.field.split('.')], action.value);
+        case POST.CREATE:
+            return state.set(NEW_ID, new Post({ id: NEW_ID }));
+        default:
+            return state;
+    }
+}
+
 export default {
     user,
     restaurants,
-    restaurantPhotos
+    restaurantPhotos,
+    posts
 };
