@@ -20,7 +20,7 @@ function restaurants(state = new OrderedMap(), action) {
     switch (action.type) {
         case RESTAURANTS.SUCCESS:
         case RESTAURANTS.BY_SUBURB_SUCCESS:
-            return arrayToMapById(action.restaurants, Restaurant, OrderedMap, restaurantDef);
+            return arrayToMapById(action.entities, Restaurant, OrderedMap, restaurantDef);
         case RESTAURANTS.FAILURE:
             return state;
         case RESTAURANT.SUCCESS:

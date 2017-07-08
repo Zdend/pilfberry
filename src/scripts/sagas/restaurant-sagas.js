@@ -12,8 +12,8 @@ export function* fetchRestaurants({ criteria }) {
     yield fetchEntity(fetchRestaurantsAction, '/api/restaurants', d => d, criteria);
 }
 
-export function* fetchRestaurantsBySuburb({ suburb }) {
-    yield fetchEntity(fetchRestaurantsBySuburbAction, `/api/restaurants/findBySuburb=${suburb}`, d => d);
+export function* fetchRestaurantsBySuburb({ criteria }) {
+    yield fetchEntity(fetchRestaurantsBySuburbAction, `/api/restaurants/findBySuburb=${criteria}`, d => d);
 }
 export function* fetchRestaurant({ id, path }) {
     if (id) {
@@ -93,10 +93,6 @@ function* prefillAddressByCoordinates(id) {
     }
 }
 
-function parseAddressResponse(results) {
-    return getAddressUntilNonEmpty(results, 0, {});
-}
-
 function getAddressUntilNonEmpty(results, index, initialAddress) {
     const getComponent = result => name => {
         const componentMatch = component => component.types && component.types.indexOf(name) !== -1;
@@ -124,4 +120,8 @@ function getAddressUntilNonEmpty(results, index, initialAddress) {
         ? newAddress
         : getAddressUntilNonEmpty(results, index + 1, newAddress);
 
+}
+
+function parseAddressResponse(results) {
+    return getAddressUntilNonEmpty(results, 0, {});
 }

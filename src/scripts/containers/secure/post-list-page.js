@@ -2,15 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Table, Button, Checkbox, FormControl } from 'react-bootstrap';
 import { push } from 'react-router-redux';
-import { getSavedRestaurants } from '../../reducers/selectors';
-import { fetchRestaurantsAction, createRestaurantAction, deleteRestaurantAction } from '../../actions/restaurant-actions';
+import { getSavedPosts } from '../../reducers/selectors';
+import { fetchPostsAction, createPostAction, deletePostAction } from '../../actions/post-actions';
 import { NEW_ID, STATUS_ACTIVE, STATUS_DELETED } from '../../../../shared/constants';
 import { matchesSomeFields, splitSearchExpression } from '../../services/util';
 import MetaTag from '../../components/structure/meta';
 
-const CheckValue = ({ hasValue }) => <i className={`fa fa-${hasValue ? 'check text-success' : 'close text-danger'}`} />;
-
-class RestaurantListPage extends Component {
+class PostListPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -21,40 +19,34 @@ class RestaurantListPage extends Component {
         this.onSeachQueryChange = this.onSeachQueryChange.bind(this);
     }
     componentDidMount() {
-        this.props.fetchRestaurants();
-        this.navigateToNewRestaurant = () => this.props.navigate(`/secure/restaurants/${NEW_ID}`);
+        // this.props.fetchPosts();
+        this.navigateToNewPost = () => this.props.navigate(`/secure/posts/${NEW_ID}`);
     }
 
-    displayDeleted(e) {
-        const displayDeleted = e.target.checked;
-        this.setState({ displayDeleted }, () => this.props.fetchRestaurants({ status: displayDeleted ? STATUS_DELETED : STATUS_ACTIVE }));
-    }
+    // displayDeleted(e) {
+    //     const displayDeleted = e.target.checked;
+    //     this.setState({ displayDeleted }, () => this.props.fetchPosts({ status: displayDeleted ? STATUS_DELETED : STATUS_ACTIVE }));
+    // }
 
     onSeachQueryChange(e) {
         this.setState({ searchQuery: e.target.value });
     }
 
-    renderRow(restaurant, navigate, deleteRestaurantAction) {
-        const id = restaurant.get('id');
+    renderRow(post, navigate, deletePostAction) {
+        const id = post.get('id');
 
         return (
-            <tr key={id} className="clickable" onClick={() => navigate(`/secure/restaurants/${id}`)}>
-                <td>{restaurant.get('name')}</td>
-                <td><CheckValue hasValue={restaurant.get('description')} /></td>
-                <td><CheckValue hasValue={restaurant.getIn(['address', 'postcode']) && restaurant.getIn(['address', 'street'])} /></td>
-                <td><CheckValue hasValue={!!restaurant.get('cuisines').size} /></td>
-                <td><CheckValue hasValue={!!restaurant.get('tags').size} /></td>
-                <td><CheckValue hasValue={restaurant.get('url')} /></td>
-                <td><CheckValue hasValue={!!restaurant.get('photos').size} /></td>
-                <td><CheckValue hasValue={restaurant.getIn(['address', 'latitude']) && restaurant.getIn(['address', 'longitude'])} /></td>
-                <td>{restaurant.get('status')}</td>
+            <tr key={id} className="clickable" onClick={() => navigate(`/secure/posts/${id}`)}>
+                <td>{post.get('title')}</td>
+
+                <td>{post.get('status')}</td>
                 <td>
-                    {restaurant.get('status') === STATUS_ACTIVE &&
+                    {post.get('status') === STATUS_ACTIVE &&
                         <Button
                             bsSize="xs"
                             bsStyle="danger"
                             className="margin-right-05x margin-bottom-05x"
-                            onClick={() => deleteRestaurantAction(id)}>
+                            onClick={() => deletePostAction(id)}>
                             Delete
                         </Button>
                     }
@@ -63,55 +55,47 @@ class RestaurantListPage extends Component {
         );
     }
 
-    renderRestaurants(restaurants, navigate, deleteRestaurantAction, displayDeleted, searchExpression) {
-        if (restaurants) {
-            const filteredRestaurants = searchExpression
-                ? restaurants.filter(restaurant => matchesSomeFields(restaurant, splitSearchExpression(searchExpression), [
-                    'name', 'address.postcode', 'address.suburb', 'address.city', 'address.street',
-                    'url', 'tags', 'cuisines', 'description'
+    renderRestaurants(posts, navigate, deletePostAction, displayDeleted, searchExpression) {
+        if (posts) {
+            const filteredPosts = searchExpression
+                ? posts.filter(post => matchesSomeFields(post, splitSearchExpression(searchExpression), [
+                    'name', 'status'
                 ]
                 ))
-                : restaurants;
-            return filteredRestaurants
-                .filter(r => displayDeleted ? true : r.get('status') === STATUS_ACTIVE)
+                : posts;
+            return filteredPosts
+                .filter(post => displayDeleted || post.get('status') === STATUS_ACTIVE)
                 .valueSeq()
-                .map(r => this.renderRow(r, navigate, deleteRestaurantAction));
+                .map(post => this.renderRow(post, navigate, deletePostAction));
         }
     }
 
     render() {
-        const { restaurants, navigate, deleteRestaurantAction } = this.props;
+        const { posts, navigate, deletePostAction = implement => implement } = this.props;
         return (
             <div className="padding-bottom-2x">
-                <MetaTag title="Manage restaurants" />
+                <MetaTag title="Manage posts" />
                 <FormControl
                     className="margin-bottom-1x margin-top-1x"
                     placeholder="Type in to filter.."
                     onChange={this.onSeachQueryChange} />
 
-                <Button bsStyle="primary" onClick={this.navigateToNewRestaurant} className="pull-right">
-                    <i className="fa fa-plus" /> Create Restaurant
+                <Button bsStyle="primary" onClick={this.navigateToNewPost} className="pull-right">
+                    <i className="fa fa-plus" /> Create Post
                 </Button>
-                <h1>Restaurants</h1>
+                <h1>Posts</h1>
 
 
                 <Table responsive hover>
                     <thead>
                         <tr>
-                            <th>Name</th>
-                            <th>Description</th>
-                            <th>Address</th>
-                            <th>Cuisines</th>
-                            <th>Tags</th>
-                            <th>Web</th>
-                            <th>Photos</th>
-                            <th>Map</th>
+                            <th>Title</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {this.renderRestaurants(restaurants, navigate, deleteRestaurantAction, this.state.displayDeleted, this.state.searchQuery)}
+                        {this.renderRestaurants(posts, navigate, deletePostAction, this.state.displayDeleted, this.state.searchQuery)}
                     </tbody>
                 </Table>
 
@@ -124,13 +108,13 @@ class RestaurantListPage extends Component {
 }
 function mapStateToProps(state) {
     return {
-        restaurants: getSavedRestaurants(state)
+        posts: getSavedPosts(state)
     };
 }
 const mapDispatchToProps = {
-    fetchRestaurants: fetchRestaurantsAction.request,
-    createRestaurantAction,
+    fetchRestaurants: fetchPostsAction.request,
+    createPostAction,
     navigate: push,
-    deleteRestaurantAction
+    // deletePostAction
 };
-export default connect(mapStateToProps, mapDispatchToProps)(RestaurantListPage);
+export default connect(mapStateToProps, mapDispatchToProps)(PostListPage);

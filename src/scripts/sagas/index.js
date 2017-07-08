@@ -81,7 +81,7 @@ export default function* root() {
         takeEvery(RESTAURANT.REQUEST, fetchRestaurant),
         takeEvery(RESTAURANT.PREFILL_REQUEST, prefillAddress),
         takeLatest(RESTAURANT.SAVE_REQUEST, saveRestaurant),
-        takeLatest(RESTAURANT.DELETE, deleteRestaurant),
+        takeLatest(RESTAURANT.DELETE_REQUEST, deleteRestaurant),
         takeLatest(RESTAURANT.DELETE_PHOTO, deletePhoto),
         takeLatest(COORDINATES.REQUEST, checkCurrentLocation)
     ];

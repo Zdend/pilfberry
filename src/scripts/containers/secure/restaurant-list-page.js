@@ -7,8 +7,7 @@ import { fetchRestaurantsAction, createRestaurantAction, deleteRestaurantAction 
 import { NEW_ID, STATUS_ACTIVE, STATUS_DELETED } from '../../../../shared/constants';
 import { matchesSomeFields, splitSearchExpression } from '../../services/util';
 import MetaTag from '../../components/structure/meta';
-
-const CheckValue = ({ hasValue }) => <i className={`fa fa-${hasValue ? 'check text-success' : 'close text-danger'}`} />;
+import CheckValue from '../../components/check-value';
 
 class RestaurantListPage extends Component {
     constructor(props) {
@@ -19,10 +18,10 @@ class RestaurantListPage extends Component {
         };
         this.displayDeleted = this.displayDeleted.bind(this);
         this.onSeachQueryChange = this.onSeachQueryChange.bind(this);
+        this.navigateToNewRestaurant = () => this.props.navigate(`/secure/restaurants/${NEW_ID}`);
     }
     componentDidMount() {
         this.props.fetchRestaurants();
-        this.navigateToNewRestaurant = () => this.props.navigate(`/secure/restaurants/${NEW_ID}`);
     }
 
     displayDeleted(e) {
