@@ -32,6 +32,14 @@ body.primary {
 .list-style-none {
   list-style: none;
 }
+.list-inline-compact {
+  margin-left: 0;
+  li {
+    padding-left: 1px;
+    padding-right: 1px;
+  }
+}
+
 .overflow-hide {
   height: 100%;
   overflow: hidden;

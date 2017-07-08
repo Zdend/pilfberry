@@ -60,6 +60,9 @@ module.exports = {
             'node_modules'
         ]
     },
+    externals: {
+        fb: 'FB'
+    },
     module: {
         rules: [
             {

@@ -48,7 +48,7 @@ function getSuburbsRoutes(restaurants) {
 export const renderView = (data = fromJS(initialState)) => (req, res) => {
     getRestaurantPaths()
         .then(restaurantObjects => {
-            const dynamicRoutes = restaurantObjects.map(r => r.path);
+            const dynamicRoutes = restaurantObjects.map(r => r.path).filter(k => k);
             const dataWithPaths = data.set('routes', new Map({
                 suburbs: new OrderedSet(getSuburbsRoutes(restaurantObjects)),
                 dynamicRoutes: new List(dynamicRoutes)

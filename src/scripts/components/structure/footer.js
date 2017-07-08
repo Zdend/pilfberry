@@ -6,11 +6,18 @@ const Footer = () => (
     <footer className="footer">
         <Grid>
             <Row>
-                <Col xs={12} md={3}>
-                    <h2 className="footer__logo">pilfberry</h2>
+                <Col xs={6}>
+                    <Link to="/" className="footer__logo margin-top-1x">pilfberry</Link>
                 </Col>
-                <Col xs={12} md={6}>
-                    <ul className="margin-top-2x list-unstyled list-inline text-align-center text-align-left-sm">
+                <Col xs={6}>
+                    <div className="text-align-right margin-top-1x">
+                        <a href="https://www.facebook.com/Pilfberry-1307425432712367/" className="text-muted" target="_blank"><i className="fa fa-facebook-square fa-2x" /></a>
+                    </div>
+                </Col>
+            </Row>
+            <Row>
+                <Col xs={12}>
+                    <ul className="margin-top-1x list-unstyled list-inline text-align-center">
                         <li><Link to="/">Home</Link></li>
                         <li><Link to="/areas">Suburbs</Link></li>
                         <li><Link to="/login">Login</Link></li>
@@ -19,8 +26,10 @@ const Footer = () => (
                         <li><Link to="/contact">Contact Us</Link></li>
                     </ul>
                 </Col>
-                <Col xs={12} md={3}>
-                    <div className="text-align-right text-align-left-sm margin-top-2x">© 2017 Pilfberry</div>
+            </Row>
+            <Row>
+                <Col sm={12}>
+                    <div className="text-center margin-top-2x">© 2017 Pilfberry</div>
                 </Col>
             </Row>
 

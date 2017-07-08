@@ -61,15 +61,15 @@ export default ({ restaurant, navigate, currentLocation }) => {
                 <div className="restaurant-block__content">
                     {renderDistance(restaurant, currentLocation)}
                     <Link className="restaurant-block__name" to={`/${restaurant.get('path')}`}>{restaurant.get('name')}</Link>
-                    <div className="restaurant-block__labels">
-                        {restaurant.get('tags').slice(0, 3).map(item => <RestaurantTag key={item} tag={item} />)}
+                    <ul className="restaurant-block__labels list-unstyled list-inline list-inline-compact">
+                        {restaurant.get('tags').slice(0, 3).map(item => <li key={item}><RestaurantTag tag={item} /></li>)}
                         {restaurant.get('tags').size > 3 &&
                             <OverlayTrigger placement="top" overlay={tooltipElement}>
-                                <Label bsStyle="success">more +</Label>
+                                <li><Label bsStyle="success">more +</Label></li>
                             </OverlayTrigger>
                         }
 
-                    </div>
+                    </ul>
                 </div>
             </div>
         </div>

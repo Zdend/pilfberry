@@ -16,7 +16,7 @@ export function convertText(text) {
 
 export function convertToPlainText(content) {
     const rawContentObject = convertTextToContent(content);
-    return rawContentObject.getPlainText();
+    return rawContentObject.getPlainText(' ');
 }
 
 export function getBlockStyle(block) {

@@ -8,4 +8,9 @@
   font-size: 2.5rem;
   font-weight: 700;
   font-family: $font-titles;
+  display: inline-block;
+  &:hover, &:focus {
+    text-decoration: none;
+    color: darken($gray, 10%);
+  }
 }

@@ -10,10 +10,12 @@ import { Link } from 'react-router-dom';
 import RestaurantViewGallery from '../components/restaurant-view-gallery';
 import RestaurantViewMap from '../components/restaurant-view-map';
 import { DEFAULT_AVATAR_COLOURS } from '../../../shared/constants/colours';
+import { HOSTNAME } from '../../../shared/constants';
 import MetaTag from '../components/structure/meta';
 import { convertText, getBlockStyle, convertToPlainText } from '../services/rich-utils';
 import { Editor } from 'draft-js';
 import { generate } from 'shortid';
+import FBShareButton from '../components/fb-share-button';
 
 const AvatarPhoto = ({ coverPhotoURL, avatarURL, name }) => {
     if (avatarURL) {
@@ -74,16 +76,20 @@ class RestaurantPage extends Component {
         const plainTextDescription = convertToPlainText(restaurant.get('description')).replace(/[\n\r]/g, '');
         const avatarURL = findFirstAvatarPicture(restaurant);
         const coverPhotoURL = findFirstCoverPicture(restaurant);
+        const shareURL = `${HOSTNAME}/${restaurant.get('path')}`;
+        const restaurantDescription = plainTextDescription && plainTextDescription.length > 20 ? plainTextDescription.substr(0, 250) : `${restaurant.get('name')} serves meals for people with special dietary requirements`;
         return (
             <div>
                 <MetaTag title={`${restaurant.get('name')}${restaurant.getIn(['address', 'suburb']) ? ', ' + restaurant.getIn(['address', 'suburb']) : ''}`}
-                    description={plainTextDescription && plainTextDescription.length > 20 ? plainTextDescription.substr(0, 250) : `${restaurant.get('name')} serves meals for people with special dietary requirements`}
+                    description={restaurantDescription}
                     keywords={[
                         restaurant.get('name'),
                         `${restaurant.getIn(['address', 'suburb']) ? 'restaurants in ' + restaurant.getIn(['address', 'suburb']) : ''}`,
                         `${restaurant.getIn(['address', 'street']) ? 'restaurants in ' + restaurant.getIn(['address', 'street']) : ''}`,
                         `${restaurant.getIn(['address', 'postcode']) ? 'restaurants in ' + restaurant.getIn(['address', 'postcode']) : ''}`,
                     ].filter(keyword => keyword && keyword.trim()).join(',')}
+                    social
+                    url={shareURL}
                 />
                 {coverPhotoURL &&
                     <div className="restaurant-page__cover" style={{ backgroundImage: `url('${coverPhotoURL}')` }}>
@@ -97,10 +103,10 @@ class RestaurantPage extends Component {
                             <h1 className="margin-top-0x">
                                 {restaurant.get('name')} {restaurant.get('price') && <PriceIndicator priceLevel={restaurant.get('price')} />}
                             </h1>
-                            <div>
-                                {restaurant.get('tags').map(item => <RestaurantTag key={item} tag={item} />)}
-                                {restaurant.get('cuisines').map(item => <RestaurantTag key={item} tag={item} type="info" />)}
-                            </div>
+                            <ul className="restaurant-block__labels list-unstyled list-inline list-inline-compact">
+                                {restaurant.get('tags').map(item => <li key={item}><RestaurantTag key={item} tag={item} /></li>)}
+                                {restaurant.get('cuisines').map(item => <li key={item}><RestaurantTag key={item} tag={item} type="info" /></li>)}
+                            </ul>
 
                             <OptionalIconValue value={getHumanAddress(restaurant)} icon="map-marker" className="margin-top-2x">
                                 <span>{getHumanAddress(restaurant)}</span>
@@ -123,6 +129,8 @@ class RestaurantPage extends Component {
                             <div className="clearfix" />
 
                             <RestaurantViewGallery restaurant={restaurant} />
+
+                            <FBShareButton url={shareURL} description={restaurantDescription} className="margin-top-1x" />
 
                             <div className="margin-top-2x"><Link to="/"><i className="fa fa-chevron-left margin-right-05x" /> Back</Link></div>
                         </Col>

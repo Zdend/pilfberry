@@ -1,4 +1,4 @@
-import { isDev } from '../config';
+import { isDev, FB_API_KEY } from '../config';
 
 export const spinnerStyle = `
     <style>
@@ -104,6 +104,29 @@ export const googleTagManagerNoScript = `
     <!-- End Google Tag Manager (noscript) -->
 `;
 
+export const facebookSDKScript = `
+    <div id="fb-root"></div>
+    <script>
+    window.fbAsyncInit = function() {
+        FB.init({
+        appId            : '${FB_API_KEY}',
+        autoLogAppEvents : true,
+        xfbml            : true,
+        version          : 'v2.9'
+        });
+        FB.AppEvents.logPageView();
+    };
+
+    (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/${isDev ? 'sdk/debug' : 'sdk'}.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+    </script>
+`;
+
 export const minifierOptions = {
     caseSensitive: true,
     collapseBooleanAttributes: true,
@@ -168,12 +191,14 @@ export const layout = (body, initialState, helmet = { title: '', meta: '' }) => 
             
             <meta name="author" content="ZdendV">
             <meta name="viewport" content="width=device-width, initial-scale=1">
+
             ${spinnerStyle}
             ${googleTagManagerScript}
             ${faviconDefinitions}
         </head>
         <body>
             ${googleTagManagerNoScript}
+            ${facebookSDKScript}
             <div class="spinner-overlay">
                 <div class="spinner"></div>
                 <div class="spinner-text">Pilfberry is loading..</div>
