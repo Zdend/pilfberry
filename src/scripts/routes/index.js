@@ -1,16 +1,16 @@
 import React from 'react';
 import App from '../containers/app';
-import LoginPage from '../containers/login-page';
-import SecurePage from '../containers/secure-page';
-import LandingPage from '../containers/landing-page';
-import RestaurantPage from '../containers/restaurant-page';
-import RestaurantListPage from '../containers/restaurant-list-page';
-import RestaurantEditPage from '../containers/restaurant-edit-page';
-import PrivacyPage from '../containers/privacy-page';
-import TermsPage from '../containers/terms-page';
-import ContactPage from '../containers/contact-page';
-import SuburbPage from '../containers/suburb-page';
-import AreasPage from '../containers/areas-page';
+import SecurePage from '../containers/secure/secure-page';
+import RestaurantListPage from '../containers/secure/restaurant-list-page';
+import RestaurantEditPage from '../containers/secure/restaurant-edit-page';
+import LoginPage from '../containers/public/login-page';
+import LandingPage from '../containers/public/landing-page';
+import RestaurantPage from '../containers/public/restaurant-page';
+import PrivacyPage from '../containers/public/privacy-page';
+import TermsPage from '../containers/public/terms-page';
+import ContactPage from '../containers/public/contact-page';
+import SuburbPage from '../containers/public/suburb-page';
+import AreasPage from '../containers/public/areas-page';
 import SecureLayoutRoute from '../components/layouts/secure-wrapper';
 import PublicLayoutRoute from '../components/layouts/public-wrapper';
 
@@ -34,5 +34,3 @@ export default ({ dynamicRoutes }) => (
         <SecureLayoutRoute path="/secure/restaurants/:id" component={RestaurantEditPage} />
     </App>
 );
-
-

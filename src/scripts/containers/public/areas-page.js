@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Grid, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { getAreaRoutes } from '../reducers/selectors';
-import { dashRevert } from '../../../shared/utils/string';
-import MetaTag from '../components/structure/meta';
+import { getAreaRoutes } from '../../reducers/selectors';
+import { dashRevert } from '../../../../shared/utils/string';
+import MetaTag from '../../components/structure/meta';
 
 class AreasPage extends Component {
 

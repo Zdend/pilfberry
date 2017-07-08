@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Table, Button, Checkbox, Label, FormControl } from 'react-bootstrap';
+import { Table, Button, Checkbox, FormControl } from 'react-bootstrap';
 import { push } from 'react-router-redux';
-import { getSavedRestaurants } from '../reducers/selectors';
-import { fetchRestaurantsAction, createRestaurantAction, deleteRestaurantAction } from '../actions/restaurant-actions';
-import { NEW_ID, STATUS_ACTIVE, STATUS_DELETED } from '../../../shared/constants';
-import RestaurantTag from '../components/restaurant-tag';
-import { matchesSomeFields, getHumanAddress, splitSearchExpression } from '../services/util';
-import MetaTag from '../components/structure/meta';
+import { getSavedRestaurants } from '../../reducers/selectors';
+import { fetchRestaurantsAction, createRestaurantAction, deleteRestaurantAction } from '../../actions/restaurant-actions';
+import { NEW_ID, STATUS_ACTIVE, STATUS_DELETED } from '../../../../shared/constants';
+import { matchesSomeFields, splitSearchExpression } from '../../services/util';
+import MetaTag from '../../components/structure/meta';
 
-const CheckValue = ({hasValue}) => <i className={`fa fa-${hasValue ? 'check text-success' : 'close text-danger'}`} />;
+const CheckValue = ({ hasValue }) => <i className={`fa fa-${hasValue ? 'check text-success' : 'close text-danger'}`} />;
 
 class RestaurantListPage extends Component {
     constructor(props) {
@@ -37,7 +36,7 @@ class RestaurantListPage extends Component {
 
     renderRow(restaurant, navigate, deleteRestaurantAction) {
         const id = restaurant.get('id');
-        
+
         return (
             <tr key={id} className="clickable" onClick={() => navigate(`/secure/restaurants/${id}`)}>
                 <td>{restaurant.get('name')}</td>

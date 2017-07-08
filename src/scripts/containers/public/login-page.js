@@ -1,11 +1,11 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-import LoginForm from '../components/login-form';
-import { loginAction, credentialsChange } from '../actions/login-actions';
-import { Grid, Row, Col } from 'react-bootstrap';
-import { getCredentials } from '../reducers/selectors';
 import { push } from 'react-router-redux';
-import MetaTag from '../components/structure/meta';
+import { Grid, Row, Col } from 'react-bootstrap';
+import LoginForm from '../../components/login-form';
+import { loginAction, credentialsChange } from '../../actions/login-actions';
+import { getCredentials } from '../../reducers/selectors';
+import MetaTag from '../../components/structure/meta';
 
 class LoginPage extends Component {
     componentDidMount() {

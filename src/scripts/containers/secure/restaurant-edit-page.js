@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Button, Row, Col, FormControl, FormGroup, ControlLabel, InputGroup } from 'react-bootstrap';
+import { Button, Row, Col, FormControl, FormGroup, ControlLabel } from 'react-bootstrap';
 import { push } from 'react-router-redux';
-import { getRestaurant, getRestaurantPhotos, getRestaurantEditPage } from '../reducers/selectors';
+import moment from 'moment';
+import { bindActionCreators } from 'redux';
+import { getRestaurant, getRestaurantPhotos, getRestaurantEditPage } from '../../reducers/selectors';
 import {
     fetchRestaurantAction,
     restaurantValueChangeAction,
@@ -11,18 +13,16 @@ import {
     prefillAddressAction,
     fileChangeAction,
     deletePhotoAction
-} from '../actions/restaurant-actions';
-import InputHOC from '../components/connected-input-hoc';
-import { NEW_ID, STATUSES, DATE_FORMAT, TAGS, CUISINES, PRICE } from '../../../shared/constants';
-import RestaurantEditTag from '../components/restaurant-edit-tag';
-import RestaurantEditLocation from '../components/restaurant-edit-location';
-import RestaurantPhoto from '../components/restaurant-photo';
-import RestaurantGallery from '../components/restaurant-gallery';
-import RestaurantEditDescription from '../components/restaurant-edit-description';
-import moment from 'moment';
-import { bindActionCreators } from 'redux';
-import { SpinnerIcon } from '../components/spinner';
-import MetaTag from '../components/structure/meta';
+} from '../../actions/restaurant-actions';
+import InputHOC from '../../components/connected-input-hoc';
+import { NEW_ID, STATUSES, DATE_FORMAT, TAGS, CUISINES, PRICE } from '../../../../shared/constants';
+import RestaurantEditTag from '../../components/restaurant-edit-tag';
+import RestaurantEditLocation from '../../components/restaurant-edit-location';
+import RestaurantPhoto from '../../components/restaurant-photo';
+import RestaurantGallery from '../../components/restaurant-gallery';
+import RestaurantEditDescription from '../../components/restaurant-edit-description';
+import { SpinnerIcon } from '../../components/spinner';
+import MetaTag from '../../components/structure/meta';
 
 
 class RestaurantEditPage extends Component {

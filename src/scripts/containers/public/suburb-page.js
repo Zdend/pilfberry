@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Grid, Row, Col } from 'react-bootstrap';
 import { push } from 'react-router-redux';
-import MetaTag from '../components/structure/meta';
 import { words } from 'capitalize';
-import { fetchRestaurantsBySuburbAction } from '../actions/restaurant-actions';
-import { getRestaurantsBySuburb, getCurrentLocation } from '../reducers/selectors';
-import RestaurantBlock from '../components/restaurant-block';
-import { SpinnerInline } from '../components/spinner';
 import { Link } from 'react-router-dom';
+import MetaTag from '../../components/structure/meta';
+import { fetchRestaurantsBySuburbAction } from '../../actions/restaurant-actions';
+import { getRestaurantsBySuburb, getCurrentLocation } from '../../reducers/selectors';
+import RestaurantBlock from '../../components/restaurant-block';
+import { SpinnerInline } from '../../components/spinner';
 
 class SuburbPage extends Component {
     componentDidMount() {

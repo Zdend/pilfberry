@@ -1,22 +1,21 @@
 import React, { Component } from 'react';
-import { fetchRestaurantAction } from '../actions/restaurant-actions';
-import { getRestaurantByPath } from '../reducers/selectors';
 import { connect } from 'react-redux';
 import { Grid, Row, Col, Button, Tooltip, OverlayTrigger } from 'react-bootstrap';
-import { findFirstAvatarPicture, findFirstCoverPicture, getHumanAddress, hashCode } from '../services/util';
-import { SpinnerInline } from '../components/spinner';
-import RestaurantTag from '../components/restaurant-tag';
-import { Link } from 'react-router-dom';
-import RestaurantViewGallery from '../components/restaurant-view-gallery';
-import RestaurantViewMap from '../components/restaurant-view-map';
-import { DEFAULT_AVATAR_COLOURS } from '../../../shared/constants/colours';
-import { HOSTNAME } from '../../../shared/constants';
-import MetaTag from '../components/structure/meta';
-import { convertText, getBlockStyle, convertToPlainText } from '../services/rich-utils';
 import { Editor } from 'draft-js';
 import { generate } from 'shortid';
-import FBShareButton from '../components/fb-share-button';
 import { LinkContainer } from 'react-router-bootstrap';
+import { fetchRestaurantAction } from '../../actions/restaurant-actions';
+import { getRestaurantByPath } from '../../reducers/selectors';
+import { findFirstAvatarPicture, findFirstCoverPicture, getHumanAddress, hashCode } from '../../services/util';
+import { SpinnerInline } from '../../components/spinner';
+import RestaurantTag from '../../components/restaurant-tag';
+import RestaurantViewGallery from '../../components/restaurant-view-gallery';
+import RestaurantViewMap from '../../components/restaurant-view-map';
+import { DEFAULT_AVATAR_COLOURS } from '../../../../shared/constants/colours';
+import { HOSTNAME } from '../../../../shared/constants';
+import MetaTag from '../../components/structure/meta';
+import { convertText, getBlockStyle, convertToPlainText } from '../../services/rich-utils';
+import FBShareButton from '../../components/fb-share-button';
 
 const AvatarPhoto = ({ coverPhotoURL, avatarURL, name }) => {
     if (avatarURL) {

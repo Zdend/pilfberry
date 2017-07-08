@@ -1,6 +1,6 @@
 import React from 'react';
 import { Grid, Row, Col } from 'react-bootstrap';
-import MetaTag from '../components/structure/meta';
+import MetaTag from '../../components/structure/meta';
 
 export default () => (
     <Grid>

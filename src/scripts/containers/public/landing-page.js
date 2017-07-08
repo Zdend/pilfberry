@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Route } from 'react-router-dom';
 import { generate } from 'shortid';
@@ -6,19 +6,19 @@ import {
     ButtonToolbar, ButtonGroup, Button, OverlayTrigger, Tooltip,
     Row, Col, Grid
 } from 'react-bootstrap';
-import { fetchRestaurantsAction } from '../actions/restaurant-actions';
-import { landingPageChangeFilter, toggleClosestFirst, checkCurrentLocationAction } from '../actions/ui-actions';
-import { getRestaurants, getClosestFirst, getSearchExpressions, getCurrentLocation } from '../reducers/selectors';
-import RestaurantBlock from '../components/restaurant-block';
-import RestaurantMap from '../components/restaurant-map';
-import TagFilter from '../components/landing-tag-filter';
-import SearchBox from '../components/landing-search';
 import { push } from 'react-router-redux';
-import throttle from '../../../shared/throttle';
-import { matchesSomeFieldsAnd, getDistanceFromLatLonInKm } from '../services/util';
-import { SpinnerInline } from '../components/spinner';
-import MetaTag from '../components/structure/meta';
 import { LinkContainer } from 'react-router-bootstrap';
+import { fetchRestaurantsAction } from '../../actions/restaurant-actions';
+import { landingPageChangeFilter, toggleClosestFirst, checkCurrentLocationAction } from '../../actions/ui-actions';
+import { getRestaurants, getClosestFirst, getSearchExpressions, getCurrentLocation } from '../../reducers/selectors';
+import RestaurantBlock from '../../components/restaurant-block';
+import RestaurantMap from '../../components/restaurant-map';
+import TagFilter from '../../components/landing-tag-filter';
+import SearchBox from '../../components/landing-search';
+import throttle from '../../../../shared/throttle';
+import { matchesSomeFieldsAnd, getDistanceFromLatLonInKm } from '../../services/util';
+import { SpinnerInline } from '../../components/spinner';
+import MetaTag from '../../components/structure/meta';
 
 function sortByDistance(restaurants, currentLocation) {
     if (!currentLocation.get('lat') || !currentLocation.get('lng')) {
