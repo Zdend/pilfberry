@@ -16,6 +16,7 @@ import { convertText, getBlockStyle, convertToPlainText } from '../services/rich
 import { Editor } from 'draft-js';
 import { generate } from 'shortid';
 import FBShareButton from '../components/fb-share-button';
+import { LinkContainer } from 'react-router-bootstrap';
 
 const AvatarPhoto = ({ coverPhotoURL, avatarURL, name }) => {
     if (avatarURL) {
@@ -77,7 +78,7 @@ class RestaurantPage extends Component {
         const avatarURL = findFirstAvatarPicture(restaurant);
         const coverPhotoURL = findFirstCoverPicture(restaurant);
         const shareURL = `${HOSTNAME}/${restaurant.get('path')}`;
-        const restaurantDescription = plainTextDescription && plainTextDescription.length > 20 ? plainTextDescription.substr(0, 250) : `${restaurant.get('name')} serves meals for people with special dietary requirements`;
+        const restaurantDescription = plainTextDescription && plainTextDescription.length > 20 ? `${plainTextDescription.substr(0, 250)}...` : `${restaurant.get('name')} serves meals for people with special dietary requirements`;
         return (
             <div>
                 <MetaTag title={`${restaurant.get('name')}${restaurant.getIn(['address', 'suburb']) ? ', ' + restaurant.getIn(['address', 'suburb']) : ''}`}
@@ -90,6 +91,7 @@ class RestaurantPage extends Component {
                     ].filter(keyword => keyword && keyword.trim()).join(',')}
                     social
                     url={shareURL}
+                    image={coverPhotoURL || avatarURL}
                 />
                 {coverPhotoURL &&
                     <div className="restaurant-page__cover" style={{ backgroundImage: `url('${coverPhotoURL}')` }}>
@@ -130,9 +132,10 @@ class RestaurantPage extends Component {
 
                             <RestaurantViewGallery restaurant={restaurant} />
 
-                            <FBShareButton url={shareURL} description={restaurantDescription} className="margin-top-1x" />
-
-                            <div className="margin-top-2x"><Link to="/"><i className="fa fa-chevron-left margin-right-05x" /> Back</Link></div>
+                            <div className="margin-top-2x">
+                                <LinkContainer to="/"><Button bsStyle="link"><i className="fa fa-chevron-left margin-right-05x" /> Back</Button></LinkContainer>
+                                <FBShareButton url={shareURL} description={restaurantDescription} className="pull-right" />
+                            </div>
                         </Col>
                     </Row>
                 </Grid>

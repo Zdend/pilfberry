@@ -17,7 +17,6 @@ export default class FBShareButton extends Component {
             method: 'share',
             display: 'popup',
             mobile_iframe: true,
-            quote: this.props.description,
             href: this.props.url,
         }, function (response) { 
             // TODO Handle successful sharing
