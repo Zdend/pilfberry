@@ -9,6 +9,15 @@ export const STATUS_DRAFT = 'DRAFT';
 export const STATUSES = [STATUS_ACTIVE, STATUS_DELETED];
 export const POST_STATUSES = [STATUS_ACTIVE, STATUS_DRAFT, STATUS_DELETED];
 
+export const POST_CATEGORY = {
+    RECIPE: 'RECIPE',
+    POST: 'POST',
+    DIET: 'DIET',
+    NEWS: 'NEWS'
+};
+
+export const POST_CATEGORIES = Object.keys(POST_CATEGORY).map(prop => POST_CATEGORY[prop]);
+
 export const TAG = {
     VEGETARIAN: 'VEGETARIAN',
     VEGAN: 'VEGAN',

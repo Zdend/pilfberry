@@ -7,10 +7,13 @@ import {
     findRestaurantByPath,
     findRestaurantsBySuburb,
     savePost,
-    findAllPosts
+    findAllPosts,
+    findPost,
+    findPostByPath
+
 } from '../db';
 import { deletePhoto, uploadPhotosToRestaurant } from '../db/file-upload';
-import view, { renderRestaurant, renderRestaurantByShortUrl, renderAllRestaurants } from './view';
+import view, { renderRestaurant, renderRestaurantByShortUrl, renderPostByShortUrl, renderAllRestaurants } from './view';
 import { STATUS_ACTIVE, STATUS_DELETED } from '../../shared/constants';
 
 const logErrorFactory = message => e => console.error(`${message ? message + ':' : ''}${e && e.stack}`);
@@ -69,6 +72,26 @@ export default function (app) {
         } catch (e) {
             logError(`findRestaurant with id ${req.params.id} failed`, e);
             res.status(500).send('Fetching of a restaurant by id failed.');
+        }
+    });
+
+    app.get('/api/post/findByPath=:shortUrl', async function (req, res) {
+        try {
+            const post = await findPostByPath(req.params.shortUrl);
+            res.json(post);
+        } catch (e) {
+            logError(`findPostByPath with id ${req.params.shortUrl} failed`, e);
+            res.status(500).send('Fetching of a post by path failed.');
+        }
+    });
+
+    app.get('/api/post/:id', secured, async function (req, res) {
+        try {
+            const post = await findPost(req.params.id);
+            res.json(post);
+        } catch (e) {
+            logError(`findPost with id ${req.params.id} failed`, e);
+            res.status(500).send('Fetching of a post by id failed.');
         }
     });
 
@@ -134,10 +157,14 @@ export default function (app) {
         try {
             const restaurant = await findRestaurantByPath(req.params.shortUrl);
             if (restaurant) {
-                renderRestaurantByShortUrl(restaurant)(req, res);
-            } else {
-                view(req, res);
+                return renderRestaurantByShortUrl(restaurant)(req, res);
             }
+            const post = await findPostByPath(req.params.shortUrl);
+            if (post) {
+                return renderPostByShortUrl(post)(req, res);
+            }
+           
+            view(req, res);
         } catch (e) {
             logError(`Server side render of a restaurant with "${req.params.shortUrl}" path failed`, e);
             res.status(500).send('Render of a restaurant failed.');

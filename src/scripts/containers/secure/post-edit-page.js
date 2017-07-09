@@ -12,7 +12,7 @@ import {
     createPostAction
 } from '../../actions/post-actions';
 import InputHOC from '../../components/connected-input-hoc';
-import { NEW_ID, STATUSES, DATE_FORMAT } from '../../../../shared/constants';
+import { NEW_ID, POST_STATUSES, DATE_FORMAT, POST_CATEGORIES } from '../../../../shared/constants';
 import PostEditDescription from '../../components/post-edit-description';
 import { SpinnerIcon } from '../../components/spinner';
 import MetaTag from '../../components/structure/meta';
@@ -65,20 +65,17 @@ class PostEditPage extends Component {
 
                         <Row className="margin-top-2x">
                             <Col sm={4}>
-                                <PostInput label="Status" field="status" type="select" selectValues={STATUSES} />
+                                <PostInput label="Status" field="status" type="select" selectValues={POST_STATUSES} />
                             </Col>
 
                             <Col sm={4}>
-                                <ControlLabel>Date created</ControlLabel>
-                                <FormControl.Static>
-                                    {post.get('dateCreated') ? moment(post.get('dateCreated')).format(DATE_FORMAT) : 'Not Specified'}
-                                </FormControl.Static>
+                                <PostInput label="Categories" field="category" type="select" selectValues={POST_CATEGORIES} />
                             </Col>
 
                             <Col sm={4}>
                                 <ControlLabel>Last updated</ControlLabel>
                                 <FormControl.Static>
-                                    {post.get('lastUpdated') ? moment(post.get('lastUpdated')).format(DATE_FORMAT) : 'Not Specified'}
+                                    {post.get('lastUpdated') || post.get('dateCreated') ? moment(post.get('lastUpdated') || post.get('dateCreated')).format(DATE_FORMAT) : 'Not Specified'}
                                 </FormControl.Static>
                             </Col>
                         </Row>

@@ -1,22 +1,21 @@
 import React from 'react';
-import { List, Map, OrderedSet, OrderedMap } from 'immutable';
+import { List, Map, OrderedSet, OrderedMap, fromJS } from 'immutable';
 import { renderToString } from 'react-dom/server';
+import { minify } from 'html-minifier';
+import Helmet from 'react-helmet';
 import Root from '../../src/scripts/containers/root';
 import configureStore from '../../src/scripts/stores/configure-store';
 import rootSaga from '../../src/scripts/sagas/index';
 import routes from '../../src/scripts/routes/index';
-import { findRestaurant, getRestaurantPaths, findAllRestaurantsLean } from '../db';
+import { findRestaurant, getRestaurantPaths, findAllRestaurantsLean, getPostPaths } from '../db';
 import { isDev } from '../config';
 import { transformNestedRecordObject, arrayToMapById } from '../../src/scripts/services';
-import { Restaurant, restaurantDef } from '../../src/scripts/models';
-import { fromJS } from 'immutable';
-import { minify } from 'html-minifier';
+import { Restaurant, restaurantDef, Post } from '../../src/scripts/models';
 import {
     minifierOptions,
     layout
 } from './templates';
 import { dashify } from '../../shared/utils/string';
-import Helmet from 'react-helmet';
 
 const initialState = {
     ui: {
@@ -45,39 +44,45 @@ function getSuburbsRoutes(restaurants) {
         .filter(key => key)
         .map(key => new Map({ url: key, count: urlObject[key] }));
 }
-export const renderView = (data = fromJS(initialState)) => (req, res) => {
-    getRestaurantPaths()
-        .then(restaurantObjects => {
-            const dynamicRoutes = restaurantObjects.map(r => r.path).filter(k => k);
-            const dataWithPaths = data.set('routes', new Map({
-                suburbs: new OrderedSet(getSuburbsRoutes(restaurantObjects)),
-                dynamicRoutes: new List(dynamicRoutes)
-            }));
-            const store = configureStore(dataWithPaths);
-            
-            const rootComp = <Root store={store} Routes={routes} isClient={false} location={req.url} context={{}} dynamicRoutes={new List(dynamicRoutes)} />;
+export const renderView = (data = fromJS(initialState)) => async (req, res) => {
+    const restaurantObjects = await getRestaurantPaths();
+    const postObjects = await getPostPaths();
 
-            store.runSaga(rootSaga).done.then(() => {
-                const bodyHtml = renderToString(rootComp);
-                const head = Helmet.renderStatic();
+    const dynamicRoutes = restaurantObjects.map(r => r.path).filter(k => k);
+    const postDynamicRoutes = postObjects.map(r => r.path).filter(k => k);
 
-                const rawHtml = layout(
-                    bodyHtml,
-                    JSON.stringify(store.getState()),
-                    head
-                );
+    const dataWithPaths = data.set('routes', new Map({
+        suburbs: new OrderedSet(getSuburbsRoutes(restaurantObjects)),
+        dynamicRoutes: new List(dynamicRoutes),
+        postDynamicRoutes: new List(postDynamicRoutes)
+    }));
+    const store = configureStore(dataWithPaths);
 
-                const finalHtml = isDev ? rawHtml : minify(rawHtml, minifierOptions);
+    const rootComp = <Root store={store} Routes={routes} isClient={false} location={req.url} context={{}}
+        dynamicRoutes={new List(dynamicRoutes)}
+        postDynamicRoutes={new List(postDynamicRoutes)} />;
 
-                res.status(200).send(finalHtml);
-            }).catch((e) => {
-                console.error(e);
-                res.status(500).send(e.message);
-            });
+    await store.runSaga(rootSaga);
 
-            store.close();
-        })
-        .catch(console.error);
+    try {
+        const bodyHtml = renderToString(rootComp);
+        const head = Helmet.renderStatic();
+
+        const rawHtml = layout(
+            bodyHtml,
+            JSON.stringify(store.getState()),
+            head
+        );
+
+        const finalHtml = isDev ? rawHtml : minify(rawHtml, minifierOptions);
+
+        res.status(200).send(finalHtml);
+    } catch (e) {
+        console.error(e);
+        res.status(500).send(e.message);
+    }
+
+    store.close();
 };
 
 export const renderRestaurant = (req, res) => {
@@ -102,6 +107,13 @@ export const renderRestaurantByShortUrl = restaurant => (req, res) => {
     const transformedRestaurant = transformNestedRecordObject(restaurant.toObject(), Restaurant, restaurantDef);
     renderView(fromJS(initialState)
         .mergeIn(['domain', 'restaurants'], transformedRestaurant))(req, res);
+
+};
+
+export const renderPostByShortUrl = post => (req, res) => {
+    const transformedPost = transformNestedRecordObject(post.toObject(), Post);
+    renderView(fromJS(initialState)
+        .mergeIn(['domain', 'posts'], transformedPost))(req, res);
 
 };
 

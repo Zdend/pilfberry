@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getGlobalMessage, getAreaRoutes } from '../reducers/selectors';
+import { getGlobalMessage, getAreaRoutes, getPostDynamicRoutes } from '../reducers/selectors';
 import { setMessageAction } from '../actions/global-message-actions';
 
 class App extends Component {
@@ -15,7 +15,8 @@ class App extends Component {
 
 export default connect(state => ({
     globalMessage: getGlobalMessage(state),
-    suburbs: getAreaRoutes(state)
+    suburbs: getAreaRoutes(state),
+    postRoutes: getPostDynamicRoutes(state)
 }), {
         resetMessageAction: () => setMessageAction({ message: null })
     })(App);

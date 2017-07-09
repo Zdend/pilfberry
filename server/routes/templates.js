@@ -44,7 +44,7 @@ export const spinnerStyle = `
         height: 100%;
         width: 100%;
         background-color: #510949;
-        z-index: 1;
+        z-index: 3001;
     }
     .spinner-text {
         color: white;
@@ -127,6 +127,25 @@ export const facebookSDKScript = `
     </script>
 `;
 
+export const shareAnyButtons = `
+<!-- AddToAny BEGIN -->
+<div class="a2a_kit a2a_kit_size_32 a2a_floating_style a2a_vertical_style" style="display: none;">
+    <a class="a2a_button_facebook"></a>
+    <a class="a2a_button_twitter"></a>
+    <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
+</div>
+<script>
+var a2a_config = a2a_config || {};
+a2a_config.linkname = "Pilfberry";
+a2a_config.linkurl = "https://pilfberry.com";
+a2a_config.onclick = 1;
+a2a_config.num_services = 10;
+a2a_config.prioritize = ["facebook", "whatsapp", "twitter", "linkedin", "pinterest", "google_plus", "tumblr", "google_gmail", "skype", "wechat"];
+</script>
+<script async src="https://static.addtoany.com/menu/page.js"></script>
+<!-- AddToAny END -->
+`;
+
 export const minifierOptions = {
     caseSensitive: true,
     collapseBooleanAttributes: true,
@@ -199,6 +218,7 @@ export const layout = (body, initialState, helmet = { title: '', meta: '' }) => 
         <body>
             ${googleTagManagerNoScript}
             ${facebookSDKScript}
+            ${shareAnyButtons}
             <div class="spinner-overlay">
                 <div class="spinner"></div>
                 <div class="spinner-text">Pilfberry is loading..</div>

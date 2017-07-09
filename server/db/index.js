@@ -155,3 +155,15 @@ export async function savePost(id, post) {
     }
     return Post.findByIdAndUpdate(id, { ...post, path }, { new: true }).exec();
 }
+
+export function findPost(id) {
+    return Post.findOne({ _id: id }).exec();
+}
+
+export function getPostPaths() {
+    return Post.find({ status: STATUS_ACTIVE }, 'path').exec();
+}
+
+export function findPostByPath(path) {
+    return findEntityByPath(Post, path);
+}

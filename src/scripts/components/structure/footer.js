@@ -29,7 +29,7 @@ const Footer = () => (
             </Row>
             <Row>
                 <Col sm={12}>
-                    <div className="text-center margin-top-2x">© 2017 Pilfberry</div>
+                    <div className="text-center margin-top-2x margin-bottom-2x">© 2017 Pilfberry</div>
                 </Col>
             </Row>
 

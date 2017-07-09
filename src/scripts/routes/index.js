@@ -5,6 +5,7 @@ import RestaurantListPage from '../containers/secure/restaurant-list-page';
 import RestaurantEditPage from '../containers/secure/restaurant-edit-page';
 import PostListPage from '../containers/secure/post-list-page';
 import PostEditPage from '../containers/secure/post-edit-page';
+import PostPage from '../containers/public/post-page';
 import LoginPage from '../containers/public/login-page';
 import LandingPage from '../containers/public/landing-page';
 import RestaurantPage from '../containers/public/restaurant-page';
@@ -17,7 +18,7 @@ import SecureLayoutRoute from '../components/layouts/secure-wrapper';
 import PublicLayoutRoute from '../components/layouts/public-wrapper';
 
 
-export default ({ dynamicRoutes }) => (
+export default ({ dynamicRoutes, postDynamicRoutes }) => (
     <App>
         <PublicLayoutRoute exact path="/" component={LandingPage} />
         <PublicLayoutRoute exact path="/list" component={LandingPage} />
@@ -30,6 +31,7 @@ export default ({ dynamicRoutes }) => (
         <PublicLayoutRoute path="/area/:area" component={SuburbPage} />
         <PublicLayoutRoute path="/restaurant/:id" component={RestaurantPage} />
         <PublicLayoutRoute path={`/:path(${dynamicRoutes.join('|')})`} component={RestaurantPage} />
+        <PublicLayoutRoute path={`/:path(${postDynamicRoutes.join('|')})`} component={PostPage} />
 
         <SecureLayoutRoute path="/secure" component={SecurePage} />
         <SecureLayoutRoute path="/secure/restaurants" component={RestaurantListPage} />

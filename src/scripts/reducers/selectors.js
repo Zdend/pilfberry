@@ -35,7 +35,9 @@ export const getRestaurantPhotos = id => s(getDomain, domain => domain.get('rest
 
 export const getSavedPosts = s(getPosts, posts => posts.filterNot(isNew));
 export const getPost = id => s(getPosts, posts => posts.get(id));
+export const getPostByPath = path => s(getPosts, posts => posts.find(post => post.get('path') === path));
 
 export const getRoutes = state => state.get('routes');
 export const getAreaRoutes = s(getRoutes, routes => routes.get('suburbs'));
+export const getPostDynamicRoutes = s(getRoutes, routes => routes.get('postDynamicRoutes'));
 

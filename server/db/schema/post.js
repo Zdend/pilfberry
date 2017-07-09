@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
-import { POST_STATUSES, STATUS_DRAFT } from '../../../shared/constants';
+import { POST_STATUSES, STATUS_DRAFT, POST_CATEGORIES, POST_CATEGORY } from '../../../shared/constants';
 
 const postSchema = new Schema({
     title: String,
@@ -14,6 +14,11 @@ const postSchema = new Schema({
         type: String,
         enum: POST_STATUSES,
         default: STATUS_DRAFT
+    },
+    category: {
+        type: String,
+        enum: POST_CATEGORIES,
+        default: POST_CATEGORY.POST
     },
     author: {
         type: Schema.ObjectId,

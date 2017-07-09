@@ -1,5 +1,5 @@
 import { Record } from 'immutable';
-import { STATUS_DRAFT } from '../../../shared/constants';
+import { STATUS_DRAFT, POST_CATEGORY } from '../../../shared/constants';
 
 export default Record({
     id: null,
@@ -9,5 +9,6 @@ export default Record({
     author: null,
     dateCreated: undefined,
     status: STATUS_DRAFT,
+    category: POST_CATEGORY.POST,
     dateUpdated: undefined
 });
