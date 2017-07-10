@@ -91,6 +91,4 @@ export const hashCode = s => {
 
 export const arrayUnique = a => a.filter((item, i, ar) => item && ar.indexOf(item) === i);
 
-export function escapeRegexCharacters(str) {
-    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-}
+export const escapeRegexCharacters = str => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');

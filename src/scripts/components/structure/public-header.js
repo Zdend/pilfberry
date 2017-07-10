@@ -3,6 +3,7 @@ import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Link } from 'react-router-dom';
 import { words } from 'capitalize';
+import { dashRevert } from '../../../../shared/utils/string';
 
 export default ({ suburbs, postRoutes }) => {
     const sortedSuburbs = suburbs.filter(suburb => suburb.get('count') >= 3)
@@ -34,13 +35,13 @@ export default ({ suburbs, postRoutes }) => {
                     <Nav pullRight>
                         {suburbs &&
                             <NavDropdown eventKey={3} title="Suburbs" id="basic-nav-dropdown">
-                                {sortedSuburbs.valueSeq().map(suburb => <LinkContainer key={suburb.get('url')} to={`/area/${suburb.get('url')}`}><MenuItem eventKey={suburb.get('url')}>{words(suburb.get('url').replace(/-/g, ' '))}</MenuItem></LinkContainer>)}
+                                {sortedSuburbs.valueSeq().map(suburb => <LinkContainer key={suburb.get('url')} to={`/area/${suburb.get('url')}`}><MenuItem eventKey={suburb.get('url')}>{dashRevert(suburb.get('url'))}</MenuItem></LinkContainer>)}
                                 <LinkContainer key="areas" to="/areas"><MenuItem eventKey="areas">More...</MenuItem></LinkContainer>
                             </NavDropdown>
                         }
                         {postRoutes &&
                             <NavDropdown eventKey={4} title="Posts" id="basic-nav-dropdown">
-                                {postRoutes.valueSeq().map(post => <LinkContainer key={post} to={`/${post}`}><MenuItem eventKey={post}>{words(post.replace(/-/g, ' '))}</MenuItem></LinkContainer>)}
+                                {postRoutes.valueSeq().map(post => <LinkContainer key={post} to={`/${post}`}><MenuItem eventKey={post}>{dashRevert(post)}</MenuItem></LinkContainer>)}
                             </NavDropdown>
                         }
                         <LinkContainer to="/login"><NavItem eventKey={1} className="header-action">Login</NavItem></LinkContainer>

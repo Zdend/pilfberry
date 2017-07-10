@@ -145,6 +145,10 @@ export function findAllPosts(criteria = { status: { $ne: STATUS_DELETED } }) {
     return Post.find(criteria).exec();
 }
 
+export function findAllActivePosts(criteria = { status: STATUS_ACTIVE }) {
+    return Post.find(criteria).exec();
+}
+
 export async function savePost(id, post) {
     delete post.author;
     delete post.dateCreated;
@@ -166,4 +170,8 @@ export function getPostPaths() {
 
 export function findPostByPath(path) {
     return findEntityByPath(Post, path);
+}
+
+export function findAllPostsLean(criteria = { status: STATUS_ACTIVE }) {
+    return Post.find(criteria).lean().exec();
 }

@@ -1,5 +1,5 @@
 import { createSelector as s } from 'reselect';
-import { NEW_ID } from '../../../shared/constants';
+import { NEW_ID, STATUS_ACTIVE } from '../../../shared/constants';
 
 const isNew = entity => entity.get('id') === NEW_ID;
 
@@ -34,6 +34,7 @@ export const getRestaurantByPath = path => s(getRestaurants, restaurants => rest
 export const getRestaurantPhotos = id => s(getDomain, domain => domain.get('restaurantPhotos').id === id && domain.get('restaurantPhotos').files);
 
 export const getSavedPosts = s(getPosts, posts => posts.filterNot(isNew));
+export const getActivePosts = s(getPosts, posts => posts.filter(post => post.get('status') === STATUS_ACTIVE));
 export const getPost = id => s(getPosts, posts => posts.get(id));
 export const getPostByPath = path => s(getPosts, posts => posts.find(post => post.get('path') === path));
 

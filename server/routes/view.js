@@ -7,7 +7,7 @@ import Root from '../../src/scripts/containers/root';
 import configureStore from '../../src/scripts/stores/configure-store';
 import rootSaga from '../../src/scripts/sagas/index';
 import routes from '../../src/scripts/routes/index';
-import { findRestaurant, getRestaurantPaths, findAllRestaurantsLean, getPostPaths } from '../db';
+import { findRestaurant, getRestaurantPaths, findAllRestaurantsLean, findAllPostsLean, getPostPaths } from '../db';
 import { isDev } from '../config';
 import { transformNestedRecordObject, arrayToMapById } from '../../src/scripts/services';
 import { Restaurant, restaurantDef, Post } from '../../src/scripts/models';
@@ -101,6 +101,12 @@ export const renderAllRestaurants = (req, res) => {
             fromJS(initialState).mergeIn(['domain', 'restaurants'], restaurants)
         )(req, res))
         .catch(console.error);
+};
+
+export const renderAllPosts = async (req, res) => {
+    const posts = await findAllPostsLean();
+    const transformedPosts = arrayToMapById(posts, Post, OrderedMap);
+    renderView(fromJS(initialState).mergeIn(['domain', 'posts'], transformedPosts))(req, res);
 };
 
 export const renderRestaurantByShortUrl = restaurant => (req, res) => {

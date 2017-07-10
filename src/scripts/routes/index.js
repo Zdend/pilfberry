@@ -14,6 +14,7 @@ import TermsPage from '../containers/public/terms-page';
 import ContactPage from '../containers/public/contact-page';
 import SuburbPage from '../containers/public/suburb-page';
 import AreasPage from '../containers/public/areas-page';
+import PostsPage from '../containers/public/posts-page';
 import SecureLayoutRoute from '../components/layouts/secure-wrapper';
 import PublicLayoutRoute from '../components/layouts/public-wrapper';
 
@@ -28,6 +29,7 @@ export default ({ dynamicRoutes, postDynamicRoutes }) => (
         <PublicLayoutRoute path="/terms" component={TermsPage} />
         <PublicLayoutRoute path="/contact" component={ContactPage} />
         <PublicLayoutRoute exact path="/areas" component={AreasPage} />
+        <PublicLayoutRoute exact path="/posts" component={PostsPage} />
         <PublicLayoutRoute path="/area/:area" component={SuburbPage} />
         <PublicLayoutRoute path="/restaurant/:id" component={RestaurantPage} />
         <PublicLayoutRoute path={`/:path(${dynamicRoutes.join('|')})`} component={RestaurantPage} />

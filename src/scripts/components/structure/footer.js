@@ -11,7 +11,9 @@ const Footer = () => (
                 </Col>
                 <Col xs={6}>
                     <div className="text-align-right margin-top-1x">
-                        <a href="https://www.facebook.com/Pilfberry-1307425432712367/" className="text-muted" target="_blank"><i className="fa fa-facebook-square fa-2x" /></a>
+                        <a href="https://www.facebook.com/Pilfberry-1307425432712367/" className="text-muted margin-right-1x" target="_blank"><i className="fa fa-facebook-square fa-2x" /></a>
+                        <a href="https://twitter.com/pilfberry/" className="text-muted margin-right-1x" target="_blank"><i className="fa fa-twitter fa-2x" /></a>
+                        <a href="https://www.instagram.com/pilfberry/" className="text-muted" target="_blank"><i className="fa fa-instagram fa-2x" /></a>
                     </div>
                 </Col>
             </Row>
@@ -20,6 +22,7 @@ const Footer = () => (
                     <ul className="margin-top-1x list-unstyled list-inline text-align-center">
                         <li><Link to="/">Home</Link></li>
                         <li><Link to="/areas">Suburbs</Link></li>
+                        <li><Link to="/posts">Posts</Link></li>
                         <li><Link to="/login">Login</Link></li>
                         <li><Link to="/terms">Terms and Conditions</Link></li>
                         <li><Link to="/privacy">Privacy</Link></li>

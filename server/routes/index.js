@@ -13,7 +13,13 @@ import {
 
 } from '../db';
 import { deletePhoto, uploadPhotosToRestaurant } from '../db/file-upload';
-import view, { renderRestaurant, renderRestaurantByShortUrl, renderPostByShortUrl, renderAllRestaurants } from './view';
+import view, {
+    renderRestaurant,
+    renderRestaurantByShortUrl,
+    renderPostByShortUrl,
+    renderAllRestaurants,
+    renderAllPosts
+} from './view';
 import { STATUS_ACTIVE, STATUS_DELETED } from '../../shared/constants';
 
 const logErrorFactory = message => e => console.error(`${message ? message + ':' : ''}${e && e.stack}`);
@@ -37,7 +43,12 @@ export default function (app) {
 
     app.get('/api/posts', async function (req, res) {
         try {
-            const posts = await findAllPosts({ status: req.query.status || { $ne: STATUS_DELETED } });
+            let posts;
+            if (req.user) {
+                posts = await findAllPosts({ status: req.query.status || { $ne: STATUS_DELETED } });
+            } else {
+                posts = await findAllPosts({ status: STATUS_ACTIVE });
+            }
             res.json(posts);
         } catch (e) {
             logError('findAllPosts failed', e);
@@ -149,6 +160,7 @@ export default function (app) {
     app.get('/secure', view);
     app.get('/restaurant/:id', renderRestaurant);
     app.get('/area/:area', view);
+    app.get('/posts', renderAllPosts);
     app.get('/', renderAllRestaurants);
     app.get('/list', renderAllRestaurants);
     app.get('/map', renderAllRestaurants);
@@ -163,7 +175,7 @@ export default function (app) {
             if (post) {
                 return renderPostByShortUrl(post)(req, res);
             }
-           
+
             view(req, res);
         } catch (e) {
             logError(`Server side render of a restaurant with "${req.params.shortUrl}" path failed`, e);

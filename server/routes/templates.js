@@ -218,7 +218,7 @@ export const layout = (body, initialState, helmet = { title: '', meta: '' }) => 
         <body>
             ${googleTagManagerNoScript}
             ${facebookSDKScript}
-            ${shareAnyButtons}
+            
             <div class="spinner-overlay">
                 <div class="spinner"></div>
                 <div class="spinner-text">Pilfberry is loading..</div>

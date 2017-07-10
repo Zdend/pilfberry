@@ -8,6 +8,8 @@ import { getPostByPath } from '../../reducers/selectors';
 import { SpinnerInline } from '../../components/spinner';
 import { convertText, getBlockStyle, convertToPlainText } from '../../services/rich-utils';
 import MetaTag from '../../components/structure/meta';
+import { HOSTNAME } from '../../../../shared/constants';
+import FBShareButton from '../../components/fb-share-button';
 
 class PostPage extends Component {
     componentDidMount() {
@@ -24,12 +26,16 @@ class PostPage extends Component {
         }
 
         const plainTextDescription = convertToPlainText(post.get('content')).replace(/[\n\r]/g, '');
+        const shareURL = `${HOSTNAME}/${post.get('path')}`;
+        const description = `${plainTextDescription.substr(0, 250)}...`;
 
         return (
             <Grid>
                 <MetaTag
                     title={post.get('title')}
-                    description={plainTextDescription}
+                    description={description}
+                    social
+                    url={shareURL}
                 />
 
                 
@@ -40,6 +46,7 @@ class PostPage extends Component {
 
                 <div className="margin-top-2x margin-bottom-2x">
                     <LinkContainer to="/"><Button bsStyle="link"><i className="fa fa-chevron-left margin-right-05x" /> Back</Button></LinkContainer>
+                    <FBShareButton url={shareURL} description={description} className="pull-right" />
                 </div>
             </Grid>
         );
