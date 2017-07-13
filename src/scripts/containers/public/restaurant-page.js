@@ -4,8 +4,9 @@ import { Grid, Row, Col, Button, Tooltip, OverlayTrigger } from 'react-bootstrap
 import { Editor } from 'draft-js';
 import { generate } from 'shortid';
 import { LinkContainer } from 'react-router-bootstrap';
+import { words } from 'capitalize';
 import { fetchRestaurantAction } from '../../actions/restaurant-actions';
-import { getRestaurantByPath } from '../../reducers/selectors';
+import { getRestaurantByPath, getCurrentLocation } from '../../reducers/selectors';
 import { findFirstAvatarPicture, findFirstCoverPicture, getHumanAddress, hashCode } from '../../services/util';
 import { SpinnerInline } from '../../components/spinner';
 import RestaurantTag from '../../components/restaurant-tag';
@@ -48,7 +49,8 @@ const priceRange = (priceLevel) => {
         case 4: return '$30+';
         default: return 'Not Available';
     }
-}
+};
+
 const PriceIndicator = ({ priceLevel }) => {
     return (
         <OverlayTrigger placement="top" overlay={<Tooltip id={generate()}>{priceRange(priceLevel)}</Tooltip>}>
@@ -57,7 +59,11 @@ const PriceIndicator = ({ priceLevel }) => {
     );
 };
 
-const ZeroPanel = () => <span>We are working on the missing content. Help us by <a href="mailto:contact@pilfberry.com">sending us</a> details for your restaurant!</span>;
+const ZeroPanel = () => (
+    <span>
+        We are working on the missing content. Help us by <a href="mailto:contact@pilfberry.com">sending us</a> details for your restaurant!
+    </span>
+);
 const OptionalIconValue = ({ value, icon, children, className }) => (value ? <div className={className}><i className={`fa fa-${icon} width-1r margin-right-1x text-muted`} /> {children ? children : value}</div> : null);
 class RestaurantPage extends Component {
     componentDidMount() {
@@ -68,7 +74,7 @@ class RestaurantPage extends Component {
     }
 
     render() {
-        const { restaurant } = this.props;
+        const { restaurant, currentLocation } = this.props;
         if (!restaurant) {
             return (<Grid><Row><Col sm={12} className="padding-top-2x padding-bottom-2x"><SpinnerInline /></Col></Row></Grid>);
         }
@@ -77,7 +83,9 @@ class RestaurantPage extends Component {
         const avatarURL = findFirstAvatarPicture(restaurant);
         const coverPhotoURL = findFirstCoverPicture(restaurant);
         const shareURL = `${HOSTNAME}/${restaurant.get('path')}`;
-        const restaurantDescription = plainTextDescription && plainTextDescription.length > 20 ? `${plainTextDescription.substr(0, 250)}...` : `${restaurant.get('name')} serves meals for people with special dietary requirements`;
+        const tagsDescription = restaurant.get('tags').map(tag => tag.toLowerCase()).join(', ');
+        const cuisinesDescription = restaurant.get('cuisines').map(tag => words(tag.toLowerCase())).join(', ');
+        const restaurantDescription = plainTextDescription && plainTextDescription.length > 20 ? `${plainTextDescription.substr(0, 250)}...` : `${restaurant.get('name')} serves meals for people with special dietary requirements like ${tagsDescription}. Taste dishes from cuisines like ${cuisinesDescription}.`;
         return (
             <div>
                 <MetaTag title={`${restaurant.get('name')}${restaurant.getIn(['address', 'suburb']) ? ', ' + restaurant.getIn(['address', 'suburb']) : ''}`}
@@ -111,7 +119,7 @@ class RestaurantPage extends Component {
 
                             <OptionalIconValue value={getHumanAddress(restaurant)} icon="map-marker" className="margin-top-2x">
                                 <span>{getHumanAddress(restaurant)}</span>
-                                <RestaurantViewMap address={restaurant.get('address')} />
+                                <RestaurantViewMap address={restaurant.get('address')} currentLocation={currentLocation} />
                             </OptionalIconValue>
                             <OptionalIconValue value={restaurant.get('url')} icon="globe"><a href={restaurant.get('url')} target="_blank">{restaurant.get('url')}</a></OptionalIconValue>
                             <OptionalIconValue value={restaurant.get('phoneNumber')} icon="phone"><a href={`tel:${restaurant.get('phoneNumber')}`}>{restaurant.get('phoneNumber')}</a></OptionalIconValue>
@@ -146,7 +154,8 @@ class RestaurantPage extends Component {
 function mapStateToProps(state, props) {
     const { match: { params: { path } } } = props;
     return {
-        restaurant: getRestaurantByPath(path)(state)
+        restaurant: getRestaurantByPath(path)(state),
+        currentLocation: getCurrentLocation(state)
     };
 }
 const mapDispatchToProps = {

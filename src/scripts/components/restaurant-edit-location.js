@@ -1,3 +1,4 @@
+/* global google */
 import React, { Component } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { withGoogleMap, GoogleMap, Marker } from 'react-google-maps';
@@ -133,8 +134,7 @@ function initAutocomplete(mapComponent, input, handlePlacesResult) {
     // more details for that place.
     searchBox.addListener('places_changed', function () {
         const places = searchBox.getPlaces();
-        console.log(places);
-        if (places.length == 0) {
+        if (!places.length) {
             return;
         }
 
@@ -152,27 +152,11 @@ function initAutocomplete(mapComponent, input, handlePlacesResult) {
             console.log('Returned place contains no geometry');
             return;
         }
-        // var icon = {
-        //     url: place.icon,
-        //     size: new google.maps.Size(40, 40),
-        //     origin: new google.maps.Point(0, 0),
-        //     anchor: new google.maps.Point(17, 34),
-        //     scaledSize: new google.maps.Size(25, 25)
-        // };
-
 
         handlePlacesResult({
             lat: place.geometry.location.lat(),
             lng: place.geometry.location.lng()
         });
-        // Create a marker for each place.
-        // markers.push(new google.maps.Marker({
-        //     map: map,
-        //     icon: icon,
-        //     title: place.name,
-        //     position: place.geometry.location
-        // }));
-
 
         if (place.geometry.viewport) {
             // Only geocodes have viewport.

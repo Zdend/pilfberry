@@ -151,7 +151,7 @@ class LandingPage extends Component {
                         <div className="row">
                             <Route exact path="/" render={() => this.renderList(filteredRestaurants, navigate, currentLocation, closestFirst, searchExpressions)} />
                             <Route exact path="/list" render={() => this.renderList(filteredRestaurants, navigate, currentLocation, closestFirst, searchExpressions)} />
-                            <Route exact path="/map" render={() => <RestaurantMap restaurants={filteredRestaurants} />} />
+                            <Route exact path="/map" render={() => <RestaurantMap restaurants={filteredRestaurants} currentLocation={currentLocation} />} />
                         </div>
                     </div>
                 </div>

@@ -5,6 +5,7 @@ import { generate } from 'shortid';
 import withScriptjs from 'react-google-maps/lib/async/withScriptjs';
 import { SpinnerInline } from './spinner';
 import { API_KEY } from '../../../shared/constants';
+import CurrentLocationMarker from './current-location-marker';
 
 const AsyncGoogleMap = withScriptjs(
     withGoogleMap(
@@ -15,8 +16,8 @@ const AsyncGoogleMap = withScriptjs(
                 defaultOptions={{
                     scrollwheel: false
                 }}
-
             >
+                <CurrentLocationMarker currentLocation={props.currentLocation} />
                 {props.markers.map(marker => (
                     <Marker key={generate()}
                         {...marker}
@@ -44,6 +45,7 @@ export default class RestaurantEditLocation extends Component {
 
     render() {
         const { latitude, longitude } = this.props.address;
+
         if (!latitude || !longitude) {
             return null;
         }
@@ -73,6 +75,7 @@ export default class RestaurantEditLocation extends Component {
                                 <div style={{ height: `100%` }} />
                             }
                             location={position}
+                            currentLocation={this.props.currentLocation}
                             markers={[{ position }]}
                             onMarkerRightClick={() => { }}
                         />
