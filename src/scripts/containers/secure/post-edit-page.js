@@ -13,7 +13,7 @@ import {
 } from '../../actions/post-actions';
 import InputHOC from '../../components/connected-input-hoc';
 import { NEW_ID, POST_STATUSES, DATE_FORMAT, POST_CATEGORIES } from '../../../../shared/constants';
-import PostEditDescription from '../../components/post-edit-description';
+import RichEditor from '../../components/rich-editor';
 import { SpinnerIcon } from '../../components/spinner';
 import MetaTag from '../../components/structure/meta';
 
@@ -59,7 +59,9 @@ class PostEditPage extends Component {
                         <Row>
                             <Col sm={12}>
                                 <ControlLabel>Post</ControlLabel>
-                                <PostEditDescription value={post.get('content')} changeAction={handleContentChange} />
+                                <RichEditor value={post.get('content')}
+                                    changeAction={handleContentChange}
+                                    placeholder="Write your post.." />
                             </Col>
                         </Row>
 

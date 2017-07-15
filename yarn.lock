@@ -1886,6 +1886,10 @@ draft-js@0.10.1:
     immutable "~3.7.4"
     object-assign "^4.1.0"
 
+draftjs-utils@0.8.3:
+  version "0.8.3"
+  resolved "https://registry.yarnpkg.com/draftjs-utils/-/draftjs-utils-0.8.3.tgz#23198824217d9386d758d22b223d827ba28aae4a"
+
 easy-extender@2.3.2:
   version "2.3.2"
   resolved "https://registry.yarnpkg.com/easy-extender/-/easy-extender-2.3.2.tgz#3d3248febe2b159607316d8f9cf491c16648221d"

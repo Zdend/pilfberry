@@ -20,7 +20,7 @@ import RestaurantEditTag from '../../components/restaurant-edit-tag';
 import RestaurantEditLocation from '../../components/restaurant-edit-location';
 import RestaurantPhoto from '../../components/restaurant-photo';
 import RestaurantGallery from '../../components/restaurant-gallery';
-import RestaurantEditDescription from '../../components/restaurant-edit-description';
+import RichEditor from '../../components/rich-editor';
 import { SpinnerIcon } from '../../components/spinner';
 import MetaTag from '../../components/structure/meta';
 
@@ -40,6 +40,7 @@ class RestaurantEditPage extends Component {
         const handleChange = (field, value) => restaurantValueChangeAction(id, field, value);
         const handleChangeForEvent = (field, e) => handleChange(field, e.target.value);
         const ConnectedInput = InputHOC(handleChangeForEvent);
+        const handleDescriptionChange = value => handleChange('description', value);
         const RestaurantInput = ({ value, field, ...rest }) => <ConnectedInput value={restaurant.getIn([...field.split('.')])} {...{ ...rest, field }} />;
         const prices = [
             { key: 'Not Specified', value: undefined },
@@ -153,7 +154,9 @@ class RestaurantEditPage extends Component {
                         <Row>
                             <Col sm={12}>
                                 <ControlLabel>Description</ControlLabel>
-                                <RestaurantEditDescription value={restaurant.get('description')} changeAction={handleChange} />
+                                <RichEditor value={restaurant.get('description')}
+                                    changeAction={handleDescriptionChange}
+                                    placeholder="Write a restaurant description.." />
                             </Col>
                         </Row>
 
