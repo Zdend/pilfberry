@@ -1,4 +1,5 @@
 export const DATE_FORMAT = 'DD/MM/YYYY';
+export const DATE_FORMAT_WORD = 'Do MMMM YYYY';
 export const NEW_ID = 'new';
 
 export const DEFAULT_AVATAR_URL = '/static/images/restaurant-type/japanese.jpg';
