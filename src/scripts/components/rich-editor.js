@@ -12,10 +12,12 @@ export default class RichEditor extends React.Component {
         this.state = {
             editorState: convertText(props.value),
             showURLInput: false,
-            urlValue: ''
+            urlValue: '',
+            focusing: false
         };
         this.focus = () => this.refs.editor.focus();
         this.onChange = this.onChange.bind(this);
+        this.onFocus = this.onFocus.bind(this);
         this.onBlur = this.onBlur.bind(this);
         this.handleKeyCommand = (command) => this._handleKeyCommand(command);
         this.onTab = (e) => this._onTab(e);
@@ -35,6 +37,15 @@ export default class RichEditor extends React.Component {
 
     onBlur(editorState) {
         this.props.changeAction(JSON.stringify(convertToRaw(this.state.editorState.getCurrentContent())));
+        this.setState({
+            focusing: false
+        });
+    }
+
+    onFocus(e) {
+        this.setState({
+            focusing: true
+        });
     }
 
     _handleKeyCommand(command) {
@@ -131,7 +142,8 @@ export default class RichEditor extends React.Component {
 
 
     render() {
-        const { editorState, placeholder } = this.state;
+        const { editorState, focusing } = this.state;
+        const { placeholder } = this.props;
         // If the user changes block type before entering any text, we can
         // either style the placeholder or hide it. Let's just hide it now.
         let className = 'RichEditor-editor';
@@ -144,25 +156,27 @@ export default class RichEditor extends React.Component {
 
         return (
             <div className="RichEditor-root">
-                <BlockStyleControls
-                    editorState={editorState}
-                    onToggle={this.toggleBlockType}
-                />
-                <InlineStyleControls
-                    editorState={editorState}
-                    onToggle={this.toggleInlineStyle}
-                />
-                <LinkStyleControls
-                    editorState={editorState}
-                    onURLChange={this.onURLChange}
-                    urlValue={this.state.urlValue}
-                    showURLInput={this.state.showURLInput}
-                    onLinkInputKeyDown={this.onLinkInputKeyDown}
-                    confirmLink={this.confirmLink}
-                    removeLink={this.removeLink}
-                    promptForLink={this.promptForLink}
-                    ref={ref => this.linkStyleControls = ref}
-                />
+                <div className={`RichEditor-controls__container ${focusing ? 'RichEditor-controls__container--floating' : ''}`}>
+                    <BlockStyleControls
+                        editorState={editorState}
+                        onToggle={this.toggleBlockType}
+                    />
+                    <InlineStyleControls
+                        editorState={editorState}
+                        onToggle={this.toggleInlineStyle}
+                    />
+                    <LinkStyleControls
+                        editorState={editorState}
+                        onURLChange={this.onURLChange}
+                        urlValue={this.state.urlValue}
+                        showURLInput={this.state.showURLInput}
+                        onLinkInputKeyDown={this.onLinkInputKeyDown}
+                        confirmLink={this.confirmLink}
+                        removeLink={this.removeLink}
+                        promptForLink={this.promptForLink}
+                        ref={ref => this.linkStyleControls = ref}
+                    />
+                </div>
                 <div className={className} onClick={this.focus}>
                     <Editor
                         blockStyleFn={getBlockStyle}
@@ -171,6 +185,7 @@ export default class RichEditor extends React.Component {
                         onChange={this.onChange}
                         onBlur={this.onBlur}
                         onTab={this.onTab}
+                        onFocus={this.onFocus}
                         placeholder={placeholder}
                         ref="editor"
                         spellCheck={true}
@@ -203,7 +218,7 @@ class LinkStyleControls extends Component {
         const active = entity ? entity.getType('LINK') : false;
 
         return (
-            <span>
+            <span className="RichEditor-controls">
                 <StyleButton
                     label={<i className="fa fa-link" />}
                     key={generate()}

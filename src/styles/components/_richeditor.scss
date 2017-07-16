@@ -6,9 +6,20 @@
 }
 
 .RichEditor-editor {
-  border-top: 1px solid $gray-lighter;
   cursor: text;
   margin-top: 10px;
+}
+
+.RichEditor-controls__container {
+  padding-bottom: .5rem;
+  border-bottom: 1px solid $gray-lighter;
+}
+
+.RichEditor-controls__container--floating {
+  position: fixed;
+  top: 1rem;
+  background: #fff;
+  z-index: 1000;
 }
 
 .RichEditor-editor .public-DraftEditorPlaceholder-root,
