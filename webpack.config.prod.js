@@ -110,10 +110,6 @@ module.exports = {
     ]
 };
 
-
-
-
-
 function makeStyleLoader(config) {
     return {
         test: exts('scss'),

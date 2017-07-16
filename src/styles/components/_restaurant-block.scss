@@ -49,14 +49,29 @@
   padding: 0.5rem;
   display: inline-block;
   color: $gray-darker;
+  font-weight: 700;
+  @include text-truncate();
 }
+@media (min-width: $screen-sm) and (max-width: $screen-sm-max) {
+  .restaurant-block__name {
+    width: 205px;
+  }
+}
+@media (min-width: $screen-md) and (max-width: $screen-md-max) {
+  .restaurant-block__name {
+    width: 350px;
+  }
+}
+
 .restaurant-block__labels {
 
 }
 .restaurant-block__distance {
-  float: right;
-  font-size: 12px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  font-size: 14px;
   color: $gray;
-  font-weight: 500;
+  font-weight: 200;
   padding: 0.5rem;
 }

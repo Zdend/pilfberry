@@ -1,7 +1,7 @@
 $white: #fff;
 $black: #000;
 
-$font-titles: "League Spartan", "Magra", "Roboto", sans-serif;
+$font-logo: "League Spartan", "Arial Black", sans-serif;
 
 // BOOTSTRAP OVERRIDES
 // $brand-primary: #df1e2d;
@@ -9,7 +9,9 @@ $brand-primary: #510949;
 // $brand-primary: #5e0b4b;
 //$brand-primary: #E6E6FA;
 
-$font-family-sans-serif: Roboto;
+$font-size-base: 16px;
+
+$font-family-sans-serif: "Source Sans Pro";
 
 $navbar-default-color: $brand-primary;
 $navbar-default-bg: #fff;

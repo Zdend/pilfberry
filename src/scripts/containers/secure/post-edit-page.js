@@ -57,7 +57,7 @@ class PostEditPage extends Component {
                         </Row>
 
                         <Row>
-                            <Col sm={12}>
+                            <Col md={8}>
                                 <ControlLabel>Post</ControlLabel>
                                 <RichEditor value={post.get('content')}
                                     changeAction={handleContentChange}

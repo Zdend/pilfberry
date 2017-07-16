@@ -6,7 +6,7 @@ const LoginForm = ({ login, password, isPending, loginRequestAction, credentials
         <div className="form-group">
             <label className="control-label">Login</label>
             <input type="text" className="form-control" value={login}
-                onChange={e => credentialsChange('login', e)} />
+                onChange={e => credentialsChange('login', e)} autoFocus />
         </div>
         <div className="form-group">
             <label className="control-label">Password</label>

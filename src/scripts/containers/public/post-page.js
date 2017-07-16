@@ -37,17 +37,20 @@ class PostPage extends Component {
                     social
                     url={shareURL}
                 />
+                <Row>
+                    <Col md={8} mdOffset={2}>
+                        <h1 className="text-center margin-top-3x margin-bottom-3x">{post.get('title')}</h1>
 
-                
-                <h1>{post.get('title')}</h1>
-                <Editor blockStyleFn={getBlockStyle}
-                    readOnly
-                    editorState={convertText(post.get('content'))} />
+                        <Editor blockStyleFn={getBlockStyle}
+                            readOnly
+                            editorState={convertText(post.get('content'))} />
+                    </Col>
+                </Row>
 
-                <div className="margin-top-2x margin-bottom-2x">
-                    <LinkContainer to="/"><Button bsStyle="link"><i className="fa fa-chevron-left margin-right-05x" /> Back</Button></LinkContainer>
-                    <FBShareButton url={shareURL} description={description} className="pull-right" />
-                </div>
+                        <div className="margin-top-2x margin-bottom-2x">
+                            <LinkContainer to="/"><Button bsStyle="link"><i className="fa fa-chevron-left margin-right-05x" /> Back</Button></LinkContainer>
+                            <FBShareButton url={shareURL} description={description} className="pull-right" />
+                        </div>
             </Grid>
         );
     }

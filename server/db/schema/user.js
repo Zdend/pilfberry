@@ -11,10 +11,15 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
+    firstName: String,
+    lastName: String,
+    companyName: String,
+    phoneNumber: String,
     roles: {
         type: Array,
         enum: ROLES
-    }
+    },
+    dateCreated: Date
 });
 
 userSchema.methods.verifyPassword = function (password) {

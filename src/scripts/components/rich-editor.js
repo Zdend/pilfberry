@@ -3,7 +3,7 @@ import { findDOMNode } from 'react-dom';
 import { Editor, RichUtils, convertToRaw, EditorState } from 'draft-js';
 import { generate } from 'shortid';
 import { Overlay, Popover, Button, InputGroup, FormControl } from 'react-bootstrap';
-import { getSelectionEntity, getSelectionText } from 'draftjs-utils';
+import { getSelectionEntity } from 'draftjs-utils';
 import { convertText, getBlockStyle, BlockStyleControls, InlineStyleControls, StyleButton } from '../services/rich-utils';
 
 export default class RichEditor extends React.Component {
