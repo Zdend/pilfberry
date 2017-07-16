@@ -3,6 +3,7 @@ import { findDOMNode } from 'react-dom';
 import { Editor, RichUtils, convertToRaw, EditorState } from 'draft-js';
 import { generate } from 'shortid';
 import { Overlay, Popover, Button, InputGroup, FormControl } from 'react-bootstrap';
+import { AutoAffix } from 'react-overlays';
 import { getSelectionEntity } from 'draftjs-utils';
 import { convertText, getBlockStyle, BlockStyleControls, InlineStyleControls, StyleButton } from '../services/rich-utils';
 
@@ -12,18 +13,17 @@ export default class RichEditor extends React.Component {
         this.state = {
             editorState: convertText(props.value),
             showURLInput: false,
-            urlValue: '',
-            focusing: false
+            urlValue: ''
         };
         this.focus = () => this.refs.editor.focus();
         this.onChange = this.onChange.bind(this);
-        this.onFocus = this.onFocus.bind(this);
         this.onBlur = this.onBlur.bind(this);
         this.handleKeyCommand = (command) => this._handleKeyCommand(command);
         this.onTab = (e) => this._onTab(e);
         this.toggleBlockType = (type) => this._toggleBlockType(type);
         this.toggleInlineStyle = (style) => this._toggleInlineStyle(style);
-
+        this.onAffix = this.onAffix.bind(this);
+        this.onAffixedOff = this.onAffixedOff.bind(this);
 
         this.promptForLink = this._promptForLink.bind(this);
         this.onURLChange = (e) => this.setState({ urlValue: e.target.value });
@@ -37,15 +37,6 @@ export default class RichEditor extends React.Component {
 
     onBlur(editorState) {
         this.props.changeAction(JSON.stringify(convertToRaw(this.state.editorState.getCurrentContent())));
-        this.setState({
-            focusing: false
-        });
-    }
-
-    onFocus(e) {
-        this.setState({
-            focusing: true
-        });
     }
 
     _handleKeyCommand(command) {
@@ -139,10 +130,16 @@ export default class RichEditor extends React.Component {
             });
         }
     }
+    onAffix() {
+        this.setState({ affixed: true });
+    }
+    onAffixedOff() {
+        this.setState({ affixed: false });
+    }
 
 
     render() {
-        const { editorState, focusing } = this.state;
+        const { editorState, showURLInput, urlValue, affixed } = this.state;
         const { placeholder } = this.props;
         // If the user changes block type before entering any text, we can
         // either style the placeholder or hide it. Let's just hide it now.
@@ -156,27 +153,30 @@ export default class RichEditor extends React.Component {
 
         return (
             <div className="RichEditor-root">
-                <div className={`RichEditor-controls__container ${focusing ? 'RichEditor-controls__container--floating' : ''}`}>
-                    <BlockStyleControls
-                        editorState={editorState}
-                        onToggle={this.toggleBlockType}
-                    />
-                    <InlineStyleControls
-                        editorState={editorState}
-                        onToggle={this.toggleInlineStyle}
-                    />
-                    <LinkStyleControls
-                        editorState={editorState}
-                        onURLChange={this.onURLChange}
-                        urlValue={this.state.urlValue}
-                        showURLInput={this.state.showURLInput}
-                        onLinkInputKeyDown={this.onLinkInputKeyDown}
-                        confirmLink={this.confirmLink}
-                        removeLink={this.removeLink}
-                        promptForLink={this.promptForLink}
-                        ref={ref => this.linkStyleControls = ref}
-                    />
-                </div>
+                <AutoAffix viewportOffsetTop={0} container={this} onAffix={this.onAffix} onAffixedTop={this.onAffixedOff}>
+                    <div className="RichEditor-controls__container">
+                        <BlockStyleControls
+                            editorState={editorState}
+                            onToggle={this.toggleBlockType}
+                        />
+                        <InlineStyleControls
+                            editorState={editorState}
+                            onToggle={this.toggleInlineStyle}
+                        />
+                        <LinkStyleControls
+                            editorState={editorState}
+                            onURLChange={this.onURLChange}
+                            urlValue={urlValue}
+                            showURLInput={showURLInput}
+                            onLinkInputKeyDown={this.onLinkInputKeyDown}
+                            confirmLink={this.confirmLink}
+                            removeLink={this.removeLink}
+                            promptForLink={this.promptForLink}
+                            affixed={affixed}
+                            ref={ref => this.linkStyleControls = ref}
+                        />
+                    </div>
+                </AutoAffix>
                 <div className={className} onClick={this.focus}>
                     <Editor
                         blockStyleFn={getBlockStyle}
@@ -210,7 +210,7 @@ class LinkStyleControls extends Component {
     }
 
     render() {
-        const { editorState, onURLChange, urlValue, onLinkInputKeyDown, confirmLink, removeLink, showURLInput } = this.props;
+        const { editorState, onURLChange, urlValue, onLinkInputKeyDown, confirmLink, removeLink, showURLInput, affixed } = this.props;
 
         const contentState = editorState.getCurrentContent();
         const entityKey = getSelectionEntity(editorState);
@@ -226,8 +226,8 @@ class LinkStyleControls extends Component {
                     onToggle={this.onToggle}
                     ref={ref => this.linkButton = ref}
                 />
-                <Overlay trigger="click" placement="top" show={showURLInput} target={() => this.linkButton}>
-                    <Popover id={generate()} title="Link">
+                <Overlay trigger="click" placement="bottom" show={showURLInput} target={() => this.linkButton}>
+                    <Popover id={generate()} title="Link" className={`${affixed ? 'RichEditor-popover--affixed' : ''}`}>
                         <InputGroup>
                             <FormControl
                                 onChange={onURLChange}
