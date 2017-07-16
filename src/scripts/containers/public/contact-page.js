@@ -7,7 +7,7 @@ export default () => (
         <MetaTag title="Contact Us" description="Send us an enquiry regarding to features you would like to see here, if you found a bug or if you wish your restaurant to appear here." />
         <Row>
             <Col sm={12} className="padding-top-2x padding-bottom-2x">
-                <h1>Contact Us</h1>
+                <h1 className="page-title">Contact Us</h1>
 
                 <p>Let us know if there is anything we can do better or if you wish to see your favourite restaurant on the list.</p>
 

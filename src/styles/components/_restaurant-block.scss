@@ -50,6 +50,8 @@
   display: inline-block;
   color: $gray-darker;
   font-weight: 700;
+  line-height: 1;
+  margin-top: 0.5rem;
   @include text-truncate();
 }
 @media (min-width: $screen-sm) and (max-width: $screen-sm-max) {
@@ -64,7 +66,7 @@
 }
 
 .restaurant-block__labels {
-
+  line-height: 1;
 }
 .restaurant-block__distance {
   position: absolute;

@@ -34,7 +34,7 @@ class SuburbPage extends Component {
                 />
                 <Row>
                     <Col sm={12}>
-                        <h1>Restaurants in {suburb}</h1>
+                        <h1 className="page-title">Restaurants in {suburb}</h1>
                         {restaurants
                             ? <Row>{restaurants.valueSeq().map(r => <RestaurantBlock restaurant={r} navigate={navigate} key={r.get('id')} currentLocation={currentLocation} />)}</Row>
                             : <SpinnerInline />

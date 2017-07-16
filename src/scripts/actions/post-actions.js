@@ -12,7 +12,7 @@ export const POSTS = {
 };
 
 export const createPostAction = () => action(POST.CREATE);
-export const deletePostAction = id => action(POST.DELETE, { id });
+export const deletePostAction = id => action(POST.DELETE_REQUEST, { id });
 export const postValueChangeAction = (id, field, value) => action(POST.CHANGE, { id, field, value });
 
 export const fetchPostsAction = fetchEntitiesAction(POSTS.REQUEST, POSTS.SUCCESS, POSTS.FAILURE);

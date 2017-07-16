@@ -38,8 +38,8 @@ class PostPage extends Component {
                     url={shareURL}
                 />
                 <Row>
-                    <Col md={8} mdOffset={2}>
-                        <h1 className="text-center margin-top-3x margin-bottom-3x">{post.get('title')}</h1>
+                    <Col md={6} mdOffset={3}>
+                        <h1 className="text-center page-title">{post.get('title')}</h1>
 
                         <Editor blockStyleFn={getBlockStyle}
                             readOnly

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Table, Button, Checkbox, FormControl } from 'react-bootstrap';
+import { Table, Button, Checkbox, FormControl, Row, Col } from 'react-bootstrap';
 import { push } from 'react-router-redux';
 import { getSavedPosts } from '../../reducers/selectors';
 import { fetchPostsAction, createPostAction, deletePostAction } from '../../actions/post-actions';
@@ -46,7 +46,10 @@ class PostListPage extends Component {
                             bsSize="xs"
                             bsStyle="danger"
                             className="margin-right-05x margin-bottom-05x"
-                            onClick={() => deletePostAction(id)}>
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                deletePostAction(id);
+                            }}>
                             Delete
                         </Button>
                     }
@@ -73,17 +76,23 @@ class PostListPage extends Component {
     render() {
         const { posts, navigate, deletePostAction = implement => implement } = this.props;
         return (
-            <div className="padding-bottom-2x">
+            <div className="padding-top-2x padding-bottom-2x">
                 <MetaTag title="Manage posts" />
-                <FormControl
-                    className="margin-bottom-1x margin-top-1x"
-                    placeholder="Type in to filter.."
-                    onChange={this.onSeachQueryChange} />
 
-                <Button bsStyle="primary" onClick={this.navigateToNewPost} className="pull-right">
-                    <i className="fa fa-plus" /> Create Post
+                <Row className="margin-bottom-1x margin-top-1x">
+                    <Col sm={8}>
+                        <FormControl
+                            placeholder="Type in to filter.."
+                            onChange={this.onSeachQueryChange} />
+                    </Col>
+                    <Col sm={4} className="margin-top-1x margin-top-0x-sm">
+                        <Button bsStyle="primary" block onClick={this.navigateToNewPost} className="pull-right">
+                            <i className="fa fa-plus" /> Create Post
                 </Button>
-                <h1>Posts</h1>
+                    </Col>
+                </Row>
+
+                <h1 className="page-title">Posts</h1>
 
 
                 <Table responsive hover>

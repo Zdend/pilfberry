@@ -20,7 +20,7 @@ class PostsPage extends Component {
                 <MetaTag title="Restaurants in Sydney" description="Find restaurants by suburbs" />
                 <Row>
                     <Col sm={12}>
-                        <h1>Latest posts</h1>
+                        <h1 className="page-title">Latest posts</h1>
                         <ul>
                             {sortedPosts.valueSeq().map(post => <li key={post.get('path')}>
                                 <Link to={`/${post.get('path')}`}>{dashRevert(post.get('path'))}</Link></li>

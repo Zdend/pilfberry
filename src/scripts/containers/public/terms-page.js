@@ -7,7 +7,7 @@ export default () => (
         <MetaTag title="Terms and Conditions" />
         <Row>
             <Col sm={12} className="padding-top-2x padding-bottom-2x">
-                <h1>Website Terms and Conditions of Use</h1>
+                <h1 className="page-title">Website Terms and Conditions of Use</h1>
             
 
                 <ol className="condition-list">

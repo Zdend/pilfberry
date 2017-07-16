@@ -16,7 +16,7 @@ class AreasPage extends Component {
                 <MetaTag title="Restaurants in Sydney" description="Find restaurants by suburbs" />
                 <Row>
                     <Col sm={12}>
-                        <h1>Restaurants in Sydney</h1>
+                        <h1 className="page-title">Restaurants in Sydney</h1>
                         <ul>
                             {sortedSuburbs.valueSeq().map(suburb => <li key={suburb.get('url')}>
                                 <Link to={`/area/${suburb.get('url')}`}>{dashRevert(suburb.get('url'))} ({suburb.get('count')})</Link></li>

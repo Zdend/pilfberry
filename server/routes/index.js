@@ -9,7 +9,8 @@ import {
     savePost,
     findAllPosts,
     findPost,
-    findPostByPath
+    findPostByPath,
+    deletePost
 
 } from '../db';
 import { deletePhoto, uploadPhotosToRestaurant } from '../db/file-upload';
@@ -128,6 +129,16 @@ export default function (app) {
         } catch (e) {
             logError(`delete of a restaurant with id ${req.params.id} failed`, e);
             res.status(500).send(`Delete of a restaurant with id ${req.params.id} failed.`);
+        }
+    });
+
+    app.delete('/api/post/:id', secured, async function (req, res) {
+        try {
+            const post = await deletePost(req.params.id);
+            res.json(post);
+        } catch (e) {
+            logError(`delete of a post with id ${req.params.id} failed`, e);
+            res.status(500).send(`Delete of a post with id ${req.params.id} failed.`);
         }
     });
 

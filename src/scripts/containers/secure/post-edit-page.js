@@ -41,7 +41,7 @@ class PostEditPage extends Component {
                 <MetaTag title="Edit post" />
                 {post &&
                     <div>
-                        <h1 className="margin-top-1x">{post.get('title') || '<Post Name>'}</h1>
+                        <h1 className="page-title">{post.get('title') || '<Post Name>'}</h1>
 
                         <Row>
                             <Col sm={6}>
@@ -57,7 +57,7 @@ class PostEditPage extends Component {
                         </Row>
 
                         <Row>
-                            <Col md={8}>
+                            <Col md={6}>
                                 <ControlLabel>Post</ControlLabel>
                                 <RichEditor value={post.get('content')}
                                     changeAction={handleContentChange}

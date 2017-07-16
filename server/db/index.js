@@ -175,3 +175,8 @@ export function findPostByPath(path) {
 export function findAllPostsLean(criteria = { status: STATUS_ACTIVE }) {
     return Post.find(criteria).lean().exec();
 }
+
+export function deletePost(id) {
+    return Post.findByIdAndUpdate(id, { status: STATUS_DELETED }, { new: true }).exec();
+}
+

@@ -48,14 +48,14 @@ export const spinnerStyle = `
     }
     .spinner-text {
         color: white;
-        font-family: Helvetica Neue;
+        font-family: "Source Sans Pro", "Helvetica Neue", Arial, sans-serif;
         font-weight: 300;
         position: absolute;
         left: 0;
         right: 0;
         text-align: center;
         top: 45%;
-        font-size: 16px;
+        font-size: 20px;
     }
     </style>
 `;

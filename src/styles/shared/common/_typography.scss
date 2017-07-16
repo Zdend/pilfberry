@@ -44,3 +44,8 @@
 .text-truncate {
   @include text-truncate();
 }
+
+.page-title {
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+}

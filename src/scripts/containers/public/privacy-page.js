@@ -7,7 +7,7 @@ export default () => (
         <MetaTag title="Privacy Policy" />
         <Row>
             <Col sm={12} className="padding-top-2x padding-bottom-2x">
-                <h1>Privacy Policy</h1>
+                <h1 className="page-title">Privacy Policy</h1>
                 <h2>Pilfberry</h2>
 
 

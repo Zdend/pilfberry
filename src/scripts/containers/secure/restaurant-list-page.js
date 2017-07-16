@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Table, Button, Checkbox, FormControl } from 'react-bootstrap';
+import { Table, Button, Checkbox, FormControl, Row, Col } from 'react-bootstrap';
 import { push } from 'react-router-redux';
 import { getSavedRestaurants } from '../../reducers/selectors';
 import { fetchRestaurantsAction, createRestaurantAction, deleteRestaurantAction } from '../../actions/restaurant-actions';
@@ -84,17 +84,23 @@ class RestaurantListPage extends Component {
     render() {
         const { restaurants, navigate, deleteRestaurantAction } = this.props;
         return (
-            <div className="padding-bottom-2x">
+            <div className="padding-top-2x padding-bottom-2x">
                 <MetaTag title="Manage restaurants" />
-                <FormControl
-                    className="margin-bottom-1x margin-top-1x"
-                    placeholder="Type in to filter.."
-                    onChange={this.onSeachQueryChange} />
 
-                <Button bsStyle="primary" onClick={this.navigateToNewRestaurant} className="pull-right">
-                    <i className="fa fa-plus" /> Create Restaurant
-                </Button>
-                <h1>Restaurants</h1>
+                <Row className="margin-bottom-1x margin-top-1x">
+                    <Col sm={8}>
+                        <FormControl
+                            placeholder="Type in to filter.."
+                            onChange={this.onSeachQueryChange} />
+                    </Col>
+                    <Col sm={4} className="margin-top-1x margin-top-0x-sm">
+                        <Button bsStyle="primary" block onClick={this.navigateToNewRestaurant}>
+                            <i className="fa fa-plus" /> Create Restaurant
+                        </Button>
+                    </Col>
+                </Row>
+
+                <h1 className="page-title">Restaurants</h1>
 
 
                 <Table responsive hover>

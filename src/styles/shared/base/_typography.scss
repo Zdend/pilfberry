@@ -12,7 +12,3 @@ h2 {
 .text-black {
   color: $gray-darker;
 }
-
-.text-truncate {
-  @include text-truncate();
-}

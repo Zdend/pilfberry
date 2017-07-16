@@ -51,7 +51,7 @@ class RestaurantEditPage extends Component {
                 <MetaTag title="Edit restaurant" />
                 {restaurant &&
                     <div>
-                        <h1 className="margin-top-1x">{restaurant.get('name') || '<Restaurant Name>'}</h1>
+                        <h1 className="page-title">{restaurant.get('name') || '<Restaurant Name>'}</h1>
 
                         <Row>
                             <Col sm={6}>

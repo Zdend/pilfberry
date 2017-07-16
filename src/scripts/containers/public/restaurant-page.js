@@ -65,6 +65,8 @@ const ZeroPanel = () => (
     </span>
 );
 const OptionalIconValue = ({ value, icon, children, className }) => (value ? <div className={className}><i className={`fa fa-${icon} width-1r margin-right-1x text-muted`} /> {children ? children : value}</div> : null);
+const stripHttp = url => url.replace(/^https?:\/\//, '').replace(/\/$/, '');
+
 class RestaurantPage extends Component {
     componentDidMount() {
         const { match: { params: { path } }, fetchRestaurant, restaurant } = this.props;
@@ -121,7 +123,7 @@ class RestaurantPage extends Component {
                                 <span>{getHumanAddress(restaurant)}</span>
                                 <RestaurantViewMap address={restaurant.get('address')} currentLocation={currentLocation} />
                             </OptionalIconValue>
-                            <OptionalIconValue value={restaurant.get('url')} icon="globe"><a href={restaurant.get('url')} target="_blank">{restaurant.get('url')}</a></OptionalIconValue>
+                            <OptionalIconValue value={restaurant.get('url')} icon="globe"><a href={restaurant.get('url')} target="_blank">{stripHttp(restaurant.get('url'))}</a></OptionalIconValue>
                             <OptionalIconValue value={restaurant.get('phoneNumber')} icon="phone"><a href={`tel:${restaurant.get('phoneNumber')}`}>{restaurant.get('phoneNumber')}</a></OptionalIconValue>
                             <OptionalIconValue value={restaurant.get('email')} icon="envelope"><a href={`mailto:${restaurant.get('email')}`}>{restaurant.get('email')}</a></OptionalIconValue>
 

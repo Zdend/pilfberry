@@ -19,7 +19,7 @@ export const RESTAURANTS = {
 export const restaurantValueChangeAction = (id, field, value) => action(RESTAURANT.CHANGE, { id, field, value });
 
 export const createRestaurantAction = () => action(RESTAURANT.CREATE);
-export const deleteRestaurantAction = id => action(RESTAURANT.DELETE, { id });
+export const deleteRestaurantAction = id => action(RESTAURANT.DELETE_REQUEST, { id });
 
 export const deletePhotoAction = restaurantId => photoId => action(RESTAURANT.DELETE_PHOTO, { restaurantId, photoId });
 
