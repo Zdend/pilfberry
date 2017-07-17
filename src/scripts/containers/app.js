@@ -4,6 +4,9 @@ import { getGlobalMessage, getAreaRoutes, getPostDynamicRoutes } from '../reduce
 import { setMessageAction } from '../actions/global-message-actions';
 
 class App extends Component {
+    componentDidMount() {
+        document.querySelector('.spinner-overlay').style.display = 'none';
+    }
     render() {
         const { children, ...rest } = this.props;
         const childrenWithProps = React.Children.map(children, child =>
