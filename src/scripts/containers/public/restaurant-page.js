@@ -64,7 +64,8 @@ const ZeroPanel = () => (
         We are working on the missing content. Help us by <a href="mailto:contact@pilfberry.com">sending us</a> details for your restaurant!
     </span>
 );
-const OptionalIconValue = ({ value, icon, children, className }) => (value ? <div className={className}><i className={`fa fa-${icon} width-1r margin-right-1x text-muted`} /> {children ? children : value}</div> : null);
+const OptionalIconValue = ({ value, icon, children, className }) => 
+(value ? <div className={className}><i className={`fa fa-${icon} text-muted restaurant-page__info-left`} /> <div className="restaurant-page__info-right">{children ? children : value}</div></div> : null);
 const stripHttp = url => url.replace(/^https?:\/\//, '').replace(/\/$/, '');
 
 class RestaurantPage extends Component {
@@ -120,7 +121,7 @@ class RestaurantPage extends Component {
                             </ul>
 
                             <OptionalIconValue value={getHumanAddress(restaurant)} icon="map-marker" className="margin-top-2x">
-                                <span>{getHumanAddress(restaurant)}</span>
+                                <span className="margin-right-1x">{getHumanAddress(restaurant)}</span>
                                 <RestaurantViewMap address={restaurant.get('address')} currentLocation={currentLocation} />
                             </OptionalIconValue>
                             <OptionalIconValue value={restaurant.get('url')} icon="globe"><a href={restaurant.get('url')} target="_blank">{stripHttp(restaurant.get('url'))}</a></OptionalIconValue>

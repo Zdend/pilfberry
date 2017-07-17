@@ -43,3 +43,9 @@
         }
     }
 }
+
+@media (max-width: $screen-xs-max) {
+    .landing-page__filter-button {
+        font-size: 14px;
+    }
+}

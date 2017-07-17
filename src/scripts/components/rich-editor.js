@@ -30,6 +30,7 @@ export default class RichEditor extends React.Component {
         this.confirmLink = this._confirmLink.bind(this);
         this.onLinkInputKeyDown = this._onLinkInputKeyDown.bind(this);
         this.removeLink = this._removeLink.bind(this);
+        this.dismissLinkPopover = this.dismissLinkPopover.bind(this);
     }
     onChange(editorState) {
         this.setState({ editorState });
@@ -130,6 +131,11 @@ export default class RichEditor extends React.Component {
             });
         }
     }
+    dismissLinkPopover() {
+        this.setState({
+            showURLInput: false
+        });
+    }
     onAffix() {
         this.setState({ affixed: true });
     }
@@ -173,6 +179,7 @@ export default class RichEditor extends React.Component {
                             removeLink={this.removeLink}
                             promptForLink={this.promptForLink}
                             affixed={affixed}
+                            dismissLinkPopover={this.dismissLinkPopover}
                             ref={ref => this.linkStyleControls = ref}
                         />
                     </div>
@@ -210,7 +217,7 @@ class LinkStyleControls extends Component {
     }
 
     render() {
-        const { editorState, onURLChange, urlValue, onLinkInputKeyDown, confirmLink, removeLink, showURLInput, affixed } = this.props;
+        const { editorState, onURLChange, urlValue, onLinkInputKeyDown, confirmLink, removeLink, dismissLinkPopover, showURLInput, affixed } = this.props;
 
         const contentState = editorState.getCurrentContent();
         const entityKey = getSelectionEntity(editorState);
@@ -227,7 +234,8 @@ class LinkStyleControls extends Component {
                     ref={ref => this.linkButton = ref}
                 />
                 <Overlay trigger="click" placement="bottom" show={showURLInput} target={() => this.linkButton}>
-                    <Popover id={generate()} title="Link" className={`${affixed ? 'RichEditor-popover--affixed' : ''}`}>
+                    <Popover id={generate()} title={<span>Link <Button className="close" onClick={dismissLinkPopover}>&times;</Button></span>} className={`${affixed ? 'RichEditor-popover--affixed' : ''}`}>
+                        
                         <InputGroup>
                             <FormControl
                                 onChange={onURLChange}

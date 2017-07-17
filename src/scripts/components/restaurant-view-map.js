@@ -52,7 +52,7 @@ export default class RestaurantEditLocation extends Component {
 
         const position = { lat: latitude, lng: longitude };
         return (
-            <div className="margin-left-1x inline-block">
+            <div className="inline-block">
                 <a className="margin-left-1x-sm" onClick={() => this.open()} href="javascript:void(0)">
                     Show on map
                 </a>

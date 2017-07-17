@@ -54,14 +54,26 @@
   margin-top: 0.5rem;
   @include text-truncate();
 }
+@media (min-width: $screen-md) and (max-width: $screen-md-max) {
+  .restaurant-block__name {
+    width: 350px;
+  }
+}
+
 @media (min-width: $screen-sm) and (max-width: $screen-sm-max) {
   .restaurant-block__name {
     width: 205px;
   }
 }
-@media (min-width: $screen-md) and (max-width: $screen-md-max) {
+
+@media (max-width: $screen-xs) {
   .restaurant-block__name {
-    width: 350px;
+    width: 235px;
+  }
+}
+@media (max-width: 360px) {
+  .restaurant-block__name {
+    width: 180px;
   }
 }
 

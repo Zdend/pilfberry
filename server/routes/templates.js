@@ -221,7 +221,7 @@ export const layout = (body, initialState, helmet = { title: '', meta: '' }) => 
             
             <div class="spinner-overlay">
                 <div class="spinner"></div>
-                <div class="spinner-text">Pilfberry is loading..</div>
+                <div class="spinner-text">Pilfberry is loading...</div>
             </div>
             <div id="root"><div>${body}</div></div>
             <script type="text/javascript" charset="utf-8">

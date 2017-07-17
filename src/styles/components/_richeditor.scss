@@ -75,3 +75,9 @@
   position: fixed;
   top: 36px !important;
 }
+
+@media (max-width: $screen-xs) {
+  .RichEditor-popover--affixed {
+    top: 56px !important;
+  }
+}

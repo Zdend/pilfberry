@@ -6,10 +6,10 @@ import {
 import { TAG } from '../../../shared/constants';
 
 const ToggleButtonHOC = (onClick) => ({ tag, className }) =>
-    <Button bsStyle="primary" onClick={() => onClick(tag)} className={`text-capitalize ${className}`}>{tag.toLowerCase()}</Button>;
+    <Button bsStyle="primary" onClick={() => onClick(tag)} className={`text-capitalize landing-page__filter-button ${className || ''}`}>{tag.toLowerCase()}</Button>;
 
 const ToggleMenuItemHOC = (onClick) => ({ tag, className }) =>
-    <MenuItem onClick={() => onClick(tag)} className={`text-capitalize ${className}`}>{tag.toLowerCase()}</MenuItem>;
+    <MenuItem onClick={() => onClick(tag)} className={`text-capitalize landing-page__filter-button ${className || ''}`}>{tag.toLowerCase()}</MenuItem>;
 
 
 export default class TagFilter extends Component {
@@ -32,7 +32,7 @@ export default class TagFilter extends Component {
                     <ToggleButton tag={TAG.GLUTEN_FREE} />
                     <ToggleButton tag={TAG.DAIRY_FREE} className="hidden-xs" />
                     <DropdownButton title={<span><i className="fa fa-ellipsis-h" /> More</span>}
-                        id="bg-justified-dropdown" bsStyle="primary" pullRight>
+                        id="bg-justified-dropdown" bsStyle="primary" pullRight className="landing-page__filter-button">
                         <ToggleMenuItem tag={TAG.DAIRY_FREE} className="visible-xs" />
                         <ToggleMenuItem tag={TAG.NUT_FREE} />
                         <ToggleMenuItem tag={TAG.PREGNANT_FRIENDLY} />
