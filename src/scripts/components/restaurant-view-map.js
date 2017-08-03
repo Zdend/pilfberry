@@ -1,3 +1,4 @@
+/* global google */
 import React, { Component } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { withGoogleMap, GoogleMap, Marker } from 'react-google-maps';
@@ -11,6 +12,7 @@ const AsyncGoogleMap = withScriptjs(
     withGoogleMap(
         props => (
             <GoogleMap
+                ref={props.onMapLoad}
                 defaultZoom={17}
                 defaultCenter={props.location}
                 defaultOptions={{
@@ -29,7 +31,27 @@ const AsyncGoogleMap = withScriptjs(
     )
 );
 
-export default class RestaurantEditLocation extends Component {
+function handleMapLoad(map, currentLocation, currentLocButton, restaurantLocation, restaurantButton) {
+    if (map) {
+        currentLocButton.onclick = () => map.panTo(currentLocation.toJS());
+        restaurantButton.onclick = () => map.panTo(restaurantLocation);
+
+        const rawMap = map.context.__SECRET_MAP_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
+
+        const controlContainer = rawMap.controls[google.maps.ControlPosition.RIGHT_BOTTOM];
+        const notInitialised = !controlContainer.getLength();
+        if (notInitialised) {
+            if (currentLocation.get('lat') && currentLocation.get('lng')) {
+                currentLocButton.style = '';
+            }
+            restaurantButton.style = '';
+            controlContainer.push(restaurantButton);
+            controlContainer.push(currentLocButton);
+        }
+    }
+}
+
+export default class RestaurantViewLocation extends Component {
     constructor(props) {
         super(props);
         this.state = { showModal: false };
@@ -44,13 +66,13 @@ export default class RestaurantEditLocation extends Component {
     }
 
     render() {
-        const { latitude, longitude } = this.props.address;
+        const { currentLocation, address } = this.props;
 
-        if (!latitude || !longitude) {
+        if (!address.get('latitude') || !address.get('longitude')) {
             return null;
         }
 
-        const position = { lat: latitude, lng: longitude };
+        const position = { lat: address.get('latitude'), lng: address.get('longitude') };
         return (
             <div className="inline-block">
                 <a className="margin-left-1x-sm" onClick={() => this.open()} href="javascript:void(0)">
@@ -58,9 +80,21 @@ export default class RestaurantEditLocation extends Component {
                 </a>
                 <Modal show={this.state.showModal} onHide={() => this.close()}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Select location of the restaurant</Modal.Title>
+                        <Modal.Title>Restaurant location</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
+                        <button type="button"
+                            className="google-button google-button__current-location margin-bottom-1x"
+                            ref={ref => this.currentLocBtn = ref}
+                            style={{ display: 'none' }}>
+                            <i className="fa fa-crosshairs" />
+                        </button>
+                        <button type="button"
+                            className="google-button google-button__current-location"
+                            ref={ref => this.restaurantLocBtn = ref}
+                            style={{ display: 'none' }}>
+                            <i className="fa fa-map-marker" />
+                        </button>
                         <AsyncGoogleMap
                             googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&key=${API_KEY}&libraries=places`}
                             loadingElement={
@@ -75,7 +109,8 @@ export default class RestaurantEditLocation extends Component {
                                 <div style={{ height: `100%` }} />
                             }
                             location={position}
-                            currentLocation={this.props.currentLocation}
+                            currentLocation={currentLocation}
+                            onMapLoad={map => handleMapLoad(map, currentLocation, this.currentLocBtn, position, this.restaurantLocBtn)}
                             markers={[{ position }]}
                             onMarkerRightClick={() => { }}
                         />

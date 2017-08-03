@@ -12,12 +12,19 @@ import MetaTag from '../../components/structure/meta';
 import { HOSTNAME, DATE_FORMAT_WORD } from '../../../../shared/constants';
 import FBShareButton from '../../components/fb-share-button';
 
-class PostPage extends Component {
-    componentDidMount() {
-        const { match: { params: { path } }, fetchPost, post } = this.props;
+const requestPost = (props) => {
+    const { match: { params: { path } }, fetchPost, post } = props;
         if (!post || !post.get('id')) {
             fetchPost({ path });
         }
+};
+
+class PostPage extends Component {
+    componentDidMount() {
+        requestPost(this.props);
+    }
+    componentDidUpdate() {
+        requestPost(this.props);
     }
 
     render() {

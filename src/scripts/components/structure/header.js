@@ -14,11 +14,11 @@ export default () => (
             </Navbar.Header>
             <Navbar.Collapse>
                 <Nav>
-                    <LinkContainer to="/secure/restaurants">
-                        <NavItem className="header-action" eventKey={1}>Restaurants</NavItem>
+                    <LinkContainer to="/secure/restaurants" className="header-action">
+                        <NavItem eventKey={1}>Restaurants</NavItem>
                     </LinkContainer>
-                    <LinkContainer to="/secure/posts">
-                        <NavItem className="header-action" eventKey={2}>Posts</NavItem>
+                    <LinkContainer to="/secure/posts" className="header-action">
+                        <NavItem eventKey={2}>Posts</NavItem>
                     </LinkContainer>
                 </Nav>
                 <Nav pullRight>

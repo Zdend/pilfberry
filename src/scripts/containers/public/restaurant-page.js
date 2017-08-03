@@ -69,7 +69,7 @@ const OptionalIconValue = ({ value, icon, children, className }) =>
 const stripHttp = url => url.replace(/^https?:\/\//, '').replace(/\/$/, '');
 
 class RestaurantPage extends Component {
-    componentDidMount() {
+    componentDidUpdate() {
         const { match: { params: { path } }, fetchRestaurant, restaurant } = this.props;
         if (!restaurant || !restaurant.get('id')) {
             fetchRestaurant({ path });

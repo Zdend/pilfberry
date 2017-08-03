@@ -45,3 +45,22 @@
   outline: none;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
+
+
+.google-button {
+  background-color: rgb(255, 255, 255);
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px;
+  border-radius: 2px;
+  border: none;
+  width: 28px;
+  height: 28px;
+  color: $gray;
+  font-size: 18px;
+  &:hover, &:focus {
+    color: $gray-darker;
+  }
+}
+
+.google-button__current-location {
+  margin-right: 10px;
+}

@@ -1,3 +1,4 @@
+/* global google */
 import React, { Component } from 'react';
 import { withGoogleMap, GoogleMap, Marker, InfoWindow } from 'react-google-maps';
 import withScriptjs from 'react-google-maps/lib/async/withScriptjs';
@@ -84,34 +85,58 @@ const getMarkers = (restaurants) => restaurants.valueSeq()
     }).toJS();
 
 
-function handleMapLoad(map, currentLocation) {
-    if (map && currentLocation && currentLocation.get('lat') && currentLocation.get('lng')) {
-        map.panTo(currentLocation.toJS());
+function handleMapLoad(map, currentLocation, input) {
+    if (map) {
+        if (currentLocation && currentLocation.get('lat') && currentLocation.get('lng')) {
+            map.panTo(currentLocation.toJS());
+        }
+
+        input.onclick = () => map.panTo(currentLocation.toJS());
+
+        const rawMap = map.context.__SECRET_MAP_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
+
+        const controlContainer = rawMap.controls[google.maps.ControlPosition.RIGHT_BOTTOM];
+        const notInitialised = !controlContainer.getLength();
+        if (notInitialised) {
+            input.style = '';
+            controlContainer.push(input);
+        }
     }
 }
 
-export default ({ restaurants, currentLocation }) => {
-    const markers = getMarkers(restaurants);
+export default class RestaurantMap extends Component {
+    render() {
+        const { restaurants, currentLocation } = this.props;
+        const markers = getMarkers(restaurants);
 
-    return (
-        <AsyncGoogleMap
-            googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&key=${API_KEY}`}
-            loadingElement={
-                <Col sm={12}>
-                    <SpinnerInline />
-                </Col>
-            }
-            containerElement={
-                <Col style={{ height: `500px`, width: '100%' }} sm={12} />
-            }
-            mapElement={
-                <div style={{ height: `100%` }} />
-            }
-            onMapLoad={map => handleMapLoad(map, currentLocation)}
-            onMapClick={() => { }}
-            markers={markers}
-            currentLocation={currentLocation}
-            onMarkerRightClick={() => { }}
-        />
-    );
-};
+        return (
+            <div>
+                <button type="button"
+                    className="google-button google-button__current-location"
+                    ref={ref => this.currentLocBtn = ref}
+                    style={{ display: 'none' }}>
+                    <i className="fa fa-crosshairs" />
+                </button>
+                <AsyncGoogleMap
+                    googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&key=${API_KEY}`}
+                    loadingElement={
+                        <Col sm={12}>
+                            <SpinnerInline />
+                        </Col>
+                    }
+                    containerElement={
+                        <Col style={{ height: `500px`, width: '100%' }} sm={12} />
+                    }
+                    mapElement={
+                        <div style={{ height: `100%` }} />
+                    }
+                    onMapLoad={map => handleMapLoad(map, currentLocation, this.currentLocBtn)}
+                    onMapClick={() => { }}
+                    markers={markers}
+                    currentLocation={currentLocation}
+                    onMarkerRightClick={() => { }}
+                />
+            </div>
+        );
+    }
+}

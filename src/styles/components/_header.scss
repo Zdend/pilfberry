@@ -1,7 +1,6 @@
 .header-action {
   transition: all 0.15s ease-in-out;
   &:focus, &:hover {
-    font-weight: 700;
-    background-color: $gray-lighter;
+    background-color: darken($gray-lighter, 6%);
   }
 }
