@@ -157,6 +157,9 @@ export default class RichEditor extends React.Component {
             }
         }
 
+        const plainText = contentState.getPlainText(' ');
+        const wordCount = plainText ? plainText.replace(/\s\s+/g, ' ').trim().split(' ').length : 0;
+
         return (
             <div className="RichEditor-root">
                 <AutoAffix viewportOffsetTop={0} container={this} onAffix={this.onAffix} onAffixedTop={this.onAffixedOff}>
@@ -198,6 +201,7 @@ export default class RichEditor extends React.Component {
                         spellCheck={true}
                     />
                 </div>
+                <div className="RichEditor-footer">{wordCount} words</div>
             </div>
         );
     }
