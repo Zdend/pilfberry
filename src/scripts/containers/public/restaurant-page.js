@@ -65,7 +65,7 @@ const ZeroPanel = () => (
     </span>
 );
 const OptionalIconValue = ({ value, icon, children, className }) => 
-(value ? <div className={className}><i className={`fa fa-${icon} text-muted restaurant-page__info-left`} /> <div className="restaurant-page__info-right">{children ? children : value}</div></div> : null);
+(value ? <div className={`${className} restaurant-page__info`}><i className={`fa fa-${icon} text-muted restaurant-page__info-left`} /> <div className="restaurant-page__info-right">{children ? children : value}</div></div> : null);
 const stripHttp = url => url.replace(/^https?:\/\//, '').replace(/\/$/, '');
 
 class RestaurantPage extends Component {

@@ -40,6 +40,9 @@
 .restaurant-page__empty-letter{
   @include letter-text();
 }
+.restaurant-page__info {
+  display: table;
+}
 .restaurant-page__info-left, .restaurant-page__info-right {
   display: table-cell;
 }
