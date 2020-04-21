@@ -1,0 +1,35 @@
+/* latin */
+$font-family-name: "Source Sans Pro";
+$font-folder-name: "SourceSansPro";
+$font-class-prefix: "text";
+$alternative-font-family: $font-family-name, "Helvetica Neue", Arial, sans-serif;
+
+@mixin font-variant($weight, $font-path, $class-suffix: "", $font-style: normal) {
+    $suffix: if($class-suffix != "", "-#{$class-suffix}", "");
+
+    @font-face {
+        font-family: $font-family-name;
+        font-style: $font-style;
+        font-weight: $weight;
+        src:    local($font-path), 
+                // url(~fonts/#{$font-folder-name}/#{$font-path}.woff2) format("woff2"), 
+                url(~fonts/#{$font-folder-name}/#{$font-path}.ttf) format("truetype");
+    }
+    .#{$font-class-prefix}#{$suffix} {
+        font-family: $alternative-font-family;
+        font-weight: $weight;
+    }
+}
+
+@include font-variant(200, "SourceSansPro-ExtraLightItalic", "extra-light-italic");
+@include font-variant(200, "SourceSansPro-ExtraLight", "extra-light");
+@include font-variant(300, "SourceSansPro-Light", "light");
+@include font-variant(300, "SourceSansPro-LightItalic", "light-italic", italic);
+@include font-variant(400, "SourceSansPro-Italic", "italic", italic);
+@include font-variant(400, "SourceSansPro-Regular", "");
+@include font-variant(600, "SourceSansPro-SemiBoldItalic", "semi-bold-italic", italic);
+@include font-variant(600, "SourceSansPro-SemiBold", "semi-bold");
+@include font-variant(700, "SourceSansPro-BoldItalic", "bold-italic", italic);
+@include font-variant(700, "SourceSansPro-Bold", "bold");
+@include font-variant(900, "SourceSansPro-BlackItalic", "black-italic", italic);
+@include font-variant(900, "SourceSansPro-Black", "black");

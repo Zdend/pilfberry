@@ -1,0 +1,24 @@
+
+@font-face {
+  font-family: "Magra";
+  font-style: normal;
+  font-weight: 400;
+  src: local("Magra-Regular"), url(~fonts/Magra/Magra-Regular.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "Magra";
+  font-style: normal;
+  font-weight: 700;
+  src: local("Magra-Bold"), url(~fonts/Magra/Magra-Bold.ttf) format("truetype");
+}
+
+.magra {
+  font-family: "Magra", "Roboto", sans-serif;
+  font-weight: 400;
+}
+
+.magra-bold {
+  font-family: "Magra", "Roboto", sans-serif;
+  font-weight: 700;
+}

@@ -1,0 +1,90 @@
+.RichEditor-root {
+  background: #fff;
+  border: 1px solid $input-border;
+  padding: 15px;
+  border-radius: $border-radius-base;
+}
+
+.RichEditor-editor {
+  cursor: text;
+  margin-top: 10px;
+}
+
+.RichEditor-footer {
+  border-top: 1px solid $gray-lighter;
+  text-align: right;
+  padding: 1rem 1rem 0 0;
+}
+
+
+.RichEditor-controls__container {
+  padding-bottom: .5rem;
+  border-bottom: 1px solid $gray-lighter;
+  background: #fff;
+  z-index: 1000;
+}
+
+.RichEditor-editor .public-DraftEditorPlaceholder-root,
+.RichEditor-editor .public-DraftEditor-content {
+  margin: 0 -15px -15px;
+  padding: 15px;
+}
+
+.RichEditor-editor .public-DraftEditor-content {
+  min-height: 100px;
+}
+
+.RichEditor-hidePlaceholder .public-DraftEditorPlaceholder-root {
+  display: none;
+}
+
+.RichEditor-blockquote {
+  border-left: 5px solid #eee;
+  color: $gray-light;
+  font-family: 'Georgia', 'Hoefler Text', serif;
+  font-style: italic;
+  margin: 16px 0;
+  padding: 10px 20px;
+}
+
+.RichEditor-editor .public-DraftStyleDefault-pre {
+  background-color: rgba(0, 0, 0, 0.05);
+  font-family: 'Inconsolata', 'Menlo', 'Consolas', monospace;
+  padding: 20px;
+}
+
+.RichEditor-controls {
+  font-size: 14px;
+  margin-bottom: 5px;
+  user-select: none;
+}
+
+.RichEditor-styleButton {
+  color: $gray-light;
+  cursor: pointer;
+  margin-right: 16px;
+  padding: 2px 0;
+  display: inline-block;
+  &:hover, &:focus {
+      color: darken($link-color, 10%);
+  }
+}
+
+.RichEditor-activeButton {
+  color: $link-color;
+}
+
+.DraftEditor-root {
+  font-size: 18px;
+}
+
+.RichEditor-popover--affixed {
+  position: fixed;
+  top: 36px !important;
+}
+
+@media (max-width: $screen-xs) {
+  .RichEditor-popover--affixed {
+    top: 56px !important;
+  }
+}

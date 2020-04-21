@@ -1,0 +1,91 @@
+
+.restaurant-block {
+  position: relative;
+  background-color: lighten($gray-lighter, 4%);
+  border-radius: $btn-border-radius-base;
+  border: 1px solid $gray-lighter;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.2s ease-in-out;
+  height: 8rem;
+  &:hover, &:focus {
+    background-color: $brand-primary;
+    .restaurant-block__name {
+      color: white;
+    }
+
+    .restaurant-block__image, .restaurant-block__labels {
+      opacity: 0.7;
+    }
+  }
+}
+
+.restaurant-block__image {
+  position: absolute;
+  background-size: cover;
+  background-position: 50% 50%;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: all 0.2s ease-in-out;
+  height: 100%;
+  width: 8rem;
+}
+.restaurant-block__empty-image {
+    position: absolute;
+    height: 100%;
+    width: 8rem;
+    font-size: 5rem;
+    @include letter-background();
+}
+.restaurant-block__empty-letter {
+  @include letter-text();
+}
+.restaurant-block__content {
+  margin-left: 9rem;
+}
+.restaurant-block__name {
+  padding: 0.5rem;
+  display: inline-block;
+  color: $gray-dark;
+  font-weight: 700;
+  line-height: 1;
+  margin-top: 0.5rem;
+  @include text-truncate();
+}
+@media (min-width: $screen-md) and (max-width: $screen-md-max) {
+  .restaurant-block__name {
+    width: 350px;
+  }
+}
+
+@media (min-width: $screen-sm) and (max-width: $screen-sm-max) {
+  .restaurant-block__name {
+    width: 205px;
+  }
+}
+
+@media (max-width: $screen-xs) {
+  .restaurant-block__name {
+    width: 235px;
+  }
+}
+@media (max-width: 360px) {
+  .restaurant-block__name {
+    width: 180px;
+  }
+}
+
+.restaurant-block__labels {
+  line-height: 1;
+}
+.restaurant-block__distance {
+  position: absolute;
+  right: 0;
+  top: 0;
+  font-size: 14px;
+  color: $gray;
+  font-weight: 200;
+  padding: 0.5rem;
+}

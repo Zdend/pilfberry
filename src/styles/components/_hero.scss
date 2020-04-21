@@ -1,0 +1,34 @@
+.hero {
+  min-height: 500px;
+  height: 100%;
+  //background: transparent url('http://dongkoy.com/wp-content/uploads/2017/04/Art-Food-Drink-Wallpaper-HD-Images-277384.jpg');
+  // background: transparent url('/static/images/food-wallpaper.jpg');
+  background: transparent url('/static/images/Burger.jpg');
+  //background: transparent url('https://images6.alphacoders.com/524/524477.jpg');
+  //background: transparent url('http://wallpapersdsc.net/wp-content/uploads/2016/09/Food-HD-Desktop.jpg');
+  //background: transparent url('http://www.printawallpaper.com/upload/designs/spice_spoons_detail.jpg');
+  //background: transparent url('http://batchef.com/wp-content/uploads/2016/06/bg-1_min.jpg');
+  //background: transparent url('http://kaboompics.com/files/upload/o_1ac2hl425cfl1sr4clv1culbos9_new.jpg');
+  background-position: center;
+  background-size: cover;
+  position: relative;
+  padding-top: 5rem;
+}
+.hero-title, .hero-subtitle {
+  text-align: center;
+  color: $white;
+  text-shadow: 1px 2px 7px $black;
+}
+
+.hero-title {
+  font-size: 5rem;
+  font-weight: 400;
+}
+.hero-subtitle {
+  margin-top: 4rem;
+  // position: absolute;
+  // bottom: 3rem;
+  font-size: 2rem;
+  font-weight: 200;
+  line-height: 1.5;
+}

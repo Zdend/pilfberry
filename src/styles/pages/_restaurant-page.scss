@@ -1,0 +1,116 @@
+.restaurant-page__cover {
+  background-size: cover;
+  background-position: 50% 50%;
+  width: 100%;
+  height: 400px;
+  color: #fff;
+  position: relative;
+}
+.restaurant-page__cover-title {
+  margin: 0;
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 0;
+  right: 0;
+  text-shadow: 1px 2px 2px rgba(0, 0, 0, 0.4);
+}
+.restaurant-page__avatar {
+  float: right;
+  width: 200px;
+  margin-left: 2rem;
+}
+.restaurant-page__avatar-pic {
+  background-size: cover;
+  background-position: 50% 50%;
+  transition: all 0.2s ease-in-out;
+  height: 200px;
+  width: 100%;
+  border-radius: $border-radius-base;
+}
+.restaurant-page__avatar-empty {
+  height: 200px;
+  width: 100%;
+  border-radius: $border-radius-base;
+  position: relative;
+  @include letter-background();
+  font-size: 10rem;
+}
+.restaurant-page__empty-letter{
+  @include letter-text();
+}
+.restaurant-page__info {
+  display: table;
+}
+.restaurant-page__info-left, .restaurant-page__info-right {
+  display: table-cell;
+}
+.restaurant-page__info-left {
+  width: 2.5rem;
+}
+
+.restaurant-page__gallery {
+  
+}
+
+.restaurant-page__gallery-container {
+  height: 200px;
+  width: 25%;
+  float: left;
+  position: relative;
+  overflow: hidden;
+  &:hover {
+    .restaurant-page__gallery-pic {
+      transform: scale(1.3);
+      &:after {
+        background-color: rgba(0, 0, 0, 0.4);
+      }
+    }
+  }
+}
+.restaurant-page__gallery-pic {
+  transition: all 0.2s ease-in-out;
+  background-size: cover;
+  background-position: 50% 50%;
+  cursor: pointer;
+  background-color: black;
+  height: 100%;
+  width: 100%;
+
+  &:after {
+      transition: all 0.2s ease-in-out;
+      display: block;
+      content: " ";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: rgba(0, 0, 0, 0);
+  }
+}
+@media (max-width: $screen-md-min) {
+  .restaurant-page__gallery-container {
+    width: 33.3333333%;
+  }
+}
+@media (max-width: $screen-sm-min) {
+  .restaurant-page__avatar {
+    width: 100%;
+    float: none;
+    margin: 1rem 0;
+  }
+  .restaurant-page__gallery-container {
+    width: 50%;
+  }
+}
+
+@media (max-width: $screen-xs-min) {
+  .restaurant-page__gallery-container {
+    width: 100%;
+    height: 300px;
+    margin: 0 0 2rem 0;
+  }
+
+}

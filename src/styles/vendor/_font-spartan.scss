@@ -1,0 +1,11 @@
+@font-face {
+  font-family: "League Spartan";
+  font-style: normal;
+  font-weight: 700;
+  src: local("League Spartan-Bold"), url(~fonts/Spartan/LeagueSpartan-Bold_a.woff) format("woff2");
+}
+
+.spartan-bold {
+  font-family: "League Spartan", "Source Sans Pro", sans-serif;
+  font-weight: 700;
+}

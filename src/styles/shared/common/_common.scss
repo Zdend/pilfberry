@@ -1,0 +1,52 @@
+.bg-default {
+  background: #fff;
+}
+
+.bg-gray-lighter {
+  background: $gray-lighter;
+}
+
+body.primary {
+  @include radial-bg(scale_color($brand-primary, $lightness: 90%));
+}
+.left {
+  float: left;
+}
+.right {
+  float: right;
+}
+
+.width-full {
+  width: 100%;
+}
+.width-half {
+  width: 50%;
+}
+.width-1r {
+  width: 1rem;
+}
+
+.inline-block {
+  display: inline-block;
+}
+.list-style-none {
+  list-style: none;
+}
+.list-inline-compact {
+  margin-left: 0;
+  li {
+    padding-left: 1px;
+    padding-right: 1px;
+  }
+}
+
+.overflow-hide {
+  height: 100%;
+  overflow: hidden;
+  width: 100%;
+  position: fixed;
+}
+
+.no-wrap {
+  white-space: nowrap;
+}

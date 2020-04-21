@@ -1,0 +1,51 @@
+.landing-page__tags-wrapper {
+    position: relative;
+
+}
+.landing-page__tags-input {
+    height: auto;
+    text-align: left;
+    padding: 6px;
+    border-top-left-radius: 4px !important;
+    border-bottom-left-radius: 4px !important;
+    .react-tagsinput-input{
+        margin-bottom: 0;
+        padding: 0;
+        padding-top: 4px;
+        padding-bottom: 4px;
+        position: relative;
+        bottom: 2px;
+    }
+    .react-autosuggest__suggestion {
+        padding: 6px;
+        font-size: 14px;
+    }
+    .react-autosuggest__suggestions-container {
+        margin-left: -5px;
+        margin-right: -5px;
+        margin-bottom: -5px;
+    }
+    &.react-tagsinput--focused { 
+        position: absolute !important;
+    }
+    .react-autosuggest__section-title {
+        padding-left: 5px;
+    }
+}
+.landing-page__tags-btn {
+    vertical-align: top;
+    height: 100%;
+    .btn {
+        height: 100%;
+        border: 2px solid $brand-primary;
+        &:hover {
+            border-color: darken($brand-primary, 12%);
+        }
+    }
+}
+
+@media (max-width: $screen-xs-max) {
+    .landing-page__filter-button {
+        font-size: 14px;
+    }
+}

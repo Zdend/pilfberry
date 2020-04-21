@@ -1,0 +1,51 @@
+.text-align-center {
+  text-align: center;
+}
+.text-align-left {
+  text-align: left;
+}
+.text-align-right {
+  text-align: right;
+}
+
+.large-disc {
+  font-size: 4rem;
+  border-radius: 3rem;
+  line-height: 5.8rem;
+  width: 6rem;
+  height: 6rem;
+}
+.massive-disc {
+  font-size: 5.8rem;
+  border-radius: 5rem;
+  line-height: 9.6rem;
+  vertical-align: middle;
+  width: 10rem;
+  height: 10rem;
+}
+
+@media (min-width: $screen-sm-min) {
+  .text-align-right-sm {
+    text-align: right;
+  }
+}
+@media (max-width: $screen-xs-max) {
+  .text-align-center-xs {
+    text-align: center;
+  }
+}
+@media (max-width: $screen-sm-max) {
+  .text-align-left-sm {
+    text-align: left;
+  }
+}
+
+
+.text-truncate {
+  @include text-truncate();
+}
+
+.page-title {
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+}

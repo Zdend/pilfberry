@@ -1,0 +1,48 @@
+.rs-photo {
+    display: inline-block;
+    position: relative;
+    margin-right: 1rem;
+    margin-top: 2rem;
+}
+.rs-photo--editing {
+    margin-bottom: 50px;
+}
+.rs-photo__selector {
+    position: absolute;
+    bottom: -50px;
+    left: 0;
+    width: 100%;
+}
+.rs-photo__frame {
+    position: relative;
+    
+    &:hover, &:focus {
+        .rs-photo__btn-toolbar {
+            height: 3.4rem;
+        }
+    }
+}
+.rs-photo__image {
+    height: 200px;
+}
+.rs-photo__btn-toolbar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 0;
+    background-color: rgba(255, 255, 255, 0.5);
+    overflow: hidden;
+    transition: all 0.2s ease-in-out;
+    padding: 0.4rem;
+    text-align: right;
+}
+
+.rs-photo__btn {
+    font-size: 2.5rem;
+    cursor: pointer;
+    margin-left: 0.5rem;
+    &:hover, &:focus {
+        color: $gray;
+    }
+}

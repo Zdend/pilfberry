@@ -1,0 +1,39 @@
+$white: #fff;
+$black: #000;
+
+$font-logo: "League Spartan", "Arial Black", sans-serif;
+
+// BOOTSTRAP OVERRIDES
+// $brand-primary: #df1e2d;
+$brand-primary: #510949;
+// $brand-primary: #5e0b4b;
+//$brand-primary: #E6E6FA;
+
+$font-size-base: 16px;
+
+$font-family-sans-serif: "Source Sans Pro";
+
+$navbar-default-color: $brand-primary;
+$navbar-default-bg: #fff;
+$navbar-default-border:            darken($navbar-default-bg, 6.5%) !default;
+
+// Navbar links
+$navbar-default-link-color:                $brand-primary !default;
+$navbar-default-link-hover-color:          #333 !default;
+$navbar-default-link-hover-bg:             transparent !default;
+$navbar-default-link-active-color:         #555 !default;
+$navbar-default-link-active-bg:            darken($navbar-default-bg, 6.5%) !default;
+$navbar-default-link-disabled-color:       #ccc !default;
+$navbar-default-link-disabled-bg:          transparent !default;
+
+// Navbar brand label
+$navbar-default-brand-color:               $navbar-default-link-color !default;
+$navbar-default-brand-hover-color:         darken($navbar-default-brand-color, 10%) !default;
+$navbar-default-brand-hover-bg:            transparent !default;
+
+// Navbar toggle
+$navbar-default-toggle-hover-bg:           lighten(#000, 90%) !default;
+$navbar-default-toggle-icon-bar-bg:        $brand-primary !default;
+$navbar-default-toggle-border-color:       $brand-primary !default;
+
+$link-color: #77006a;

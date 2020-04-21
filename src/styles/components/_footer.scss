@@ -1,0 +1,16 @@
+.footer {
+  border-top: 1px solid $gray-lighter;
+  padding: 1rem;
+}
+
+.footer__logo {
+  color: $gray;
+  font-size: 2.5rem;
+  font-weight: 700;
+  font-family: $font-logo;
+  display: inline-block;
+  &:hover, &:focus {
+    text-decoration: none;
+    color: darken($gray, 10%);
+  }
+}

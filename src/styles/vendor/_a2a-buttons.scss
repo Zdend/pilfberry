@@ -1,0 +1,24 @@
+.a2a_kit {
+    left: 0; 
+    top: 30%;
+    display: block !important; 
+    background: none;
+}
+.a2a_floating_style {
+    z-index: 3000;
+}
+
+@media (max-width: $screen-xs-max) {
+    .a2a_kit {
+        top: initial;
+        bottom: 0 !important;
+        line-height: 0 !important;
+        margin: 0 auto;
+        left: 0;
+        right: 0;
+        text-align: center;
+    }
+    .a2a_vertical_style a {
+        display: inline-block;
+    }
+}

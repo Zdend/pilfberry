@@ -1,0 +1,36 @@
+.navbar {
+  margin-bottom: 0;
+}
+@media (min-width: $screen-sm-min) {
+  .navbar {
+    border-radius: 0;
+  }
+}
+.navbar-brand {
+  font-size: 2.5rem;
+  font-weight: 700;
+  font-family: $font-logo;
+  padding: 18px 15px;
+  .fa {
+    font-size: 80%;
+  }
+}
+.navbar-toggle {
+  padding: 9px;
+}
+@media (max-width: $screen-xs-max) {
+  .navbar-nav {
+    margin: 5px -15px;
+  }
+  .navbar-right > .pull-right {
+    float: none !important;
+  }
+}
+
+.label-wrap {
+  display: inline-block;
+  // padding: .4em .6em;
+}
+.label {
+  font-weight: 400;
+}
