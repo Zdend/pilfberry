@@ -1,5 +1,5 @@
 {
-  "name": "special-diet",
+  "name": "pilfberry",
   "version": "1.0.0",
   "description": "",
   "main": "webpack.config.js",
@@ -13,7 +13,7 @@
     "debug-prod": "NODE_ENV=development forceProdDb=true ./node_modules/.bin/babel-watch ./server/index.js --inspect  --debug 5858 --watch server --exclude src"
   },
   "repository": "git+https://github.com/Zdend/special-diet.git",
-  "author": "Zdenek Vecek <zdenek.vecek@gmail.com>",
+  "author": "Zdenek Vecek <8145571+Zdend@users.noreply.github.com>",
   "license": "LicenseRef-LICENCE",
   "devDependencies": {
     "assert": "1.4.1",
